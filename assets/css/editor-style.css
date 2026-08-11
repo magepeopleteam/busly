@@ -1,0 +1,14 @@
+/**
+ * Busly — editor-style.css
+ * Makes the block editor canvas preview Busly's own typography/colors
+ * (registered via add_editor_style() in inc/setup/theme-setup.php).
+ */
+
+body {
+	font-family: 'Plus Jakarta Sans', sans-serif;
+	color: #0f172a;
+}
+.wp-block { max-width: 700px; }
+.wp-block h1, .wp-block h2, .wp-block h3 { font-weight: 800; letter-spacing: -.02em; }
+.wp-block a { color: #1d3d87; }
+.wp-block-button__link { border-radius: 100px; background: #1d3d87; font-weight: 700; }

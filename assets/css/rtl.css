@@ -1,0 +1,36 @@
+/**
+ * Busly — rtl.css
+ * Loaded only when is_rtl() (see inc/setup/enqueue.php). Flips directional
+ * spacing/positioning that CSS logical properties don't already handle in
+ * the other stylesheets. Deliberately NOT a blind mirror — box shadows,
+ * gradients and icon rotations that should stay visually identical in RTL
+ * are left untouched.
+ */
+
+body { direction: rtl; }
+
+.hero-h1, .hero-sub, .sec-p, .feat-d, .rev-txt, .post-excerpt { text-align: right; }
+.hero-overlay { transform: scaleX(-1); }
+.busly-hero-overlay { background: linear-gradient(260deg, rgba(6,14,46,.90) 0%, rgba(6,14,46,.75) 22%, rgba(6,14,46,.45) 44%, rgba(6,14,46,.12) 66%, transparent 82%); }
+
+.nav { flex-direction: row-reverse; }
+.hdr-in, .hdr-btns, .logo, .hero-trust, .trust-item, .route-top, .code-pair,
+.wbtm-card-wrap, .wbtm-card-times, .off-foot, .post-meta, .ftr-bot, .pay-badges { flex-direction: row-reverse; }
+
+.rarr, .go-ic svg, .see-all svg, .arrow-right, .chevron-right { transform: scaleX(-1); }
+
+.wtbm_inputList { border-right: none; border-left: 1px solid var(--busly-s200); }
+.wtbm_inputList:last-of-type { border-left: none; }
+.wbtm_search_location_toggle:hover, #wbtm_search_location_toggle:hover { transform: rotate(-180deg); }
+
+.busly-breadcrumbs, .busly-mobile-nav a { flex-direction: row-reverse; }
+.busly-comment-avatar { margin-left: 14px; margin-right: 0; }
+.comment-list .children { margin-left: 0; margin-right: 32px; }
+.wbtm_sm_pin { margin-left: 8px; margin-right: 0; }
+
+.busly-back-to-top { right: auto; left: 22px; }
+.busly-back-to-top svg { transform: rotate(90deg); }
+
+@media (max-width: 760px) {
+	.wtbm_inputList { border-left: none; border-bottom: 1px solid var(--busly-s200); }
+}

@@ -1,0 +1,277 @@
+/**
+ * Busly — booking.css
+ * Presentation-only skin over the Bus Ticket Booking with Seat Reservation
+ * plugin's REAL rendered markup (.wbtm_*, .mp_seat, .wtbm_*). No plugin
+ * template is duplicated here — see templates/README.md. Every selector
+ * below targets a class name confirmed in the plugin's own PHP/CSS, so
+ * this file only ever changes appearance, never behaviour.
+ *
+ * If a future plugin update renames one of these classes, only this file
+ * needs a follow-up patch — booking logic itself is never at risk.
+ */
+
+/* ══════════════════════════════════════════════════════════════════
+   1. SEARCH FORM — reskinned into the homepage.html pill-bar look
+   ══════════════════════════════════════════════════════════════════ */
+.wbtm_style { font-family: var(--busly-font-primary); }
+
+#wbtm_area .wbtm_search_area,
+.wbtm_style .wbtm_search_area {
+	background: #fff;
+	border-radius: 100px;
+	border: 1px solid var(--busly-s200);
+	box-shadow: 0 2px 16px rgba(0,0,0,.08);
+	padding: 6px;
+	max-width: 100%;
+}
+.wbtm_search_input_fields_holder,
+.wbtm_input_fields_holder {
+	display: flex;
+	align-items: stretch;
+	flex-wrap: wrap;
+}
+.wbtm_input_start_end_location,
+.wbtm_input_start_end_date { display: flex; align-items: stretch; flex: 1; min-width: 0; }
+
+.wtbm_inputList {
+	flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px;
+	padding: 10px 20px; cursor: pointer; transition: background .12s;
+	border-right: 1px solid var(--busly-s200); position: relative;
+}
+.wtbm_inputList:last-of-type,
+.wbtm_input_start_end_date .wtbm_inputList:last-child { border-right: none; }
+.wtbm_inputList:hover, .wtbm_inputList:focus-within { background: #f7f8ff; }
+.wtbm_fdColumn { display: flex; flex-direction: column; gap: 3px; width: 100%; }
+.wtbm_fdColumn label,
+.wtbm_inputList > label {
+	font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em;
+	color: #6b7280; white-space: nowrap; order: -1;
+}
+.wtbm_inputList .marker,
+.wtbm_inputList .calendar { color: #9ca3af; flex-shrink: 0; display: flex; }
+.wtbm_inputList .marker svg,
+.wtbm_inputList .calendar svg,
+.wtbm_inputList .marker i,
+.wtbm_inputList .calendar i { width: 16px; height: 16px; font-size: 16px; }
+
+.wtbm_inputList input.formControl,
+.wtbm_inputList input[type="text"],
+#wbtm_journey_date, #wbtm_return_date {
+	font-size: 13.5px; font-weight: 500; color: #111827; background: transparent;
+	border: none; outline: none; width: 100%; padding: 0; caret-color: var(--busly-primary-3);
+}
+.wtbm_inputList input.formControl::placeholder { color: #9ca3af; font-weight: 400; }
+
+/* Location autocomplete dropdown */
+.wbtm_input_select_list {
+	position: absolute; top: calc(100% + 8px); left: 0; min-width: 260px; max-height: 280px; overflow-y: auto;
+	background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16);
+	box-shadow: 0 16px 40px rgba(0,0,0,.14); z-index: 40; padding: 8px;
+}
+.wbtm_input_select_list li { padding: 10px 14px; border-radius: 10px; font-size: 13.5px; cursor: pointer; transition: background .1s; }
+.wbtm_input_select_list li:hover, .wbtm_input_select_list li.wbtm_city_selected { background: var(--busly-i50); color: var(--busly-primary); }
+
+/* Swap button */
+.wbtm_search_location_toggle, #wbtm_search_location_toggle {
+	flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: #fff; border: 1.5px solid #d1d5db;
+	display: flex; align-items: center; justify-content: center; color: #6b7280; cursor: pointer; align-self: center;
+	box-shadow: 0 1px 4px rgba(0,0,0,.08); transition: transform .3s, border-color .15s, color .15s;
+	margin: 0 -18px; z-index: 2; position: relative;
+}
+.wbtm_search_location_toggle:hover { transform: rotate(180deg); border-color: var(--busly-primary); color: var(--busly-primary); }
+.wbtm_search_location_toggle svg, .wbtm_search_location_toggle i { width: 14px; height: 14px; font-size: 14px; }
+
+/* Submit button(s) */
+.wtbm_bus_search_button_holder, .search_button_holder { display: flex; align-items: stretch; flex-shrink: 0; }
+.wbtm_bus_submit.wbtm_search_action_button,
+.get_wbtm_bus_list.wbtm_search_action_button {
+	flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 8px;
+	padding: 0 28px; margin: 6px 6px 6px 0; border-radius: 100px; background: var(--busly-accent);
+	color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; white-space: nowrap;
+	box-shadow: 0 3px 14px rgba(240,90,40,.35); transition: background .15s, transform .1s; min-height: 46px;
+}
+.wbtm_bus_submit.wbtm_search_action_button:hover,
+.get_wbtm_bus_list.wbtm_search_action_button:hover { background: var(--busly-accent-hover); transform: translateY(-1px); }
+
+/* Left-filter toggle variants keep their own layout; only re-theme colors */
+.wbtm_search_area.inputInline { border-radius: var(--busly-r20); }
+
+@media (max-width: 760px) {
+	.wbtm_search_input_fields_holder, .wbtm_input_fields_holder,
+	.wbtm_input_start_end_location, .wbtm_input_start_end_date { flex-direction: column; }
+	.wtbm_inputList { border-right: none; border-bottom: 1px solid var(--busly-s200); }
+	.wbtm_search_location_toggle, #wbtm_search_location_toggle { margin: 0; align-self: flex-end; transform: translateY(-18px); }
+	.wbtm_bus_submit.wbtm_search_action_button,
+	.get_wbtm_bus_list.wbtm_search_action_button { margin: 6px; padding: 15px; border-radius: 14px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   2. SEARCH RESULTS — bus cards (modern layout)
+   ══════════════════════════════════════════════════════════════════ */
+.wbtm-bus-list {
+	background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r20);
+	margin-bottom: 16px; overflow: hidden; transition: border-color .15s, box-shadow .15s;
+}
+.wbtm-bus-list:hover { border-color: #b0c4f0; box-shadow: 0 6px 24px rgba(0,0,0,.08); }
+.wbtm-bus-list.in_cart { border-color: var(--busly-primary); background: var(--busly-i50); }
+.wbtm-card-wrap { display: flex; align-items: center; gap: 24px; padding: 22px 26px; flex-wrap: wrap; }
+.wbtm-card-times { display: flex; align-items: center; gap: 18px; flex: 1; min-width: 220px; }
+.wbtm-time-depart, .wbtm-time-arrive { font-size: 18px; font-weight: 800; color: var(--busly-s900); }
+.wbtm-city-depart, .wbtm-city-arrive { font-size: 11.5px; color: var(--busly-s400); margin-top: 2px; }
+.wbtm-duration-track-wrap { flex: 1; text-align: center; min-width: 100px; }
+.wbtm-track-line { height: 2px; background: var(--busly-s200); position: relative; margin: 6px 0; }
+.wbtm-track-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--busly-primary); position: absolute; top: 50%; transform: translateY(-50%); }
+.wbtm-track-dot:first-child { left: 0; } .wbtm-track-dot:last-child { right: 0; }
+.wbtm-track-duration { font-size: 11.5px; color: var(--busly-s400); font-weight: 600; }
+.wbtm-card-info { flex: 1.4; min-width: 200px; }
+.wbtm-operator-name { font-size: 14px; font-weight: 700; color: var(--busly-s900); margin-bottom: 6px; }
+.wbtm-type-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 6px; background: var(--busly-s100); color: var(--busly-s600); margin-bottom: 8px; }
+.wbtm-amenities { display: flex; gap: 8px; flex-wrap: wrap; }
+.wbtm-amenity { font-size: 11px; color: var(--busly-s500); display: flex; align-items: center; gap: 4px; }
+.wbtm-seats-avail { font-size: 12px; color: #16a34a; font-weight: 600; margin-top: 6px; }
+.wbtm-card-price { text-align: right; flex-shrink: 0; }
+.wbtm-price-value { font-size: 20px; font-weight: 900; color: var(--busly-primary); display: block; margin-bottom: 10px; }
+.wbtm-seat-book, #get_wbtm_bus_details {
+	display: inline-flex; align-items: center; gap: 6px; padding: 11px 22px; border-radius: 100px;
+	background: var(--busly-primary); color: #fff !important; font-size: 13px; font-weight: 700; border: none; cursor: pointer;
+}
+.wbtm-seat-book:hover, #get_wbtm_bus_details:hover { opacity: .9; }
+.wbtm_bus_details { border-top: 1px solid var(--busly-s200); padding: 24px 26px; background: var(--busly-s50); }
+
+/* Flix / legacy compact layout */
+.wbtm-bus-flix-style {
+	background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16);
+	padding: 18px 22px; margin-bottom: 12px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+}
+.wbtm-bus-flix-style .price { font-weight: 800; color: var(--busly-primary); }
+
+/* Left filter sidebar */
+.wbtm_bus_left_filter_holder .wbtm-filter-card { background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16); padding: 20px; margin-bottom: 16px; }
+.wbtm-filter-header { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 14px; }
+.wbtm-filter-section { margin-bottom: 18px; }
+.wbtm-filter-cb-row { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; font-size: 13px; color: var(--busly-s600); }
+.wbtm-filter-cb-row input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--busly-primary); }
+
+/* Popup modal (bus details tabs) */
+.wbtm-bus-popup { position: fixed; inset: 0; background: rgba(15,23,42,.6); z-index: 100000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.wbtm-bus-popup-inner { background: #fff; border-radius: var(--busly-r20); max-width: 640px; width: 100%; max-height: 86vh; overflow-y: auto; padding: 32px; position: relative; }
+.wbtm-popup-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; background: var(--busly-s100); display: flex; align-items: center; justify-content: center; }
+
+/* Journey leg badges (cart) */
+.wbtm-journey-leg-badge { display: inline-flex; font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 100px; text-transform: uppercase; letter-spacing: .03em; }
+.wbtm-journey-leg-badge.wbtm-journey-leg-outbound { background: var(--busly-i50); color: var(--busly-primary); }
+.wbtm-journey-leg-badge.wbtm-journey-leg-return { background: #fef3c7; color: #b45309; }
+
+/* ══════════════════════════════════════════════════════════════════
+   3. SEAT MAP
+   ══════════════════════════════════════════════════════════════════ */
+.wbtm_seat_plan_area { background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r20); padding: 24px; }
+.wbtm_seat_plan_lower, .wbtm_seat_plan_upper { display: inline-flex; flex-direction: column; gap: 8px; }
+.wbtm_cabin_section { border: 1px solid var(--busly-s200); border-radius: var(--busly-r16); margin-bottom: 12px; overflow: hidden; }
+.wbtm_cabin_header { padding: 12px 18px; background: var(--busly-s50); font-weight: 700; font-size: 13.5px; cursor: pointer; }
+.wbtm_cabin_section.collapsed .wbtm_cabin_seat_plan { display: none; }
+.wbtm_cabin_seat_plan { padding: 18px; }
+
+.mp_seat_item { display: inline-flex; }
+.mp_seat {
+	width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center;
+	position: relative; cursor: pointer; transition: transform .1s;
+}
+.mp_seat .seat_visual { width: 100%; height: 100%; border-radius: 9px; display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--busly-s200); background: var(--busly-s50); transition: background .15s, border-color .15s; }
+.mp_seat .seat_number { font-size: 10.5px; font-weight: 700; color: var(--busly-s600); }
+.mp_seat.seat_available .seat_visual { background: #fff; border-color: #cbd5e1; }
+.mp_seat.seat_available:hover .seat_visual { border-color: var(--busly-primary); }
+.mp_seat.seat_selected.seat_available .seat_visual { background: var(--busly-primary); border-color: var(--busly-primary); }
+.mp_seat.seat_selected.seat_available .seat_number { color: #fff; }
+.mp_seat.seat_booked, .mp_seat.seat_in_cart { cursor: not-allowed; }
+.mp_seat.seat_booked .seat_visual { background: var(--busly-s200); border-color: var(--busly-s200); }
+.mp_seat.seat_booked .seat_number { color: var(--busly-s400); }
+.mp_seat.seat_in_cart .seat_visual { background: #fde68a; border-color: #fde68a; }
+
+.wbtm_non_seat_item { width: 38px; height: 38px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--busly-s400); }
+.wbtm_non_seat_icon { font-size: 14px; }
+.wbtm_non_seat_label { font-size: 8px; font-weight: 700; text-transform: uppercase; }
+.wbtm_aisle_blank { width: 20px; height: 38px; }
+
+.wbtm_seat_legend { display: flex; gap: 18px; margin-top: 20px; flex-wrap: wrap; border-top: 1px solid var(--busly-s200); padding-top: 18px; }
+.wbtm_seat_legend_item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--busly-s600); }
+.wbtm_seat_legend_swatch { width: 16px; height: 16px; border-radius: 5px; display: inline-block; border: 1.5px solid var(--busly-s200); background: #fff; }
+.wbtm_seat_legend_swatch.is_available { border-color: #cbd5e1; }
+.wbtm_seat_legend_swatch.is_selected { background: var(--busly-primary); border-color: var(--busly-primary); }
+.wbtm_seat_legend_swatch.is_booked { background: var(--busly-s200); border-color: var(--busly-s200); }
+
+.wbtm_seat_item_list ul.mp_list li.justifyBetween { display: flex; justify-content: space-between; padding: 8px 0; font-size: 13px; border-bottom: 1px solid var(--busly-s100); }
+
+/* ══════════════════════════════════════════════════════════════════
+   4. SELECTED SEATS + BOOKING SUMMARY + TOTALS
+   ══════════════════════════════════════════════════════════════════ */
+.wbtm_selected_seat_details { width: 100%; margin-top: 18px; }
+.wbtm_selected_seat_details th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--busly-s400); padding-bottom: 8px; }
+.wbtm_selected_seat_details td { padding: 10px 0; font-size: 13.5px; border-top: 1px solid var(--busly-s100); }
+.wbtm_remove_area { color: #dc2626; cursor: pointer; }
+
+.wbtm_booking_summary_preview {
+	background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r20); padding: 24px; position: sticky; top: 90px;
+}
+.wbtm_booking_summary_title { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+.wbtm_booking_summary_route { font-size: 12.5px; color: var(--busly-s500); margin-bottom: 16px; }
+.wbtm_booking_summary_table { width: 100%; }
+.wbtm_booking_summary_table td { padding: 6px 0; font-size: 13px; }
+.wbtm_booking_summary_subtotal, .wbtm_booking_summary_total { border-top: 1px solid var(--busly-s200); padding-top: 12px; margin-top: 8px; font-weight: 700; }
+.wbtm_booking_summary_total, .wbtm_summary_preview_total { color: var(--busly-primary); font-size: 16px; }
+.wbtm_summary_preview_book_now { width: 100%; margin-top: 16px; padding: 13px; border-radius: 100px; background: var(--busly-primary); color: #fff; font-weight: 700; }
+
+table.wbtm_totals h5.wbtm_sub_total, h5 span.wbtm_total { color: var(--busly-primary); font-weight: 800; }
+
+/* ══════════════════════════════════════════════════════════════════
+   5. SINGLE BUS PAGE (single_bus_details.php)
+   ══════════════════════════════════════════════════════════════════ */
+.wbtm_single_modern_card { background: #fff; border-radius: var(--busly-r20); border: 1px solid var(--busly-s200); overflow: hidden; margin-bottom: 32px; }
+.wbtm_sm_top { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.wbtm_sm_slider img { width: 100%; height: 100%; object-fit: cover; min-height: 320px; }
+.wbtm_sm_info { padding: 32px; }
+.wbtm_sm_header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.wbtm_sm_name { font-size: 22px; font-weight: 900; letter-spacing: -.02em; }
+.wbtm_sm_code { font-size: 12px; color: var(--busly-s400); font-weight: 700; }
+.wbtm_sm_tags { display: flex; gap: 8px; margin: 12px 0 20px; flex-wrap: wrap; }
+.wbtm_sm_tag { font-size: 11.5px; font-weight: 700; padding: 5px 11px; border-radius: 100px; }
+.wbtm_sm_tag._gray { background: var(--busly-s100); color: var(--busly-s600); }
+.wbtm_sm_tag._blue { background: var(--busly-i50); color: var(--busly-primary); }
+.wbtm_sm_tag._green { background: #dcfce7; color: #15803d; }
+.wbtm_sm_routes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.wbtm_sm_route_box { background: var(--busly-s50); border-radius: var(--busly-r16); padding: 16px; }
+.wbtm_sm_stop { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 8px; }
+.wbtm_sm_pin { color: var(--busly-primary); flex-shrink: 0; }
+.wbtm_sm_stop_time { color: var(--busly-s400); font-size: 11.5px; margin-left: auto; }
+.wbtm_sm_return_toggle { font-size: 13px; font-weight: 700; color: var(--busly-primary); cursor: pointer; margin-bottom: 12px; display: inline-flex; align-items: center; gap: 6px; }
+.wbtm_sm_description { font-size: 13.5px; color: var(--busly-s600); line-height: 1.75; padding: 0 32px 32px; }
+.wtbm_term_wrapper { border-top: 1px solid var(--busly-s200); padding: 20px 32px 32px; }
+.wtbm_term_item { border-bottom: 1px solid var(--busly-s100); padding: 12px 0; }
+.wtbm_term_title { font-weight: 700; font-size: 13.5px; cursor: pointer; }
+
+@media (max-width: 760px) {
+	.wbtm_sm_top, .wbtm_sm_routes { grid-template-columns: 1fr; }
+	.wbtm_sm_slider img { min-height: 220px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   6. MY ACCOUNT — Bus Booking Dashboard
+   ══════════════════════════════════════════════════════════════════ */
+.wbtm-my-account-dashboard { display: flex; flex-direction: column; gap: 24px; }
+.wbtm-dashboard-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.wbtm-stat-card { background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16); padding: 20px; text-align: center; }
+.wbtm-stat-card strong { display: block; font-size: 24px; font-weight: 900; color: var(--busly-primary); }
+.wbtm-dashboard-filters { display: flex; gap: 10px; flex-wrap: wrap; }
+.wbtm-bookings-container { background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16); overflow: hidden; }
+.wbtm-bookings-header { display: flex; background: var(--busly-s50); font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--busly-s500); }
+.wbtm-header-cell { padding: 12px 16px; flex: 1; }
+
+@media (max-width: 760px) {
+	.wbtm-dashboard-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   7. WooCommerce cart-page booking-item display
+   ══════════════════════════════════════════════════════════════════ */
+.woocommerce-cart .wbtm_style { font-size: 13px; color: var(--busly-s600); }
+.woocommerce-cart .wbtm_style table { font-size: 13px; }

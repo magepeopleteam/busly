@@ -1,0 +1,31 @@
+/*
+Theme Name: Busly
+Theme URI: https://magepeople.com/themes/busly
+Author: MagePeople
+Author URI: https://magepeople.com
+Description: Premium Bus Ticket Booking & Transportation WordPress Theme. Busly is built for bus operators, coach and shuttle services, and travel agencies. It pairs a 100% Elementor-editable homepage with deep integration for the Bus Ticket Booking with Seat Reservation plugin (search, seat maps, WooCommerce checkout, customer account) and optional WooCommerce shop support.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.7
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Text Domain: busly
+Tags: e-commerce, blog, one-column, two-columns, right-sidebar, custom-menu, custom-logo, featured-images, rtl-language-support, threaded-comments, translation-ready, travel, transportation
+
+Busly is distributed under the terms of the GNU GPL.
+
+This program is free software: you can redistribute it and/or modify it under the terms
+of the GNU General Public License as published by the Free Software Foundation, either
+version 2 of the License, or (at your option) any later version.
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+*/
+
+/* ------------------------------------------------------------------------
+ * This file intentionally holds only the required theme header comment.
+ * All presentational CSS lives in assets/css/*.css and is loaded through
+ * wp_enqueue_style() from inc/setup/enqueue.php so that individual sheets
+ * can be conditionally loaded per page (see PERFORMANCE notes in the docs).
+ * ---------------------------------------------------------------------- */

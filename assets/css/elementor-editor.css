@@ -1,0 +1,15 @@
+/**
+ * Busly — elementor-editor.css
+ * Editor-panel-only tweaks (empty-state placeholders inside Busly widgets
+ * while they're being configured in the Elementor panel). Never loaded on
+ * the front end — see inc/integrations/elementor.php.
+ */
+
+.busly-elementor-empty {
+	padding: 24px;
+	text-align: center;
+	border: 1px dashed #d5dadf;
+	border-radius: 8px;
+	color: #6d7882;
+	font-size: 12px;
+}

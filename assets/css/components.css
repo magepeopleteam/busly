@@ -1,0 +1,109 @@
+/**
+ * Busly — components.css
+ * Buttons, cards, badges, forms, pagination, breadcrumbs, comments.
+ * Shared building blocks reused by template-parts, widgets and WooCommerce.
+ */
+
+/* ── Buttons ───────────────────────────────────── */
+.busly-btn {
+	display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+	padding: 13px 28px; border-radius: 100px; font-size: 14px; font-weight: 800;
+	cursor: pointer; transition: transform .15s, box-shadow .15s, background .15s, opacity .15s;
+	border: none; white-space: nowrap;
+}
+.busly-btn--primary { background: var(--busly-primary); color: #fff; }
+.busly-btn--primary:hover { opacity: .9; transform: translateY(-1px); }
+.busly-btn--accent { background: var(--busly-accent); color: #fff; box-shadow: 0 3px 14px rgba(240,90,40,.35); }
+.busly-btn--accent:hover { background: var(--busly-accent-hover); transform: translateY(-1px); }
+.busly-btn--white { background: #fff; color: var(--busly-navy); box-shadow: 0 6px 24px rgba(0,0,0,.22); }
+.busly-btn--white:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,0,0,.28); }
+.busly-btn--outline { background: transparent; border: 1.5px solid var(--busly-border); color: var(--busly-s700); }
+.busly-btn--outline:hover { background: var(--busly-s100); }
+.busly-btn--sm { padding: 9px 18px; font-size: 12.5px; }
+.busly-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+.busly-btn:disabled { opacity: .55; cursor: not-allowed; transform: none !important; }
+
+/* ── Cards ─────────────────────────────────────── */
+.busly-card {
+	background: #fff; border-radius: var(--busly-r20); border: 1px solid var(--busly-s200);
+	transition: border-color .15s, box-shadow .15s, transform .15s;
+}
+.busly-card:hover { border-color: #b0c4f0; box-shadow: 0 6px 24px rgba(0,0,0,.08); transform: translateY(-2px); }
+.busly-badge {
+	font-size: 11px; font-weight: 800; letter-spacing: .04em; padding: 3px 8px;
+	border-radius: 6px; background: var(--busly-s100); color: var(--busly-s600); display: inline-block;
+}
+.busly-pill {
+	display: inline-block; font-size: 11.5px; font-weight: 700; color: #fff;
+	background: rgba(255,255,255,.18); backdrop-filter: blur(6px); padding: 4px 10px; border-radius: 100px;
+}
+
+/* ── Forms ─────────────────────────────────────── */
+.busly-form input[type="text"],
+.busly-form input[type="email"],
+.busly-form input[type="tel"],
+.busly-form input[type="number"],
+.busly-form textarea,
+.busly-form select,
+.wpcf7-form-control:not(.wpcf7-submit),
+.wpforms-field input:not([type="submit"]):not([type="checkbox"]):not([type="radio"]),
+.wpforms-field textarea,
+.wpforms-field select {
+	width: 100%; padding: 13px 16px; border: 1px solid var(--busly-s200); border-radius: var(--busly-r12);
+	font-size: 14px; color: var(--busly-s900); background: #fff; transition: border-color .15s, box-shadow .15s;
+}
+.busly-form input:focus, .busly-form textarea:focus, .busly-form select:focus,
+.wpcf7-form-control:focus, .wpforms-field input:focus, .wpforms-field textarea:focus {
+	border-color: var(--busly-primary-3); box-shadow: 0 0 0 3px var(--busly-i50); outline: none;
+}
+.busly-form label, .wpforms-field-label { font-size: 12.5px; font-weight: 700; color: var(--busly-s700); display: block; margin-bottom: 6px; }
+.wpcf7-submit, .wpforms-submit { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 100px; background: var(--busly-primary); color: #fff !important; font-size: 14px; font-weight: 800; border: none; cursor: pointer; }
+.wpcf7-submit:hover, .wpforms-submit:hover { opacity: .9; }
+.wpcf7-not-valid-tip { color: #dc2626; font-size: 12px; margin-top: 4px; }
+.wpcf7-response-output { border-radius: var(--busly-r12); padding: 12px 16px; font-size: 13px; margin-top: 16px; }
+
+/* ── Pagination ────────────────────────────────── */
+.busly-pagination { margin-top: 48px; display: flex; justify-content: center; }
+.busly-pagination ul { display: flex; align-items: center; gap: 6px; }
+.busly-pagination .page-numbers {
+	display: flex; align-items: center; justify-content: center; min-width: 38px; height: 38px;
+	padding: 0 8px; border-radius: 10px; font-size: 13px; font-weight: 700; color: var(--busly-s700);
+	background: #fff; border: 1px solid var(--busly-s200); transition: background .15s, color .15s;
+}
+.busly-pagination .page-numbers.current,
+.busly-pagination .page-numbers:hover { background: var(--busly-primary); color: #fff; border-color: var(--busly-primary); }
+.busly-pagination .page-numbers.dots { border: none; background: none; }
+
+/* ── Breadcrumbs ───────────────────────────────── */
+.busly-breadcrumbs { font-size: 12.5px; color: var(--busly-s500); margin-bottom: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.busly-breadcrumbs a { color: var(--busly-s500); transition: color .15s; }
+.busly-breadcrumbs a:hover { color: var(--busly-primary); }
+.busly-breadcrumbs [aria-current="page"] { color: var(--busly-s900); font-weight: 600; }
+
+/* ── Page header (non-front pages) ────────────── */
+.busly-page-header { padding: 48px 0 8px; }
+.busly-page-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 900; letter-spacing: -.02em; }
+
+/* ── Comments ──────────────────────────────────── */
+.busly-comments { margin-top: 56px; }
+.busly-comments-title { font-size: 18px; font-weight: 800; margin-bottom: 24px; }
+.comment-list { display: flex; flex-direction: column; gap: 20px; }
+.comment-list .children { margin-top: 20px; margin-left: 32px; display: flex; flex-direction: column; gap: 20px; }
+.busly-comment { display: flex; gap: 14px; }
+.busly-comment-avatar img { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; }
+.busly-comment-body { background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16); padding: 16px 18px; flex: 1; }
+.busly-comment-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+.busly-comment-author { font-weight: 700; font-size: 13.5px; }
+.busly-comment-date { font-size: 12px; color: var(--busly-s400); }
+.busly-comment-content p { font-size: 13.5px; color: var(--busly-s600); line-height: 1.7; }
+.busly-comment-reply a { font-size: 12px; font-weight: 700; color: var(--busly-primary); }
+.comment-respond { margin-top: 32px; background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16); padding: 24px; }
+.comment-form p { margin-bottom: 14px; }
+.comment-form-cookies-consent { display: flex; align-items: center; gap: 8px; }
+
+/* ── Widgets (sidebar cards) ───────────────────── */
+.busly-widget { margin-bottom: 32px; background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16); padding: 22px; }
+.busly-widget-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 16px; }
+.busly-widget ul { display: flex; flex-direction: column; gap: 10px; }
+.busly-widget a { font-size: 13.5px; color: var(--busly-s600); transition: color .15s; }
+.busly-widget a:hover { color: var(--busly-primary); }

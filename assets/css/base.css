@@ -1,0 +1,127 @@
+/**
+ * Busly — base.css
+ * Reset, design tokens (CSS custom properties) and base typography.
+ * Token values match the homepage.html design reference exactly; the
+ * --busly-* properties below are overridden per-site by Busly Theme
+ * Settings (see inc/setup/enqueue.php:busly_generate_css_variables()).
+ */
+
+/* ── Reset ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+	html { scroll-behavior: auto; }
+	*, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+body {
+	font-family: var(--busly-font-primary, 'Plus Jakarta Sans', sans-serif);
+	font-size: 15px;
+	line-height: 1.6;
+	color: var(--busly-heading, #0f172a);
+	background: var(--busly-background, #f4f6fb);
+	-webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+button { border: none; background: none; cursor: pointer; font-family: inherit; }
+input, select, textarea { font-family: inherit; font-size: inherit; }
+img { display: block; max-width: 100%; height: auto; }
+ul, ol { list-style: none; }
+table { border-collapse: collapse; width: 100%; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
+/* ── Design tokens (defaults; live values injected inline) ───────── */
+:root {
+	--busly-navy: #0c1a52;
+	--busly-primary: #1d3d87;
+	--busly-primary-2: #2f56c7;
+	--busly-primary-3: #3b6ae8;
+	--busly-accent: #f05a28;
+	--busly-accent-hover: #e04a18;
+	--busly-heading: #0f172a;
+	--busly-text: #64748b;
+	--busly-border: #e2e8f0;
+	--busly-background: #f4f6fb;
+	--busly-radius: 20px;
+	--busly-container: 1180px;
+	--busly-font-primary: 'Plus Jakarta Sans', sans-serif;
+
+	/* Fixed slate scale — not theme-settable, matches the reference 1:1. */
+	--busly-i50: #eef2ff;
+	--busly-i100: #e0e7ff;
+	--busly-s50: #f8fafc;
+	--busly-s100: #f1f5f9;
+	--busly-s200: #e2e8f0;
+	--busly-s400: #94a3b8;
+	--busly-s500: #64748b;
+	--busly-s600: #475569;
+	--busly-s700: #334155;
+	--busly-s900: #0f172a;
+	--busly-white: #ffffff;
+	--busly-r8: 8px;
+	--busly-r12: 12px;
+	--busly-r16: 16px;
+	--busly-r20: 20px;
+	--busly-r24: 24px;
+}
+
+/* ── Base typography ───────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 800;
+	line-height: 1.25;
+	letter-spacing: -.02em;
+	color: var(--busly-heading);
+}
+h1 { font-weight: 900; }
+h2 { font-weight: 900; }
+p { margin: 0 0 1em; }
+p:last-child { margin-bottom: 0; }
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+	outline: 2px solid var(--busly-primary-3);
+	outline-offset: 2px;
+}
+
+/* ── Accessibility utility ─────────────────────── */
+.screen-reader-text {
+	border: 0; clip: rect(1px, 1px, 1px, 1px); clip-path: inset(50%);
+	height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute;
+	width: 1px; word-wrap: normal !important;
+}
+.screen-reader-text:focus {
+	background: #fff; clip: auto !important; clip-path: none; color: #111827;
+	display: block; font-size: 14px; font-weight: 700; height: auto; left: 8px; top: 8px;
+	line-height: normal; padding: 12px 20px; text-decoration: none; width: auto;
+	z-index: 100000; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,.2);
+}
+.skip-link { position: absolute; left: -9999px; z-index: 100000; }
+.skip-link:focus { left: 8px; top: 8px; }
+
+/* ── Generic notices (used by graceful-degradation fallbacks) ─────── */
+.busly-notice {
+	padding: 16px 20px;
+	border-radius: var(--busly-r16);
+	font-size: 13.5px;
+	line-height: 1.6;
+	margin: 0 0 20px;
+}
+.busly-notice--warning {
+	background: #fffbeb;
+	border: 1px solid #fde68a;
+	color: #92400e;
+}
+.busly-notice--info {
+	background: var(--busly-i50);
+	border: 1px solid var(--busly-i100);
+	color: var(--busly-primary);
+}
+
+/* ── Alignment helpers (block editor parity) ───── */
+.alignwide { max-width: 1400px; }
+.alignfull { max-width: none; width: 100%; }
+.aligncenter { margin-left: auto; margin-right: auto; }

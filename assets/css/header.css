@@ -1,0 +1,100 @@
+/**
+ * Busly — header.css
+ * Sticky/transparent header, primary nav, mobile menu. Matches the .hdr
+ * block in homepage.html; scoped with .busly-header-* body classes so a
+ * non-front page (opaque header) and the front page (transparent-over-hero)
+ * can share one markup structure.
+ */
+
+.hdr {
+	position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+	height: 66px; display: flex; align-items: center;
+	transition: background .3s, backdrop-filter .3s, box-shadow .3s;
+	background: var(--busly-navy);
+}
+body:not(.busly-header-transparent) .hdr,
+.hdr.solid {
+	background: rgba(255,255,255,.97);
+	backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+	box-shadow: 0 1px 0 rgba(0,0,0,.07);
+}
+body:not(.busly-header-sticky) .hdr { position: absolute; }
+body.busly-header-transparent:not(.busly-header-sticky) .hdr.solid { position: fixed; }
+
+.hdr-in {
+	max-width: var(--busly-container); margin: 0 auto; padding: 0 28px;
+	width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+}
+.logo { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+.logo img { max-height: 34px; width: auto; }
+.logo-box {
+	width: 32px; height: 32px; border-radius: 8px;
+	background: var(--busly-primary); display: flex; align-items: center; justify-content: center; color: #fff;
+}
+.logo-box svg { width: 17px; height: 17px; }
+.logo-name { font-size: 17px; font-weight: 900; letter-spacing: -.03em; color: #fff; transition: color .3s; }
+body:not(.busly-header-transparent) .logo-name,
+.hdr.solid .logo-name { color: var(--busly-primary); }
+
+.nav { display: flex; align-items: center; gap: 1px; flex: 1; }
+.nav a { padding: 6px 12px; border-radius: 7px; font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,.78); transition: background .15s, color .15s; }
+.nav a:hover, .nav .current-menu-item > a { background: rgba(255,255,255,.1); color: #fff; }
+body:not(.busly-header-transparent) .nav a,
+.hdr.solid .nav a { color: var(--busly-s600); }
+body:not(.busly-header-transparent) .nav a:hover,
+body:not(.busly-header-transparent) .nav .current-menu-item > a,
+.hdr.solid .nav a:hover,
+.hdr.solid .nav .current-menu-item > a { background: var(--busly-s100); color: var(--busly-s900); }
+
+/* Sub-menu (dropdown) */
+.nav li { position: relative; }
+.nav ul.sub-menu {
+	position: absolute; top: 100%; left: 0; min-width: 200px; background: #fff;
+	border-radius: var(--busly-r12); box-shadow: 0 12px 32px rgba(0,0,0,.14); border: 1px solid var(--busly-s200);
+	padding: 8px; opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .15s, transform .15s;
+	z-index: 20;
+}
+.nav li:hover > ul.sub-menu, .nav li:focus-within > ul.sub-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+.nav ul.sub-menu a { color: var(--busly-s700) !important; display: block; border-radius: 7px; }
+.nav ul.sub-menu a:hover { background: var(--busly-s100) !important; }
+.nav ul.sub-menu ul.sub-menu { top: 0; left: 100%; }
+
+.hdr-btns { display: flex; align-items: center; gap: 7px; flex-shrink: 0; }
+.hbtn { padding: 7px 13px; border-radius: 7px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,.8); transition: background .15s, color .15s; }
+.hbtn:hover { background: rgba(255,255,255,.1); color: #fff; }
+body:not(.busly-header-transparent) .hbtn, .hdr.solid .hbtn { color: var(--busly-s700); }
+body:not(.busly-header-transparent) .hbtn:hover, .hdr.solid .hbtn:hover { background: var(--busly-s100); }
+.hbtn-outline { border: 1px solid rgba(255,255,255,.24); }
+body:not(.busly-header-transparent) .hbtn-outline, .hdr.solid .hbtn-outline { border-color: var(--busly-s200); }
+.hbtn-fill { background: var(--busly-primary); color: #fff !important; font-weight: 700; }
+.hbtn-fill:hover { opacity: .88; transform: translateY(-1px); }
+
+/* Mobile toggle + panel */
+.hdr-burger { display: none; width: 38px; height: 38px; align-items: center; justify-content: center; border-radius: 8px; color: #fff; flex-shrink: 0; }
+body:not(.busly-header-transparent) .hdr-burger, .hdr.solid .hdr-burger { color: var(--busly-s700); }
+.hdr-burger svg { width: 22px; height: 22px; }
+
+.busly-mobile-panel {
+	position: fixed; inset: 0; z-index: 10000; background: #fff; transform: translateX(100%);
+	transition: transform .25s ease; overflow-y: auto; padding: 20px 24px 40px;
+}
+.busly-mobile-panel.is-open { transform: translateX(0); }
+.busly-mobile-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.busly-mobile-panel-close { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: var(--busly-s100); }
+.busly-mobile-panel-close svg { width: 18px; height: 18px; }
+.busly-mobile-nav { display: flex; flex-direction: column; gap: 2px; margin-bottom: 24px; }
+.busly-mobile-nav a { display: flex; align-items: center; justify-content: space-between; padding: 13px 4px; font-size: 15px; font-weight: 600; color: var(--busly-s900); border-bottom: 1px solid var(--busly-s100); }
+.busly-mobile-nav .sub-menu { padding-left: 16px; display: none; }
+.busly-mobile-nav li.menu-item-has-children.is-expanded > .sub-menu { display: block; }
+.busly-mobile-btns { display: flex; flex-direction: column; gap: 10px; }
+.busly-mobile-btns .busly-btn { width: 100%; }
+body.busly-mobile-open { overflow: hidden; }
+
+@media (max-width: 960px) {
+	.nav { display: none; }
+	.hdr-btns .hbtn:not(.hbtn-fill) { display: none; }
+	.hdr-burger { display: flex; }
+}
+@media (min-width: 961px) {
+	.busly-mobile-panel, .busly-mobile-panel-close { display: none; }
+}

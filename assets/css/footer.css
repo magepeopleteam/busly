@@ -1,0 +1,50 @@
+/**
+ * Busly — footer.css
+ * Matches the .ftr block in homepage.html; widget-area aware.
+ */
+
+.ftr { background: #0b1220; padding: 60px 0 0; }
+.ftr-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 44px; padding-bottom: 44px; }
+.ftr-brand p { font-size: 13px; color: #546580; line-height: 1.7; max-width: 250px; margin: 14px 0 22px; }
+.ftr-brand .logo-name { color: #fff; }
+.ftr-newsletter { margin-top: 22px; }
+.ftr-newsletter form { display: flex; gap: 8px; max-width: 320px; }
+.ftr-newsletter input[type="email"] {
+	flex: 1; padding: 11px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,.12);
+	background: rgba(255,255,255,.05); color: #fff; font-size: 13px;
+}
+.ftr-newsletter input[type="email"]::placeholder { color: #546580; }
+.ftr-newsletter button { padding: 11px 16px; border-radius: 10px; background: var(--busly-primary); color: #fff; font-size: 13px; font-weight: 700; }
+.ftr-socials { display: flex; gap: 7px; }
+.soc {
+	width: 32px; height: 32px; border-radius: 7px; background: rgba(255,255,255,.05);
+	display: flex; align-items: center; justify-content: center; color: #546580; transition: background .15s, color .15s;
+}
+.soc:hover { background: var(--busly-primary); color: #fff; }
+.soc svg { width: 14px; height: 14px; }
+.ftr-col h4 { font-size: 12.5px; font-weight: 700; color: #fff; margin-bottom: 14px; }
+.ftr-col ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.ftr-col a { font-size: 13px; color: #546580; transition: color .15s; }
+.ftr-col a:hover { color: #94a3b8; }
+.ftr-col.busly-widget { background: none; border: none; padding: 0; margin: 0; }
+.ftr-bot { border-top: 1px solid rgba(255,255,255,.06); padding: 18px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.ftr-copy { font-size: 12px; color: #3d4f68; }
+.pay-badges { display: flex; gap: 5px; }
+.pay { padding: 3px 9px; border-radius: 5px; background: rgba(255,255,255,.05); font-size: 11px; font-weight: 600; color: #546580; }
+
+.busly-back-to-top {
+	position: fixed; right: 22px; bottom: 22px; width: 44px; height: 44px; border-radius: 50%;
+	background: var(--busly-primary); color: #fff; display: flex; align-items: center; justify-content: center;
+	box-shadow: 0 8px 24px rgba(0,0,0,.2); opacity: 0; visibility: hidden; transform: translateY(10px);
+	transition: opacity .2s, transform .2s, visibility .2s; z-index: 999;
+}
+.busly-back-to-top.is-visible { opacity: 1; visibility: visible; transform: translateY(0); }
+.busly-back-to-top svg { width: 18px; height: 18px; transform: rotate(-90deg); }
+
+@media (max-width: 1024px) {
+	.ftr-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media (max-width: 760px) {
+	.ftr-grid { grid-template-columns: 1fr; }
+	.ftr-bot { flex-direction: column; align-items: flex-start; }
+}

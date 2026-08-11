@@ -1,0 +1,78 @@
+/**
+ * Busly — admin.css
+ * Styles the Busly Dashboard, Theme Settings and Setup Wizard admin screens.
+ * Scoped entirely under .busly-admin so it never leaks onto other wp-admin
+ * screens (enqueued only when the current hook contains "busly").
+ */
+
+.busly-admin { max-width: 1180px; margin: 20px 0 0; font-family: -apple-system, "Segoe UI", sans-serif; }
+.busly-admin * { box-sizing: border-box; }
+.busly-admin a { text-decoration: none; }
+
+.busly-admin-header { display: flex; align-items: center; justify-content: space-between; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px 28px; margin-bottom: 24px; }
+.busly-admin-header h1 { font-size: 20px; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 10px; }
+.busly-admin-logo { width: 34px; height: 34px; border-radius: 9px; background: #1d3d87; display: flex; align-items: center; justify-content: center; color: #fff; }
+.busly-admin-version { font-size: 12px; color: #94a3b8; font-weight: 600; }
+
+.busly-admin-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 22px; }
+.busly-admin-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 24px; margin-bottom: 22px; }
+.busly-admin-card h2 { font-size: 15px; font-weight: 800; margin: 0 0 16px; }
+
+.busly-req-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #f1f5f9; }
+.busly-req-row:last-child { border-bottom: none; }
+.busly-req-name { font-weight: 700; font-size: 13.5px; }
+.busly-req-desc { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+.busly-req-status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 100px; }
+.busly-req-status.is-active { background: #dcfce7; color: #15803d; }
+.busly-req-status.is-inactive { background: #fef3c7; color: #b45309; }
+.busly-req-status.is-missing { background: #fee2e2; color: #b91c1c; }
+
+.busly-btn-admin {
+	display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px;
+	background: #1d3d87; color: #fff; font-size: 12.5px; font-weight: 700; border: none; cursor: pointer;
+}
+.busly-btn-admin:hover { background: #16326e; color: #fff; }
+.busly-btn-admin.secondary { background: #f1f5f9; color: #334155; }
+.busly-btn-admin.secondary:hover { background: #e2e8f0; }
+.busly-btn-admin:disabled { opacity: .5; cursor: not-allowed; }
+
+.busly-quicklinks { display: flex; flex-direction: column; gap: 8px; }
+.busly-quicklinks a { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: #f8fafc; border-radius: 10px; font-size: 13px; font-weight: 600; color: #334155; }
+.busly-quicklinks a:hover { background: #eef2ff; color: #1d3d87; }
+
+/* Setup Wizard */
+.busly-wizard { max-width: 720px; margin: 40px auto; background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 40px; }
+.busly-wizard-steps { display: flex; justify-content: center; gap: 6px; margin-bottom: 32px; }
+.busly-wizard-step-dot { width: 34px; height: 4px; border-radius: 3px; background: #e2e8f0; }
+.busly-wizard-step-dot.is-active, .busly-wizard-step-dot.is-done { background: #1d3d87; }
+.busly-wizard h1 { font-size: 22px; text-align: center; margin-bottom: 8px; }
+.busly-wizard p.busly-wizard-lead { text-align: center; color: #64748b; margin-bottom: 28px; }
+.busly-wizard-actions { display: flex; justify-content: space-between; margin-top: 32px; }
+.busly-wizard-progress { height: 8px; background: #f1f5f9; border-radius: 100px; overflow: hidden; margin: 20px 0; }
+.busly-wizard-progress-bar { height: 100%; background: #1d3d87; width: 0%; transition: width .3s; }
+.busly-wizard-log { font-family: monospace; font-size: 12px; background: #0b1220; color: #94a3b8; border-radius: 10px; padding: 16px; max-height: 200px; overflow-y: auto; }
+.busly-wizard-log .ok { color: #4ade80; }
+.busly-wizard-log .err { color: #f87171; }
+.busly-wizard-finish-links { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+
+/* Theme Settings tabs */
+.busly-settings-wrap { display: flex; gap: 24px; align-items: flex-start; }
+.busly-settings-nav { width: 220px; flex-shrink: 0; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 10px; position: sticky; top: 40px; }
+.busly-settings-nav a { display: block; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 2px; }
+.busly-settings-nav a:hover { background: #f8fafc; }
+.busly-settings-nav a.is-active { background: #eef2ff; color: #1d3d87; }
+.busly-settings-panel { flex: 1; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 28px; }
+.busly-settings-panel h2 { font-size: 16px; margin: 0 0 4px; }
+.busly-settings-panel .description { color: #94a3b8; font-size: 12.5px; margin-bottom: 22px; }
+.busly-field-row { display: grid; grid-template-columns: 220px 1fr; gap: 20px; padding: 16px 0; border-bottom: 1px solid #f1f5f9; align-items: start; }
+.busly-field-row label { font-weight: 700; font-size: 13px; padding-top: 8px; }
+.busly-field-row input[type="text"], .busly-field-row input[type="number"], .busly-field-row select, .busly-field-row textarea {
+	max-width: 420px; width: 100%; padding: 9px 12px; border: 1px solid #cbd5e1; border-radius: 8px;
+}
+.busly-field-row input[type="color"] { width: 60px; height: 38px; padding: 2px; border-radius: 8px; }
+.busly-field-desc { font-size: 12px; color: #94a3b8; margin-top: 6px; }
+
+@media (max-width: 960px) {
+	.busly-admin-grid, .busly-settings-wrap { grid-template-columns: 1fr; display: block; }
+	.busly-settings-nav { width: 100%; margin-bottom: 20px; position: static; }
+}

@@ -1,0 +1,28 @@
+/**
+ * Busly — responsive.css
+ * Cross-cutting breakpoint polish that doesn't belong to one component file
+ * (most component-specific media queries live alongside their component).
+ * Verified against 320/375/390/414/768/1024/1280/1440/1920 per PHASE 26.
+ */
+
+/* Never allow horizontal scroll regardless of content. */
+html, body { max-width: 100%; overflow-x: hidden; }
+img, video, iframe, table, pre { max-width: 100%; }
+table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+@media (max-width: 414px) {
+	.wrap { padding: 0 16px; }
+	.hero-h1 { max-width: 100%; }
+	.busly-btn { width: 100%; justify-content: center; }
+	.hdr-btns .busly-btn { width: auto; }
+	.busly-pricing-card.is-featured { transform: none; }
+}
+
+@media (min-width: 1920px) {
+	.wrap { max-width: 1400px; }
+}
+
+@media print {
+	.hdr, .busly-mobile-panel, .ftr, .busly-back-to-top, .busly-sidebar { display: none !important; }
+	body { background: #fff; }
+}

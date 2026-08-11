@@ -1,0 +1,75 @@
+/**
+ * Busly — layout.css
+ * Container, section rhythm, grid systems, sidebar layout.
+ */
+
+.wrap {
+	max-width: var(--busly-container, 1180px);
+	margin: 0 auto;
+	padding: 0 28px;
+}
+body.busly-layout-full-width .wrap { max-width: none; }
+
+section, .busly-section { padding: 88px 0; }
+.busly-section--tight { padding: 56px 0; }
+.busly-section--alt { background: var(--busly-s50); }
+
+.sec-eye {
+	font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em;
+	color: var(--busly-primary); margin-bottom: 8px;
+}
+.sec-h {
+	font-size: clamp(1.55rem, 2.5vw, 2.1rem); font-weight: 900;
+	color: var(--busly-s900); letter-spacing: -.025em; line-height: 1.2; margin-bottom: 10px;
+}
+.sec-p { font-size: 14.5px; color: var(--busly-s500); line-height: 1.72; max-width: 460px; }
+.sec-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 40px; }
+.sec-hd { margin-bottom: 40px; }
+.sec-centered { text-align: center; max-width: 480px; margin: 0 auto 40px; }
+.sec-centered .sec-p { margin: 0 auto; }
+.see-all {
+	font-size: 13px; font-weight: 700; color: var(--busly-primary);
+	display: flex; align-items: center; gap: 3px; flex-shrink: 0; transition: opacity .15s;
+}
+.see-all:hover { opacity: .7; }
+.see-all svg { width: 14px; height: 14px; }
+
+/* Grid systems */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.dest-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+/* Content + sidebar layout (blog / shop) */
+.busly-content-grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
+.busly-layout-right-sidebar .busly-content-grid,
+.busly-layout-left-sidebar .busly-content-grid {
+	grid-template-columns: minmax(0, 1fr) 320px;
+}
+.busly-layout-left-sidebar .busly-content-grid { grid-template-columns: 320px minmax(0, 1fr); }
+.busly-layout-left-sidebar .busly-content-col { order: 2; }
+.busly-layout-left-sidebar .busly-sidebar { order: 1; }
+.busly-no-sidebar .busly-content-grid { grid-template-columns: 1fr; max-width: 820px; margin: 0 auto; }
+
+.busly-main { padding: 56px 0 88px; }
+.busly-elementor-canvas.busly-main { padding: 0; }
+
+/* Full-bleed helper for Elementor "stretch section" rows inside a boxed page */
+.e-con.e-flex.busly-fullbleed,
+.elementor-section.busly-fullbleed { width: 100vw; margin-left: 50%; transform: translateX(-50%); }
+
+@media (max-width: 1024px) {
+	.grid-4, .dest-grid { grid-template-columns: repeat(2, 1fr); }
+	.busly-layout-right-sidebar .busly-content-grid,
+	.busly-layout-left-sidebar .busly-content-grid { grid-template-columns: 1fr; }
+	.busly-layout-left-sidebar .busly-content-col,
+	.busly-layout-left-sidebar .busly-sidebar { order: initial; }
+}
+@media (max-width: 760px) {
+	section, .busly-section { padding: 56px 0; }
+	.grid-4, .dest-grid, .grid-3 { grid-template-columns: repeat(2, 1fr); }
+	.wrap { padding: 0 18px; }
+}
+@media (max-width: 480px) {
+	.grid-4, .grid-3, .dest-grid, .grid-2 { grid-template-columns: 1fr; }
+}
