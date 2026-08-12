@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /** Theme version — bump on every release, used for cache-busting enqueues. */
-define( 'BUSLY_VERSION', '1.0.7' );
+define( 'BUSLY_VERSION', '1.0.8' );
 
 /** Absolute filesystem path to the theme root, no trailing slash. */
 define( 'BUSLY_DIR', get_template_directory() );
