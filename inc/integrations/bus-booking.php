@@ -130,15 +130,31 @@ function busly_render_wbtm_shortcode( $tag, $atts = array() ) {
 		$atts_string .= sprintf( ' %s="%s"', sanitize_key( $key ), esc_attr( $value ) );
 	}
 
-	/**
-	 * A page-builder-embedded shortcode isn't literal text inside
-	 * post_content, so the plugin's own asset gate (which scans
-	 * post_content for the shortcode tag) will not fire. Force it on.
-	 */
-	add_filter( 'wbtm_load_frontend_assets', '__return_true' );
-
 	return do_shortcode( '[' . $tag . $atts_string . ']' );
 }
+
+/**
+ * Force the plugin's own `wbtm_load_frontend_assets` gate open early enough
+ * to matter.
+ *
+ * The plugin decides whether to enqueue its frontend bundle (jQuery UI,
+ * Font Awesome, Select2, Owl Carousel, wbtm.css/js — everything that makes
+ * the seat map, datepickers and location dropdowns actually interactive) by
+ * scanning post_content for its shortcode tags. A shortcode rendered from
+ * inside an Elementor widget's render() method isn't literal text in
+ * post_content, so that scan misses it — and by the time render() runs
+ * (during template output), `wp_enqueue_scripts` has already fired, so an
+ * add_filter() call there is too late to change the outcome. Registering
+ * the filter here on `template_redirect` (before any enqueueing happens)
+ * fixes that, using the same detection already proven correct for our own
+ * booking.css gate.
+ */
+function busly_force_wbtm_frontend_assets() {
+	if ( busly_should_load_booking_assets() ) {
+		add_filter( 'wbtm_load_frontend_assets', '__return_true' );
+	}
+}
+add_action( 'template_redirect', 'busly_force_wbtm_frontend_assets' );
 
 /**
  * Whether the current request should load Busly's booking.css skin

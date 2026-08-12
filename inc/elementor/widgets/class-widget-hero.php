@@ -184,16 +184,20 @@ class Busly_Widget_Hero extends Busly_Widget_Base {
 		$this->add_responsive_control(
 			'height',
 			array(
-				'label'      => __( 'Height', 'busly' ),
-				'type'       => Controls_Manager::SLIDER,
-				'size_units' => array( 'px', 'vh' ),
-				'range'      => array(
+				'label'       => __( 'Minimum Height', 'busly' ),
+				'type'        => Controls_Manager::SLIDER,
+				'size_units'  => array( 'px', 'vh' ),
+				'range'       => array(
 					'px' => array( 'min' => 300, 'max' => 900 ),
 					'vh' => array( 'min' => 30, 'max' => 100 ),
 				),
-				'default'    => array( 'unit' => 'vh', 'size' => 62 ),
-				'selectors'  => array(
-					'{{WRAPPER}} .busly-hero' => 'height: clamp(400px, {{SIZE}}{{UNIT}}, 680px);',
+				'default'     => array( 'unit' => 'vh', 'size' => 62 ),
+				'description' => __( 'A floor, not a fixed height — the box always grows to fit the badge/heading/subtitle/button/trust-row stack, so nothing gets clipped on shorter screens.', 'busly' ),
+				'selectors'   => array(
+					// min-height, not height — see the matching note in
+					// hero.css for why a fixed height clips the content
+					// stack whenever it's taller than this value.
+					'{{WRAPPER}} .busly-hero' => 'min-height: clamp(400px, {{SIZE}}{{UNIT}}, 680px);',
 				),
 			)
 		);

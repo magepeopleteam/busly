@@ -11,16 +11,19 @@ img, video, iframe, table, pre { max-width: 100%; }
 table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
 @media (max-width: 414px) {
-	.wrap { padding: 0 16px; }
+	.wrap, .hdr-in { padding: 0 16px; }
 	.hero-h1 { max-width: 100%; }
 	.busly-btn { width: 100%; justify-content: center; }
 	.hdr-btns .busly-btn { width: auto; }
 	.busly-pricing-card.is-featured { transform: none; }
 }
 
-@media (min-width: 1920px) {
-	.wrap { max-width: 1400px; }
-}
+/* No >1920px max-width bump on purpose: the reference design uses a fixed
+   1180px container at every width, and .hdr-in (the header's equivalent of
+   .wrap) never got the same treatment — widening only .wrap on ultra-wide
+   screens made hero/section content visibly wider than the header content
+   above it. Matching the reference's fixed width everywhere is both the
+   fix and the more faithful choice. */
 
 @media print {
 	.hdr, .busly-mobile-panel, .ftr, .busly-back-to-top, .busly-sidebar { display: none !important; }

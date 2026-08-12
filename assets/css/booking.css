@@ -11,6 +11,45 @@
  */
 
 /* ══════════════════════════════════════════════════════════════════
+   0. CONTAINER — the plugin's own `.wbtm_container` (wbtm_global.css)
+   ══════════════════════════════════════════════════════════════════
+   Hard-coded to `width:1340px;max-width:1340px` with NO auto-centering
+   by default (centering is only added for `body.single-wbtm_bus`) — wider
+   than our own 1180px `.wrap` and left-aligned rather than centered
+   wherever it renders inside one (e.g. the homepage search widget),
+   producing extra/uneven whitespace and left-edge misalignment. Since our
+   own `.wrap` already provides the correct width/centering one level up,
+   the plugin's container just needs to fill it edge-to-edge here.
+   ══════════════════════════════════════════════════════════════════ */
+.wrap > .wbtm_style.wbtm_container,
+.busly-search-widget .wbtm_container {
+	width: 100% !important;
+	max-width: 100% !important;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	margin-top: 0 !important;
+	margin-bottom: 0 !important;
+}
+
+/* Defensive full reset of every wrapper between our widget and the actual
+   pill bar: the plugin's mp_global framework applies a generic utility rule
+   — `.wbtm_style [class*="_dLayout"] { padding: 20px; border: 1px solid …;
+   margin-top: -1px; background: #fff; }` — to ANY element whose class
+   contains "_dLayout" (matches the search form's own outer wrapper div,
+   among others), on top of whatever the .wbtm-bar-redesign inline style
+   already does. Rather than keep tracing every utility class one at a
+   time, zero out spacing on the whole ancestor chain up to (but not
+   including) the pill itself, which manages its own padding correctly. */
+.busly-search-widget #wbtm_area,
+.busly-search-widget .wbtm_style,
+.busly-search-widget [class*="_dLayout"] {
+	padding: 0 !important;
+	margin: 0 !important;
+	border: 0 !important;
+	background: transparent !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════
    1. SEARCH FORM
    ══════════════════════════════════════════════════════════════════
    IMPORTANT: templates/layout/search_form.php ships its OWN hard-coded,

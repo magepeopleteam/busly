@@ -5,6 +5,33 @@
  * the corresponding Busly Elementor widgets.
  */
 
+/* Standard 88px top/bottom section rhythm, matching homepage.html's
+   `section { padding: 88px 0 }` — applied directly to each plain content
+   widget's own root element (NOT a bare `section` selector; see the note
+   in layout.css for why that broke on Elementor-built pages). Hero, CTA
+   and the Bus Search widget are excluded here since they define their own
+   full-bleed spacing already.
+
+   Longhand top/bottom only (not the `padding` shorthand): these elements
+   also carry the `.wrap` class for horizontal centering (padding: 0 28px),
+   and since both rules have equal specificity with this file loading after
+   layout.css, a shorthand `padding` here would win the cascade tie for ALL
+   four sides and silently wipe out .wrap's left/right gutter. */
+.busly-featured-routes,
+.busly-features,
+.busly-destinations,
+.busly-offers,
+.busly-steps-widget,
+.busly-testimonials,
+.busly-pricing,
+.busly-faq-widget,
+.busly-contact-widget,
+.busly-bus-listing-widget,
+.busly-counter {
+	padding-top: 88px;
+	padding-bottom: 88px;
+}
+
 /* ── Routes ────────────────────────────────────── */
 .route-c { padding: 20px; cursor: pointer; display: flex; flex-direction: column; gap: 14px; }
 .route-top { display: flex; align-items: center; justify-content: space-between; }

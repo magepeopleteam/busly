@@ -10,7 +10,15 @@
 }
 body.busly-layout-full-width .wrap { max-width: none; }
 
-section, .busly-section { padding: 88px 0; }
+/* NOT a bare `section` element selector on purpose: the homepage is built
+   entirely with Elementor, and every Elementor section wrapper is itself a
+   literal <section> tag (class="elementor-section ..."). A generic `section`
+   selector here was silently adding this padding to EVERY Elementor section
+   on the page — on top of each widget's own internal padding — which is
+   very likely the real explanation for the oversized gaps around the hero
+   and search widgets. `.busly-section` is only applied by our own code, so
+   scope to that class alone. */
+.busly-section { padding: 88px 0; }
 .busly-section--tight { padding: 56px 0; }
 .busly-section--alt { background: var(--busly-s50); }
 
@@ -52,6 +60,27 @@ section, .busly-section { padding: 88px 0; }
 
 .busly-main { padding: 56px 0 88px; }
 .busly-elementor-canvas.busly-main { padding: 0; }
+
+/* Elementor's own default CSS puts padding on the populated widget-wrap
+   inside every column (frontend.min.css) — on our full_width homepage
+   sections this pushes each widget's own content inward/downward from
+   what our widgets' CSS assumes is the section's true edge (e.g. the
+   hero photo not actually reaching the very top of the page, its left
+   edge landing 10px right of the header's logo instead of aligning with
+   it, or extra whitespace stacking on top of a widget's own padding).
+   Zero it out theme-wide so every Busly section renders exactly
+   edge-to-edge.
+
+   `body` prefix is required, not decorative: Elementor's own frontend.css
+   defines the exact same selector (`.elementor-column-gap-default>
+   .elementor-column>.elementor-element-populated{padding:10px}`) at the
+   exact same specificity, and it's enqueued AFTER every busly-*.css file —
+   on an equal-specificity tie the later rule always wins, so without this
+   extra qualifier Elementor's 10px silently wins regardless of source
+   order in this file. */
+body .elementor-column-gap-default > .elementor-column > .elementor-element-populated {
+	padding: 0;
+}
 
 /* Full-bleed helper for Elementor "stretch section" rows inside a boxed page */
 .e-con.e-flex.busly-fullbleed,
