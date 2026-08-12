@@ -122,7 +122,7 @@ class Busly_Widget_Contact extends Busly_Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 		?>
-		<div class="busly-contact-widget">
+		<div class="busly-contact-widget wrap">
 			<?php $this->render_section_header( $settings ); ?>
 
 			<div>

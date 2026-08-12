@@ -94,7 +94,10 @@ zero business logic — see templates/README.md.
 == Credits ==
 
 * Plus Jakarta Sans font — SIL Open Font License, https://fonts.google.com/specimen/Plus+Jakarta+Sans
-* Demo destination/hero photography referenced in the design mockup is from
-  Unsplash (unsplash.com) and is NOT bundled with this theme — the Setup
-  Wizard's demo import uses local placeholder images only. Replace with your
-  own licensed photography before launch.
+* Demo hero/destination photography matches the design reference exactly and
+  is hotlinked directly from Unsplash (unsplash.com) under the free Unsplash
+  License (unsplash.com/license) — no images are bundled with this theme.
+  Every photo is a normal Elementor Image control, so replace any of them
+  from the Media Library at any time. For a marketplace/production launch,
+  we recommend downloading and re-hosting your chosen photos (or your own
+  licensed photography) on your own site instead of hotlinking indefinitely.

@@ -45,7 +45,19 @@ if ( ! $busly_copyright ) {
 						<span class="logo-name"><?php bloginfo( 'name' ); ?></span>
 					<?php endif; ?>
 				</a>
-				<p><?php echo esc_html( busly_get_option( 'footer_description', get_bloginfo( 'description' ) ? get_bloginfo( 'description' ) : __( 'The modern way to book bus travel. Comfortable journeys, simple booking, transparent pricing.', 'busly' ) ) ); ?></p>
+				<?php
+				// busly_get_option()'s 2nd arg only wins when the key isn't a
+				// registered Theme Settings field; 'footer_description' IS one
+				// (with a blank schema default), so resolve the real fallback
+				// chain explicitly here instead.
+				$busly_footer_desc = busly_get_option( 'footer_description', '' );
+				if ( ! $busly_footer_desc ) {
+					$busly_footer_desc = get_bloginfo( 'description' )
+						? get_bloginfo( 'description' )
+						: __( 'The modern way to book bus travel. Comfortable journeys, simple booking, transparent pricing.', 'busly' );
+				}
+				?>
+				<p><?php echo esc_html( $busly_footer_desc ); ?></p>
 				<?php if ( ! empty( $busly_socials ) ) : ?>
 					<div class="ftr-socials">
 						<?php foreach ( $busly_socials as $busly_icon_name => $busly_url ) : ?>

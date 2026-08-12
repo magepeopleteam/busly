@@ -34,7 +34,7 @@ $busly_cta_label   = busly_get_option( 'header_cta_label', __( 'Book Now', 'busl
 				'container'      => 'nav',
 				'container_class' => 'nav',
 				'container_aria_label' => esc_attr__( 'Primary navigation', 'busly' ),
-				'menu_class'     => '',
+				'menu_class'     => 'nav-menu',
 				'depth'          => 3,
 				'fallback_cb'    => 'busly_primary_menu_fallback',
 			)

@@ -100,7 +100,7 @@ class Busly_Widget_Features extends Busly_Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 		?>
-		<div class="busly-features">
+		<div class="busly-features wrap">
 			<?php $this->render_section_header( $settings ); ?>
 
 			<div class="grid-4">

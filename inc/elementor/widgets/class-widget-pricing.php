@@ -86,7 +86,7 @@ class Busly_Widget_Pricing extends Busly_Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 		?>
-		<div class="busly-pricing">
+		<div class="busly-pricing wrap">
 			<?php $this->render_section_header( $settings ); ?>
 
 			<div class="busly-pricing-grid">

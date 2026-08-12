@@ -80,7 +80,7 @@ class Busly_Widget_Counter extends Busly_Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 		?>
-		<div class="busly-counter">
+		<div class="busly-counter wrap">
 			<?php $this->render_section_header( $settings ); ?>
 
 			<div class="counter-grid">

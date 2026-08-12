@@ -76,7 +76,7 @@ $busly_show_posts_on_front = ( 'posts' === get_option( 'show_on_front' ) );
 				<div class="busly-notice busly-notice--info">
 					<p>
 						<?php esc_html_e( 'Your homepage is empty. Run the Setup Wizard to import the demo homepage, or start building it in Elementor.', 'busly' ); ?>
-						<a href="<?php echo esc_url( admin_url( 'themes.php?page=busly-setup-wizard' ) ); ?>"><?php esc_html_e( 'Open Setup Wizard →', 'busly' ); ?></a>
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=busly-setup-wizard' ) ); ?>"><?php esc_html_e( 'Open Setup Wizard →', 'busly' ); ?></a>
 					</p>
 				</div>
 			<?php endif; ?>

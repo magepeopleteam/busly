@@ -7,14 +7,6 @@
 .ftr-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 44px; padding-bottom: 44px; }
 .ftr-brand p { font-size: 13px; color: #546580; line-height: 1.7; max-width: 250px; margin: 14px 0 22px; }
 .ftr-brand .logo-name { color: #fff; }
-.ftr-newsletter { margin-top: 22px; }
-.ftr-newsletter form { display: flex; gap: 8px; max-width: 320px; }
-.ftr-newsletter input[type="email"] {
-	flex: 1; padding: 11px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,.12);
-	background: rgba(255,255,255,.05); color: #fff; font-size: 13px;
-}
-.ftr-newsletter input[type="email"]::placeholder { color: #546580; }
-.ftr-newsletter button { padding: 11px 16px; border-radius: 10px; background: var(--busly-primary); color: #fff; font-size: 13px; font-weight: 700; }
 .ftr-socials { display: flex; gap: 7px; }
 .soc {
 	width: 32px; height: 32px; border-radius: 7px; background: rgba(255,255,255,.05);

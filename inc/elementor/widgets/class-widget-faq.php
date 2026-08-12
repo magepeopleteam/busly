@@ -89,7 +89,7 @@ class Busly_Widget_Faq extends Busly_Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 		?>
-		<div class="busly-faq-widget">
+		<div class="busly-faq-widget wrap">
 			<?php $this->render_section_header( $settings ); ?>
 
 			<div class="busly-faq">

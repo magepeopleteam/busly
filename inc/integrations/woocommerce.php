@@ -69,18 +69,14 @@ function busly_wc_wrapper_end() {
 }
 add_action( 'woocommerce_after_main_content', 'busly_wc_wrapper_end', 10 );
 
-/**
- * Match the Busly button styling on all WooCommerce buttons.
- *
- * @param array $classes Existing classes.
- * @return array
+/*
+ * WooCommerce's own button markup (.button, .add_to_cart_button,
+ * .checkout-button, #place_order, .wc-forward, …) is restyled directly in
+ * assets/css/woocommerce.css against WooCommerce's real default classes,
+ * rather than via a class-injecting filter — WooCommerce doesn't expose one
+ * generic "button class" filter across every button context, so styling
+ * the classes it always renders is the more reliable approach.
  */
-function busly_wc_button_classes( $classes ) {
-	$classes[] = 'busly-btn';
-	$classes[] = 'busly-btn--primary';
-	return $classes;
-}
-add_filter( 'woocommerce_button_class', 'busly_wc_button_classes' );
 
 /**
  * Products per row / per page from Busly Theme Settings.

@@ -82,7 +82,7 @@ class Busly_Widget_Testimonial extends Busly_Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 		?>
-		<div class="busly-testimonials">
+		<div class="busly-testimonials wrap">
 			<?php $this->render_section_header( $settings ); ?>
 
 			<div class="rev-grid">

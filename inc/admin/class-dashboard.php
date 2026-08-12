@@ -93,7 +93,7 @@ class Busly_Dashboard {
 					<div class="busly-admin-card">
 						<h2><?php esc_html_e( 'Quick Links', 'busly' ); ?></h2>
 						<div class="busly-quicklinks">
-							<a href="<?php echo esc_url( admin_url( 'themes.php?page=busly-setup-wizard' ) ); ?>"><?php esc_html_e( 'Setup Wizard', 'busly' ); ?> →</a>
+							<a href="<?php echo esc_url( admin_url( 'admin.php?page=busly-setup-wizard' ) ); ?>"><?php esc_html_e( 'Setup Wizard', 'busly' ); ?> →</a>
 							<a href="<?php echo esc_url( admin_url( 'admin.php?page=busly-theme-settings' ) ); ?>"><?php esc_html_e( 'Theme Settings', 'busly' ); ?> →</a>
 							<a href="<?php echo esc_url( admin_url( 'customize.php' ) ); ?>"><?php esc_html_e( 'Customize Website', 'busly' ); ?> →</a>
 							<?php if ( post_type_exists( 'wbtm_bus' ) ) : ?>

@@ -140,7 +140,7 @@ class Busly_Widget_Bus_Listing extends Busly_Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 		?>
-		<div class="busly-bus-listing-widget">
+		<div class="busly-bus-listing-widget wrap">
 			<?php $this->render_section_header( $settings ); ?>
 
 			<?php

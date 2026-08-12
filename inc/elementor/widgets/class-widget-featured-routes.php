@@ -97,7 +97,7 @@ class Busly_Widget_Featured_Routes extends Busly_Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 		?>
-		<div class="busly-featured-routes">
+		<div class="busly-featured-routes wrap">
 			<?php $this->render_section_header( $settings ); ?>
 
 			<div class="grid-4">

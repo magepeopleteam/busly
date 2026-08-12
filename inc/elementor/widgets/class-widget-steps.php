@@ -82,7 +82,7 @@ class Busly_Widget_Steps extends Busly_Widget_Base {
 		$step_count = count( $settings['steps'] );
 		$size_class = 5 === $step_count ? 'busly-steps-5' : ( 3 === $step_count ? 'busly-steps-3' : '' );
 		?>
-		<div class="busly-steps-widget">
+		<div class="busly-steps-widget wrap">
 			<?php $this->render_section_header( $settings ); ?>
 
 			<div class="steps <?php echo esc_attr( $size_class ); ?>">

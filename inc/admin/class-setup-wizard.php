@@ -31,12 +31,15 @@ class Busly_Setup_Wizard {
 	}
 
 	/**
-	 * Register under Appearance (matches the Dashboard's quick-link URL).
+	 * Register directly under the top-level "Busly" menu, alongside
+	 * Dashboard and Theme Settings — not tucked away under Appearance,
+	 * so it's where the brief ("Busly → Setup Wizard") says it belongs.
 	 */
 	public static function register_page() {
-		add_theme_page(
+		add_submenu_page(
+			'busly',
 			__( 'Busly Setup Wizard', 'busly' ),
-			__( 'Busly Setup', 'busly' ),
+			__( 'Setup Wizard', 'busly' ),
 			'edit_theme_options',
 			'busly-setup-wizard',
 			array( __CLASS__, 'render' )
@@ -65,7 +68,7 @@ class Busly_Setup_Wizard {
 				'page' => 'busly-setup-wizard',
 				'step' => $step,
 			),
-			admin_url( 'themes.php' )
+			admin_url( 'admin.php' )
 		);
 	}
 

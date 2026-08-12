@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Image_Size;
 use Elementor\Repeater;
-use Elementor\Utils;
 
 /**
  * Class Busly_Widget_Hero
@@ -74,7 +73,7 @@ class Busly_Widget_Hero extends Busly_Widget_Base {
 			array(
 				'label'       => __( 'Heading', 'busly' ),
 				'type'        => Controls_Manager::TEXTAREA,
-				'default'     => __( 'Your journey starts with the right bus.', 'busly' ),
+				'default'     => __( 'Your journey starts with the right *bus.*', 'busly' ),
 				'description' => __( 'Wrap any word(s) in *asterisks* to color them (the accent color).', 'busly' ),
 			)
 		);
@@ -84,7 +83,7 @@ class Busly_Widget_Hero extends Busly_Widget_Base {
 			array(
 				'label'   => __( 'Subtitle', 'busly' ),
 				'type'    => Controls_Manager::TEXTAREA,
-				'default' => __( '500+ routes · 50+ verified operators · Real-time seat selection.', 'busly' ),
+				'default' => __( '500+ routes · 50+ verified operators · Real-time seat selection across Bangladesh.', 'busly' ),
 			)
 		);
 
@@ -162,11 +161,15 @@ class Busly_Widget_Hero extends Busly_Widget_Base {
 		$this->add_control(
 			'background_image',
 			array(
-				'label'   => __( 'Background Photo', 'busly' ),
-				'type'    => Controls_Manager::MEDIA,
-				'default' => array(
-					'url' => Utils::get_placeholder_image_src(),
+				'label'       => __( 'Background Photo', 'busly' ),
+				'type'        => Controls_Manager::MEDIA,
+				'default'     => array(
+					// Same bus-on-highway photo as the design reference, hotlinked
+					// from Unsplash under the free Unsplash License (not bundled
+					// with the theme) — replace with your own image anytime.
+					'url' => 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=1600&h=900&fit=crop&auto=format&q=88',
 				),
+				'description' => __( 'Default is the same demo photo as the design reference (hotlinked from Unsplash, not bundled). Upload your own to replace it.', 'busly' ),
 			)
 		);
 

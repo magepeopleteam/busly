@@ -11,146 +11,130 @@
  */
 
 /* ══════════════════════════════════════════════════════════════════
-   1. SEARCH FORM — reskinned into the homepage.html pill-bar look
-   ══════════════════════════════════════════════════════════════════ */
+   1. SEARCH FORM
+   ══════════════════════════════════════════════════════════════════
+   IMPORTANT: templates/layout/search_form.php ships its OWN hard-coded,
+   !important-heavy inline <style> block, scoped to `.wbtm-bar-redesign`
+   (a class it always adds, regardless of the shortcode's `style` attr).
+   That block already implements a complete pill-bar layout — flex rows,
+   icon+label fields, swap button, dropdown, submit button shape.
+
+   Fighting that with competing layout rules is a losing battle (its rules
+   are `!important` and load later in the DOM than our <head>-enqueued
+   stylesheet, so equal-specificity rules of ours would always lose).
+   Instead we RETINT its existing layout to Busly's palette, using the
+   same "#wbtm_area .wbtm-bar-redesign" scope plus one extra `body`
+   ancestor to guarantee higher specificity than the plugin's own rules —
+   that wins regardless of load order or its use of !important. */
 .wbtm_style { font-family: var(--busly-font-primary); }
 
-#wbtm_area .wbtm_search_area,
-.wbtm_style .wbtm_search_area {
-	background: #fff;
-	border-radius: 100px;
-	border: 1px solid var(--busly-s200);
-	box-shadow: 0 2px 16px rgba(0,0,0,.08);
-	padding: 6px;
-	max-width: 100%;
+body #wbtm_area .wbtm-bar-redesign .wbtm_search_input_fields_holder {
+	border-radius: 100px !important;
+	border-color: var(--busly-s200) !important;
+	box-shadow: 0 2px 16px rgba(0,0,0,.08) !important;
 }
-.wbtm_search_input_fields_holder,
-.wbtm_input_fields_holder {
-	display: flex;
-	align-items: stretch;
-	flex-wrap: wrap;
-}
-.wbtm_input_start_end_location,
-.wbtm_input_start_end_date { display: flex; align-items: stretch; flex: 1; min-width: 0; }
-
-.wtbm_inputList {
-	flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px;
-	padding: 10px 20px; cursor: pointer; transition: background .12s;
-	border-right: 1px solid var(--busly-s200); position: relative;
-}
-.wtbm_inputList:last-of-type,
-.wbtm_input_start_end_date .wtbm_inputList:last-child { border-right: none; }
-.wtbm_inputList:hover, .wtbm_inputList:focus-within { background: #f7f8ff; }
-.wtbm_fdColumn { display: flex; flex-direction: column; gap: 3px; width: 100%; }
-.wtbm_fdColumn label,
-.wtbm_inputList > label {
-	font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em;
-	color: #6b7280; white-space: nowrap; order: -1;
-}
-.wtbm_inputList .marker,
-.wtbm_inputList .calendar { color: #9ca3af; flex-shrink: 0; display: flex; }
-.wtbm_inputList .marker svg,
-.wtbm_inputList .calendar svg,
-.wtbm_inputList .marker i,
-.wtbm_inputList .calendar i { width: 16px; height: 16px; font-size: 16px; }
-
-.wtbm_inputList input.formControl,
-.wtbm_inputList input[type="text"],
-#wbtm_journey_date, #wbtm_return_date {
-	font-size: 13.5px; font-weight: 500; color: #111827; background: transparent;
-	border: none; outline: none; width: 100%; padding: 0; caret-color: var(--busly-primary-3);
-}
-.wtbm_inputList input.formControl::placeholder { color: #9ca3af; font-weight: 400; }
-
-/* Location autocomplete dropdown */
-.wbtm_input_select_list {
-	position: absolute; top: calc(100% + 8px); left: 0; min-width: 260px; max-height: 280px; overflow-y: auto;
-	background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16);
-	box-shadow: 0 16px 40px rgba(0,0,0,.14); z-index: 40; padding: 8px;
-}
-.wbtm_input_select_list li { padding: 10px 14px; border-radius: 10px; font-size: 13.5px; cursor: pointer; transition: background .1s; }
-.wbtm_input_select_list li:hover, .wbtm_input_select_list li.wbtm_city_selected { background: var(--busly-i50); color: var(--busly-primary); }
+body #wbtm_area .wbtm-bar-redesign .wtbm_inputList { border-right-color: var(--busly-s200) !important; }
+body #wbtm_area .wbtm-bar-redesign .wtbm_inputList:hover { background: #f7f8ff !important; }
+body #wbtm_area .wbtm-bar-redesign label.wtbm_fdColumn { color: var(--busly-s500) !important; }
+body #wbtm_area .wbtm-bar-redesign .marker > i,
+body #wbtm_area .wbtm-bar-redesign .calendar > i { color: var(--busly-s400) !important; }
+body #wbtm_area .wbtm-bar-redesign .formControl { caret-color: var(--busly-primary-3) !important; }
 
 /* Swap button */
-.wbtm_search_location_toggle, #wbtm_search_location_toggle {
-	flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: #fff; border: 1.5px solid #d1d5db;
-	display: flex; align-items: center; justify-content: center; color: #6b7280; cursor: pointer; align-self: center;
-	box-shadow: 0 1px 4px rgba(0,0,0,.08); transition: transform .3s, border-color .15s, color .15s;
-	margin: 0 -18px; z-index: 2; position: relative;
+body #wbtm_area .wbtm-bar-redesign .wbtm_search_location_toggle { border-color: #d1d5db !important; }
+body #wbtm_area .wbtm-bar-redesign .wbtm_search_location_toggle:hover {
+	background: #fff !important;
+	border-color: var(--busly-primary) !important;
 }
-.wbtm_search_location_toggle:hover { transform: rotate(180deg); border-color: var(--busly-primary); color: var(--busly-primary); }
-.wbtm_search_location_toggle svg, .wbtm_search_location_toggle i { width: 14px; height: 14px; font-size: 14px; }
+body #wbtm_area .wbtm-bar-redesign .wbtm_search_location_toggle:hover i { color: var(--busly-primary) !important; }
 
-/* Submit button(s) */
-.wtbm_bus_search_button_holder, .search_button_holder { display: flex; align-items: stretch; flex-shrink: 0; }
-.wbtm_bus_submit.wbtm_search_action_button,
-.get_wbtm_bus_list.wbtm_search_action_button {
-	flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 8px;
-	padding: 0 28px; margin: 6px 6px 6px 0; border-radius: 100px; background: var(--busly-accent);
-	color: #fff; font-size: 14px; font-weight: 700; border: none; cursor: pointer; white-space: nowrap;
-	box-shadow: 0 3px 14px rgba(240,90,40,.35); transition: background .15s, transform .1s; min-height: 46px;
+/* Location dropdown */
+body #wbtm_area .wbtm-bar-redesign ul.wbtm_input_select_list li:hover { background: var(--busly-i50) !important; }
+body #wbtm_area .wbtm-bar-redesign ul.wbtm_input_select_list li.wbtm_city_selected::before {
+	background: var(--busly-primary) !important;
+	border-color: var(--busly-primary) !important;
 }
-.wbtm_bus_submit.wbtm_search_action_button:hover,
-.get_wbtm_bus_list.wbtm_search_action_button:hover { background: var(--busly-accent-hover); transform: translateY(-1px); }
+body #wbtm_area .wbtm-bar-redesign ul.wbtm_input_select_list li.wbtm_city_selected::after {
+	background: var(--busly-i50) !important;
+	color: var(--busly-primary) !important;
+}
 
-/* Left-filter toggle variants keep their own layout; only re-theme colors */
-.wbtm_search_area.inputInline { border-radius: var(--busly-r20); }
+/* Submit button — the redesign's own stylesheet shapes it but never sets a
+   color, so it inherits whatever the plugin's global button theme is;
+   force Busly's accent orange to match the reference exactly. */
+body #wbtm_area .wbtm-bar-redesign .wbtm_search_action_button {
+	background: var(--busly-accent) !important;
+	color: #fff !important;
+	box-shadow: 0 3px 14px rgba(240,90,40,.35) !important;
+}
+body #wbtm_area .wbtm-bar-redesign .wbtm_search_action_button:hover { background: var(--busly-accent-hover) !important; }
 
-@media (max-width: 760px) {
-	.wbtm_search_input_fields_holder, .wbtm_input_fields_holder,
-	.wbtm_input_start_end_location, .wbtm_input_start_end_date { flex-direction: column; }
-	.wtbm_inputList { border-right: none; border-bottom: 1px solid var(--busly-s200); }
-	.wbtm_search_location_toggle, #wbtm_search_location_toggle { margin: 0; align-self: flex-end; transform: translateY(-18px); }
-	.wbtm_bus_submit.wbtm_search_action_button,
-	.get_wbtm_bus_list.wbtm_search_action_button { margin: 6px; padding: 15px; border-radius: 14px; }
+/* Generic fallback for any OTHER context that renders the plugin's search
+   form WITHOUT the `.wbtm-bar-redesign` treatment (defensive only — every
+   known call path in this plugin version always adds that class). */
+.wbtm_input_select_list {
+	background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16);
+	box-shadow: 0 16px 40px rgba(0,0,0,.14);
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   2. SEARCH RESULTS — bus cards (modern layout)
-   ══════════════════════════════════════════════════════════════════ */
-.wbtm-bus-list {
-	background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r20);
-	margin-bottom: 16px; overflow: hidden; transition: border-color .15s, box-shadow .15s;
-}
-.wbtm-bus-list:hover { border-color: #b0c4f0; box-shadow: 0 6px 24px rgba(0,0,0,.08); }
-.wbtm-bus-list.in_cart { border-color: var(--busly-primary); background: var(--busly-i50); }
-.wbtm-card-wrap { display: flex; align-items: center; gap: 24px; padding: 22px 26px; flex-wrap: wrap; }
-.wbtm-card-times { display: flex; align-items: center; gap: 18px; flex: 1; min-width: 220px; }
-.wbtm-time-depart, .wbtm-time-arrive { font-size: 18px; font-weight: 800; color: var(--busly-s900); }
-.wbtm-city-depart, .wbtm-city-arrive { font-size: 11.5px; color: var(--busly-s400); margin-top: 2px; }
-.wbtm-duration-track-wrap { flex: 1; text-align: center; min-width: 100px; }
-.wbtm-track-line { height: 2px; background: var(--busly-s200); position: relative; margin: 6px 0; }
-.wbtm-track-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--busly-primary); position: absolute; top: 50%; transform: translateY(-50%); }
-.wbtm-track-dot:first-child { left: 0; } .wbtm-track-dot:last-child { right: 0; }
-.wbtm-track-duration { font-size: 11.5px; color: var(--busly-s400); font-weight: 600; }
-.wbtm-card-info { flex: 1.4; min-width: 200px; }
-.wbtm-operator-name { font-size: 14px; font-weight: 700; color: var(--busly-s900); margin-bottom: 6px; }
-.wbtm-type-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 6px; background: var(--busly-s100); color: var(--busly-s600); margin-bottom: 8px; }
-.wbtm-amenities { display: flex; gap: 8px; flex-wrap: wrap; }
-.wbtm-amenity { font-size: 11px; color: var(--busly-s500); display: flex; align-items: center; gap: 4px; }
-.wbtm-seats-avail { font-size: 12px; color: #16a34a; font-weight: 600; margin-top: 6px; }
-.wbtm-card-price { text-align: right; flex-shrink: 0; }
-.wbtm-price-value { font-size: 20px; font-weight: 900; color: var(--busly-primary); display: block; margin-bottom: 10px; }
-.wbtm-seat-book, #get_wbtm_bus_details {
-	display: inline-flex; align-items: center; gap: 6px; padding: 11px 22px; border-radius: 100px;
-	background: var(--busly-primary); color: #fff !important; font-size: 13px; font-weight: 700; border: none; cursor: pointer;
-}
-.wbtm-seat-book:hover, #get_wbtm_bus_details:hover { opacity: .9; }
-.wbtm_bus_details { border-top: 1px solid var(--busly-s200); padding: 24px 26px; background: var(--busly-s50); }
+   2. SEARCH RESULTS — bus cards
+   ══════════════════════════════════════════════════════════════════
+   Like search_form.php, templates/layout/search_result.php ALSO ships
+   its own complete, !important-heavy inline <style> block — a full
+   FlixBus-style card/filter/popup redesign (times+duration grid, operator
+   info, price panel, sticky filter sidebar, member-promo card). Same
+   strategy as Section 1: retint it to Busly's palette instead of
+   fighting its layout.
 
-/* Flix / legacy compact layout */
+   Its accent color is driven by the CSS custom property
+   `--wbtm_color_theme` (default #e8510f) almost everywhere, so redefining
+   that single variable on the result container retints most of it in one
+   move; the handful of spots that hard-code a literal color instead of
+   the variable are overridden individually below with boosted specificity
+   (see Section 1's comment for why `body …` + !important is needed). */
+#wbtm_area, .wbtm_search_result_holder, .wbtm_bus_list_area {
+	--wbtm_color_theme: var(--busly-accent);
+}
+
+body .wbtm_selbus_date_badge,
+body .wbtm_bus_tab_wrapper .wbtm_tab_active::before { background: var(--busly-primary) !important; }
+body .wbtm_selbus_change_btn,
+body .wbtm_selbus_price { color: var(--busly-primary) !important; }
+
+body .wbtm-bus-list.in_cart {
+	border-color: var(--busly-primary) !important;
+	box-shadow: 0 0 0 2px var(--busly-i50) !important;
+}
+body .wbtm-price-value { color: var(--busly-primary) !important; }
+body .wbtm-operator-name,
+body .wbtm-list-count,
+body .wbtm-sort-label { font-family: var(--busly-font-primary); }
+
+body .wbtm-card-price .wbtm-seat-book._themeButton_xs,
+body .wbtm-card-price ._themeButton_xs,
+body .wbtm-card-price #get_wbtm_bus_details {
+	background: var(--busly-accent) !important;
+	box-shadow: 0 3px 10px rgba(240,90,40,.3) !important;
+}
+body .wbtm-card-price .wbtm-seat-book._themeButton_xs:hover,
+body .wbtm-card-price #get_wbtm_bus_details:hover { opacity: .92; }
+
+body .wbtm-member-promo { background: linear-gradient(140deg, var(--busly-navy) 0%, var(--busly-primary-3) 100%) !important; }
+body .wbtm-member-promo-btn { background: var(--busly-accent) !important; }
+body .wbtm-member-promo-btn:hover { background: var(--busly-accent-hover) !important; }
+
+body .wbtm-filter-section-label,
+body .wbtm-filter-reset-btn:hover,
+body .wbtm-filter-header-title { color: var(--busly-primary) !important; }
+body .wbtm-filter-cb-row input[type="checkbox"] { accent-color: var(--busly-accent) !important; }
+
+/* Flix / legacy compact layout (older style param, no known template redesign) */
 .wbtm-bus-flix-style {
 	background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16);
 	padding: 18px 22px; margin-bottom: 12px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
 }
 .wbtm-bus-flix-style .price { font-weight: 800; color: var(--busly-primary); }
-
-/* Left filter sidebar */
-.wbtm_bus_left_filter_holder .wbtm-filter-card { background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16); padding: 20px; margin-bottom: 16px; }
-.wbtm-filter-header { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 14px; }
-.wbtm-filter-section { margin-bottom: 18px; }
-.wbtm-filter-cb-row { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; font-size: 13px; color: var(--busly-s600); }
-.wbtm-filter-cb-row input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--busly-primary); }
 
 /* Popup modal (bus details tabs) */
 .wbtm-bus-popup { position: fixed; inset: 0; background: rgba(15,23,42,.6); z-index: 100000; display: flex; align-items: center; justify-content: center; padding: 20px; }

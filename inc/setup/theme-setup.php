@@ -49,11 +49,12 @@ function busly_setup() {
 
 	add_editor_style( 'assets/css/editor-style.css' );
 
+	global $content_width;
 	if ( ! isset( $content_width ) ) {
-		$content_width = 1180; // phpcs:ignore
+		$content_width = 1180; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 	}
 
-	register_post_type_support( 'page', 'excerpt' );
+	add_post_type_support( 'page', 'excerpt' );
 }
 add_action( 'after_setup_theme', 'busly_setup' );
 

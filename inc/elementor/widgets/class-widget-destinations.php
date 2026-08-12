@@ -73,11 +73,14 @@ class Busly_Widget_Destinations extends Busly_Widget_Base {
 				'type'        => Controls_Manager::REPEATER,
 				'fields'      => $repeater->get_controls(),
 				'title_field' => '{{{ city }}}',
+				// Same 4 demo photos as the design reference, hotlinked from
+				// Unsplash under the free Unsplash License (not bundled with
+				// the theme) — replace any of them from the Elementor panel.
 				'default'     => array(
-					array( 'city' => __( 'Chittagong', 'busly' ), 'country' => __( 'Bangladesh', 'busly' ), 'fare' => __( 'From ৳650', 'busly' ) ),
-					array( 'city' => __( "Cox's Bazar", 'busly' ), 'country' => __( 'Bangladesh', 'busly' ), 'fare' => __( 'From ৳900', 'busly' ) ),
-					array( 'city' => __( 'Sylhet', 'busly' ), 'country' => __( 'Bangladesh', 'busly' ), 'fare' => __( 'From ৳550', 'busly' ) ),
-					array( 'city' => __( 'Rajshahi', 'busly' ), 'country' => __( 'Bangladesh', 'busly' ), 'fare' => __( 'From ৳600', 'busly' ) ),
+					array( 'city' => __( 'Chittagong', 'busly' ), 'country' => __( 'Bangladesh', 'busly' ), 'fare' => __( 'From ৳650', 'busly' ), 'image' => array( 'url' => 'https://images.unsplash.com/photo-1499669404910-ba8b35824a3c?w=500&h=700&fit=crop&auto=format' ) ),
+					array( 'city' => __( "Cox's Bazar", 'busly' ), 'country' => __( 'Bangladesh', 'busly' ), 'fare' => __( 'From ৳900', 'busly' ), 'image' => array( 'url' => 'https://images.unsplash.com/photo-1465447142348-e9952c393450?w=500&h=700&fit=crop&auto=format' ) ),
+					array( 'city' => __( 'Sylhet', 'busly' ), 'country' => __( 'Bangladesh', 'busly' ), 'fare' => __( 'From ৳550', 'busly' ), 'image' => array( 'url' => 'https://images.unsplash.com/photo-1526404423292-15db8c2334e5?w=500&h=700&fit=crop&auto=format' ) ),
+					array( 'city' => __( 'Rajshahi', 'busly' ), 'country' => __( 'Bangladesh', 'busly' ), 'fare' => __( 'From ৳600', 'busly' ), 'image' => array( 'url' => 'https://images.unsplash.com/photo-1639037179118-d1a475030792?w=500&h=700&fit=crop&auto=format' ) ),
 				),
 			)
 		);
@@ -91,7 +94,7 @@ class Busly_Widget_Destinations extends Busly_Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 		?>
-		<div class="busly-destinations">
+		<div class="busly-destinations wrap">
 			<?php $this->render_section_header( $settings ); ?>
 
 			<div class="dest-grid">

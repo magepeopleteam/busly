@@ -139,9 +139,11 @@ class Busly_Widget_Bus_Search extends Busly_Widget_Base {
 		);
 		?>
 		<div class="busly-search-widget" id="busly-search">
-			<?php do_action( 'busly_before_booking_form' ); ?>
-			<?php echo busly_render_wbtm_shortcode( 'wbtm-bus-search-form', $atts ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- shortcode output is the plugin's own escaped markup. ?>
-			<?php do_action( 'busly_after_booking_form' ); ?>
+			<div class="wrap">
+				<?php do_action( 'busly_before_booking_form' ); ?>
+				<?php echo busly_render_wbtm_shortcode( 'wbtm-bus-search-form', $atts ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- shortcode output is the plugin's own escaped markup. ?>
+				<?php do_action( 'busly_after_booking_form' ); ?>
+			</div>
 		</div>
 		<?php
 	}

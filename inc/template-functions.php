@@ -77,7 +77,14 @@ function busly_is_elementor_built( $post_id = 0 ) {
 		return false;
 	}
 
+	// get_the_ID() only works once the Loop has started (the_post() called).
+	// front-page.php/page.php need this answer for the <main> class BEFORE
+	// the Loop runs, so fall back to the query's queried object — reliable
+	// at any point in the request for the main query's singular post.
 	$post_id = $post_id ? $post_id : get_the_ID();
+	if ( ! $post_id ) {
+		$post_id = get_queried_object_id();
+	}
 	if ( ! $post_id ) {
 		return false;
 	}
@@ -141,11 +148,16 @@ function busly_comment_template( $comment, $args, $depth ) {
  * @return array{login: string, login_label: string, bookings: string, cta: string}
  */
 function busly_header_urls() {
+	// 'header_cta_url' is a registered Theme Settings field with a blank
+	// schema default, so busly_get_option()'s fallback arg never wins for
+	// it (see the same issue fixed in site-footer.php) — resolve manually.
+	$busly_cta_url = busly_get_option( 'header_cta_url', '' );
+
 	$urls = array(
 		'login'       => wp_login_url(),
 		'login_label' => __( 'Login', 'busly' ),
 		'bookings'    => '',
-		'cta'         => busly_get_option( 'header_cta_url', home_url( '/' ) ),
+		'cta'         => $busly_cta_url ? $busly_cta_url : home_url( '/' ),
 	);
 
 	if ( busly_is_wc_active() ) {

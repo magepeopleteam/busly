@@ -4,6 +4,30 @@
  * are duplicated except the thin wrapper hooks in inc/integrations/woocommerce.php.
  */
 
+/* Every button WooCommerce itself renders (add-to-cart, checkout, place
+   order, "Continue Shopping", coupon apply, etc.) — targeted by WooCommerce's
+   own real default classes rather than a custom class-injecting filter. */
+.woocommerce a.button, .woocommerce button.button, .woocommerce input.button,
+.woocommerce #respond input#submit, .woocommerce-page a.button,
+.woocommerce-page button.button, .woocommerce-page input.button,
+.woocommerce-page #respond input#submit,
+.woocommerce a.checkout-button, #place_order {
+	display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+	padding: 12px 26px; border-radius: 100px; font-size: 13.5px; font-weight: 700;
+	background: var(--busly-primary); color: #fff; border: none; cursor: pointer;
+	transition: opacity .15s, transform .1s;
+}
+.woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce input.button:hover,
+.woocommerce #respond input#submit:hover, .woocommerce a.checkout-button:hover, #place_order:hover {
+	opacity: .9; transform: translateY(-1px); color: #fff;
+}
+.woocommerce a.button.alt, .woocommerce button.button.alt, .woocommerce input.button.alt {
+	background: var(--busly-accent);
+}
+.woocommerce a.added_to_cart, .woocommerce a.wc-forward {
+	font-size: 12.5px; font-weight: 700; color: var(--busly-primary); text-decoration: underline;
+}
+
 .busly-woo-main .woocommerce-products-header { margin-bottom: 28px; }
 .busly-woo-main .woocommerce-result-count,
 .busly-woo-main .woocommerce-ordering select { font-size: 13px; color: var(--busly-s500); }
@@ -19,7 +43,7 @@ ul.products li.product img { border-radius: var(--busly-r16); aspect-ratio: 1/1;
 ul.products li.product .woocommerce-loop-product__title { font-size: 14.5px; font-weight: 700; color: var(--busly-s900); margin: 0 0 6px; }
 ul.products li.product .price { font-size: 15px; font-weight: 800; color: var(--busly-primary); }
 ul.products li.product .star-rating { font-size: 12px; color: #f59e0b; margin-bottom: 6px; }
-ul.products li.product .button.busly-btn { margin-top: 12px; width: 100%; }
+ul.products li.product .button { margin-top: 12px; width: 100%; }
 .onsale { background: var(--busly-accent) !important; border-radius: 100px !important; font-size: 11px !important; font-weight: 800 !important; padding: 4px 10px !important; }
 
 /* Single product */

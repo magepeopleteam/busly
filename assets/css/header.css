@@ -10,7 +10,7 @@
 	position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
 	height: 66px; display: flex; align-items: center;
 	transition: background .3s, backdrop-filter .3s, box-shadow .3s;
-	background: var(--busly-navy);
+	background: transparent;
 }
 body:not(.busly-header-transparent) .hdr,
 .hdr.solid {
@@ -36,7 +36,11 @@ body.busly-header-transparent:not(.busly-header-sticky) .hdr.solid { position: f
 body:not(.busly-header-transparent) .logo-name,
 .hdr.solid .logo-name { color: var(--busly-primary); }
 
-.nav { display: flex; align-items: center; gap: 1px; flex: 1; }
+/* `.nav` is the <nav> landmark wp_nav_menu() wraps around its own <ul>;
+   the <ul class="nav-menu"> it actually renders is the real flex row —
+   see template-parts/header/site-header.php. */
+.nav { flex: 1; min-width: 0; }
+.nav-menu { display: flex; align-items: center; gap: 1px; list-style: none; margin: 0; padding: 0; }
 .nav a { padding: 6px 12px; border-radius: 7px; font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,.78); transition: background .15s, color .15s; }
 .nav a:hover, .nav .current-menu-item > a { background: rgba(255,255,255,.1); color: #fff; }
 body:not(.busly-header-transparent) .nav a,
@@ -97,4 +101,14 @@ body.busly-mobile-open { overflow: hidden; }
 }
 @media (min-width: 961px) {
 	.busly-mobile-panel, .busly-mobile-panel-close { display: none; }
+}
+
+/* ── WordPress admin toolbar compatibility ─────────────────────────
+   The toolbar is itself `position:fixed; top:0` at a higher z-index, so a
+   fixed-position header at top:0 renders underneath/behind it. WordPress
+   core adds the "admin-bar" body class automatically whenever the toolbar
+   is showing — offset our fixed header by its height in both states. */
+body.admin-bar .hdr { top: 32px; }
+@media screen and (max-width: 782px) {
+	body.admin-bar .hdr { top: 46px; }
 }

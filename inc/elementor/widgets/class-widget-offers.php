@@ -105,7 +105,7 @@ class Busly_Widget_Offers extends Busly_Widget_Base {
 		$settings = $this->get_settings_for_display();
 		$themes   = $this->color_themes();
 		?>
-		<div class="busly-offers">
+		<div class="busly-offers wrap">
 			<?php $this->render_section_header( $settings ); ?>
 
 			<div class="off-grid">
