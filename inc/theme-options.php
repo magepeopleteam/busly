@@ -185,6 +185,12 @@ function busly_theme_option_fields() {
 		'footer'     => array(
 			'label'  => __( 'Footer', 'busly' ),
 			'fields' => array(
+				'footer_copyright'           => array(
+					'type'        => 'text',
+					'label'       => __( 'Copyright Text', 'busly' ),
+					'default'     => '',
+					'description' => __( 'Use {year} and {site} as placeholders. HTML links allowed, e.g. <a href="/">{site}</a>. Leave blank for the default.', 'busly' ),
+				),
 				'footer_description'         => array(
 					'type'    => 'textarea',
 					'label'   => __( 'Footer Brand Description', 'busly' ),
@@ -192,8 +198,25 @@ function busly_theme_option_fields() {
 				),
 				'footer_show_payment_badges' => array(
 					'type'    => 'checkbox',
-					'label'   => __( 'Show payment badges (Visa/Mastercard/PayPal/Stripe)', 'busly' ),
+					'label'   => __( 'Show payment badges', 'busly' ),
 					'default' => 'yes',
+				),
+				'footer_payment_badges'      => array(
+					'type'        => 'repeater',
+					'label'       => __( 'Payment Badges', 'busly' ),
+					'default'     => array(
+						array( 'label' => 'Visa' ),
+						array( 'label' => 'Mastercard' ),
+						array( 'label' => 'PayPal' ),
+						array( 'label' => 'Stripe' ),
+					),
+					'fields'      => array(
+						'label' => array(
+							'type'  => 'text',
+							'label' => __( 'Badge Label', 'busly' ),
+						),
+					),
+					'description' => __( 'Add or remove payment method badges shown in the footer bottom bar.', 'busly' ),
 				),
 			),
 		),
@@ -401,14 +424,38 @@ function busly_sanitize_theme_options( $input ) {
 					break;
 				case 'select':
 					$choices       = array_keys( $field['choices'] );
-					$clean[ $key ] = in_array( $raw, $choices, true ) ? $raw : $field['default'];
+					$clean[ $key ] = in_array( $raw, $choices ) ? $raw : $field['default'];
 					break;
 				case 'page':
 					$clean[ $key ] = absint( $raw );
 					break;
-				case 'textarea':
-					$clean[ $key ] = sanitize_textarea_field( $raw );
-					break;
+			case 'textarea':
+				$clean[ $key ] = sanitize_textarea_field( $raw );
+				break;
+			case 'repeater':
+				$sub_fields = isset( $field['fields'] ) ? $field['fields'] : array();
+				$clean[ $key ] = array();
+				if ( is_array( $raw ) ) {
+					foreach ( $raw as $item ) {
+						if ( ! is_array( $item ) ) {
+							continue;
+						}
+						$clean_item = array();
+						foreach ( $sub_fields as $sub_key => $sub_field ) {
+							$sub_raw = isset( $item[ $sub_key ] ) ? $item[ $sub_key ] : '';
+							$sub_type = isset( $sub_field['type'] ) ? $sub_field['type'] : 'text';
+							if ( 'number' === $sub_type ) {
+								$clean_item[ $sub_key ] = absint( $sub_raw );
+							} else {
+								$clean_item[ $sub_key ] = sanitize_text_field( $sub_raw );
+							}
+						}
+						if ( array_filter( $clean_item ) ) {
+							$clean[ $key ][] = $clean_item;
+						}
+					}
+				}
+				break;
 				case 'text':
 				default:
 					$clean[ $key ] = sanitize_text_field( $raw );
@@ -588,6 +635,37 @@ function busly_render_settings_field( $key, $field, $value ) {
 				esc_attr( $name ),
 				esc_attr( $value )
 			);
+			return;
+
+		case 'repeater':
+			$items   = is_array( $value ) ? $value : array();
+			$sub     = isset( $field['fields'] ) ? $field['fields'] : array();
+			echo '<div class="busly-repeater" data-field="' . esc_attr( $key ) . '">';
+			if ( ! empty( $items ) ) {
+				foreach ( $items as $i => $item ) {
+					echo '<div class="busly-repeater-item">';
+					echo '<div class="busly-repeater-fields">';
+					foreach ( $sub as $sub_key => $sub_field ) {
+						$sub_name  = $name . '[' . $i . '][' . $sub_key . ']';
+						$sub_id    = $id . '-' . $i . '-' . $sub_key;
+						$sub_value = isset( $item[ $sub_key ] ) ? $item[ $sub_key ] : '';
+						$sub_type  = isset( $sub_field['type'] ) ? $sub_field['type'] : 'text';
+						printf( '<label>%s</label>', esc_html( $sub_field['label'] ) );
+						printf(
+							'<input type="%1$s" name="%2$s" id="%3$s" value="%4$s" />',
+							esc_attr( $sub_type ),
+							esc_attr( $sub_name ),
+							esc_attr( $sub_id ),
+							esc_attr( $sub_value )
+						);
+					}
+					echo '</div>';
+					echo '<button type="button" class="busly-repeater-remove" aria-label="Remove item">&times;</button>';
+					echo '</div>';
+				}
+			}
+			echo '<button type="button" class="busly-repeater-add button button-secondary">+ Add Item</button>';
+			echo '</div>';
 			return;
 	}
 }

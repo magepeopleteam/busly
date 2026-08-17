@@ -51,10 +51,10 @@ function busly_register_sidebars() {
 					$i
 				),
 				'id'            => 'sidebar-footer-' . $i,
-				'description'   => __( 'Optional widget-based footer column. Leave empty to use the Footer Menu instead.', 'busly' ),
-				'before_widget' => '<div id="%1$s" class="ftr-col %2$s">',
+				'description'   => __( 'Add widgets here to populate footer column. Use the "Navigation Menu" widget to display a menu.', 'busly' ),
+				'before_widget' => '<div id="%1$s" class="busly-widget %2$s">',
 				'after_widget'  => '</div>',
-				'before_title'  => '<h4>',
+				'before_title'  => '<h4 class="busly-widget-title">',
 				'after_title'   => '</h4>',
 			)
 		);

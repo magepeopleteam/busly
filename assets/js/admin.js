@@ -80,6 +80,47 @@
 				}
 			} );
 		} );
+
+		// Repeater: add / remove items.
+		$( document ).on( 'click', '.busly-repeater-add', function ( e ) {
+			e.preventDefault();
+			var $wrapper = $( this ).closest( '.busly-repeater' );
+			var $items   = $wrapper.find( '.busly-repeater-item' );
+			var index    = $items.length;
+			var template = $items.first().clone();
+			template.find( 'input' ).each( function () {
+				var name = $( this ).attr( 'name' );
+				if ( name ) {
+					name = name.replace( /\[\d+\]/, '[' + index + ']' );
+					$( this ).attr( 'name', name ).val( '' );
+				}
+				var id = $( this ).attr( 'id' );
+				if ( id ) {
+					id = id.replace( /-\d+-/, '-' + index + '-' );
+					$( this ).attr( 'id', id );
+				}
+			} );
+			$wrapper.find( '.busly-repeater-add' ).before( template );
+		} );
+
+		$( document ).on( 'click', '.busly-repeater-remove', function ( e ) {
+			e.preventDefault();
+			var $item = $( this ).closest( '.busly-repeater-item' );
+			var $wrapper = $item.closest( '.busly-repeater' );
+			$item.remove();
+			$wrapper.find( '.busly-repeater-item' ).each( function ( idx ) {
+				$( this ).find( 'input' ).each( function () {
+					var name = $( this ).attr( 'name' );
+					if ( name ) {
+						$( this ).attr( 'name', name.replace( /\[\d+\]/, '[' + idx + ']' ) );
+					}
+					var id = $( this ).attr( 'id' );
+					if ( id ) {
+						$( this ).attr( 'id', id.replace( /-\d+-/, '-' + idx + '-' ) );
+					}
+				} );
+			} );
+		} );
 	} );
 
 } )( jQuery );

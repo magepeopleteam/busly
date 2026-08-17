@@ -19,7 +19,7 @@ $busly_socials = array(
 );
 $busly_socials = array_filter( $busly_socials );
 
-$busly_copyright = get_theme_mod( 'busly_footer_copyright', '' );
+$busly_copyright = busly_get_option( 'footer_copyright', '' );
 if ( ! $busly_copyright ) {
 	$busly_copyright = sprintf(
 		/* translators: 1: current year, 2: site name */
@@ -30,7 +30,20 @@ if ( ! $busly_copyright ) {
 } else {
 	$busly_copyright = str_replace( '{year}', gmdate( 'Y' ), $busly_copyright );
 	$busly_copyright = str_replace( '{site}', get_bloginfo( 'name' ), $busly_copyright );
+	// Strip any leftover curly braces and collapse multiple spaces.
+	$busly_copyright = preg_replace( '/\{[^}]+\}/', ' ', $busly_copyright );
+	$busly_copyright = preg_replace( '/\s+/', ' ', $busly_copyright );
+	$busly_copyright = trim( $busly_copyright );
 }
+
+$busly_payment_badges = busly_get_option( 'footer_payment_badges', array() );
+
+// Read show-payment-badges directly from DB — busly_get_option() treats
+// empty-string (unchecked checkbox) as "not set" and returns the default.
+$busly_options        = get_option( 'busly_theme_options', array() );
+$busly_show_badges    = isset( $busly_options['footer_show_payment_badges'] )
+	? $busly_options['footer_show_payment_badges']
+	: 'yes';
 ?>
 <footer class="ftr">
 	<div class="wrap">
@@ -69,34 +82,26 @@ if ( ! $busly_copyright ) {
 				<?php endif; ?>
 			</div>
 
-			<?php for ( $busly_i = 1; $busly_i <= 3; $busly_i++ ) : ?>
-				<div class="ftr-col">
-					<?php if ( is_active_sidebar( 'sidebar-footer-' . $busly_i ) ) : ?>
-						<?php dynamic_sidebar( 'sidebar-footer-' . $busly_i ); ?>
-					<?php elseif ( has_nav_menu( 'footer-' . $busly_i ) ) : ?>
-						<?php
-						wp_nav_menu(
-							array(
-								'theme_location' => 'footer-' . $busly_i,
-								'container'      => false,
-								'menu_class'     => '',
-								'depth'          => 1,
-								'items_wrap'     => '<h4>' . esc_html( wp_get_nav_menu_name( 'footer-' . $busly_i ) ) . '</h4><ul>%3$s</ul>',
-							)
-						);
-						?>
-					<?php endif; ?>
-				</div>
-			<?php endfor; ?>
+		<?php for ( $busly_i = 1; $busly_i <= 3; $busly_i++ ) : ?>
+			<div class="ftr-col">
+				<?php if ( is_active_sidebar( 'sidebar-footer-' . $busly_i ) ) : ?>
+					<?php dynamic_sidebar( 'sidebar-footer-' . $busly_i ); ?>
+				<?php endif; ?>
+			</div>
+		<?php endfor; ?>
 
 		</div>
 
 		<div class="ftr-bot">
-			<span class="ftr-copy"><?php echo esc_html( $busly_copyright ); ?></span>
+			<span class="ftr-copy"><?php echo wp_kses_post( $busly_copyright ); ?></span>
 
-			<?php if ( 'yes' === busly_get_option( 'footer_show_payment_badges', 'yes' ) ) : ?>
+			<?php if ( 'yes' === $busly_show_badges && ! empty( $busly_payment_badges ) ) : ?>
 				<div class="pay-badges">
-					<span class="pay">Visa</span><span class="pay">Mastercard</span><span class="pay">PayPal</span><span class="pay">Stripe</span>
+					<?php foreach ( $busly_payment_badges as $busly_badge ) : ?>
+						<?php if ( ! empty( $busly_badge['label'] ) ) : ?>
+							<span class="pay"><?php echo esc_html( $busly_badge['label'] ); ?></span>
+						<?php endif; ?>
+					<?php endforeach; ?>
 				</div>
 			<?php endif; ?>
 		</div>
