@@ -76,6 +76,47 @@ body #wbtm_area .wbtm-bar-redesign .wbtm_search_input_fields_holder {
 	border-color: var(--busly-s200) !important;
 	box-shadow: 0 2px 16px rgba(0,0,0,.08) !important;
 }
+/* The pill's own OUTER wrapper (._dLayout.wbtm_search_area.wbtm-bar-redesign)
+   still carries a leftover rule from the plugin's classic/non-redesign skin
+   (assets/frontend/wbtm.css: `.wbtm_style .wbtm_search_area { border-radius:
+   12px; box-shadow: 0 4px 12px rgba(0,0,0,.05); }`) — the redesign skin's
+   own inline <style> resets this wrapper's background/padding but never
+   resets this, so a 12px-radius shadow rendered behind the pill's actual
+   100px-radius shadow, poking out at the corners as a faint rectangular
+   "echo". Neutralize it here rather than in the plugin file so this
+   survives plugin updates. */
+body #wbtm_area .wbtm-bar-redesign.wbtm_search_area {
+	border-radius: 0 !important;
+	box-shadow: none !important;
+}
+/* The FROM field (.wbtm_start_point) is the first inner element sitting
+   right at the pill's rounded left edge. Its own hover background
+   (.wtbm_inputList:hover, plugin rule) fills its own square-cornered box,
+   which pokes out past the pill's curve at 100px radius — barely visible
+   at the plugin's own small default radius, but obvious at this size.
+   overflow:hidden on the pill would be the usual fix, but that would also
+   clip the absolutely-positioned city dropdown (ul.wbtm_input_select_list)
+   that needs to render below it, so match the corner radius on this one
+   child directly instead — desktop-only, this field isn't the pill's
+   left edge once the plugin's own mobile breakpoint stacks it vertically. */
+@media (min-width: 768px) {
+	body #wbtm_area .wbtm-bar-redesign .wbtm_start_point {
+		border-radius: 100px 0 0 100px !important;
+	}
+}
+/* The pill radius above only suits the wide desktop row layout. The
+   plugin's own mobile breakpoint (search_form.php, @media max-width:767px)
+   already switches this container to flex-direction:column and reduces its
+   own radius back to 10px for the stacked layout — but our unconditional
+   !important above has higher specificity than that plugin rule, so it was
+   winning even on mobile and leaving a huge pill corner on a tall, narrow
+   card. Match the plugin's own breakpoint and radius value here so mobile
+   goes back to looking intentional instead of broken. */
+@media (max-width: 767px) {
+	body #wbtm_area .wbtm-bar-redesign .wbtm_search_input_fields_holder {
+		border-radius: 10px !important;
+	}
+}
 body #wbtm_area .wbtm-bar-redesign .wtbm_inputList { border-right-color: var(--busly-s200) !important; }
 body #wbtm_area .wbtm-bar-redesign .wtbm_inputList:hover { background: #f7f8ff !important; }
 body #wbtm_area .wbtm-bar-redesign label.wtbm_fdColumn { color: var(--busly-s500) !important; }
@@ -140,6 +181,23 @@ body #wbtm_area .wbtm-bar-redesign .wbtm_search_action_button:hover { background
 	--wbtm_color_theme: var(--busly-accent);
 }
 
+/* Each bus result is TWO nested "card" boxes with their own competing
+   border/shadow/radius: the outer .wbtm-bus-list (16px radius, the one
+   with overflow:hidden that actually clips the photo) and an inner
+   .wbtm-card-wrap grid wrapper (its own 24px radius + border + shadow +
+   background, entirely redundant since it's already fully clipped by the
+   outer box). The mismatched radii don't line up at the corners — the
+   photo's own 24px curve cuts in more aggressively than the outer 16px
+   border, leaving a visible seam at the top/bottom corners. Strip the
+   inner box's own decoration so the outer .wbtm-bus-list is the only
+   visible card boundary. */
+body .wbtm-card-wrap {
+	border-radius: 0 !important;
+	border: 0 !important;
+	box-shadow: none !important;
+	background: transparent !important;
+}
+
 body .wbtm_selbus_date_badge,
 body .wbtm_bus_tab_wrapper .wbtm_tab_active::before { background: var(--busly-primary) !important; }
 body .wbtm_selbus_change_btn,
@@ -152,7 +210,21 @@ body .wbtm-bus-list.in_cart {
 body .wbtm-price-value { color: var(--busly-primary) !important; }
 body .wbtm-operator-name,
 body .wbtm-list-count,
-body .wbtm-sort-label { font-family: var(--busly-font-primary); }
+body .wbtm-sort-label-text { font-family: var(--busly-font-primary); }
+
+/* Force the plugin's own intended vertical-centering for the "N buses
+   available… / Sort by" row — its own CSS already declares
+   `display:flex; align-items:center` on .wbtm-list-header, but something
+   in the surrounding page context was winning over it, making the two
+   sides sit at different vertical positions. */
+body .wbtm-list-header {
+	display: flex !important;
+	align-items: center !important;
+}
+body .wbtm-list-sort {
+	display: flex !important;
+	align-items: center !important;
+}
 
 body .wbtm-card-price .wbtm-seat-book._themeButton_xs,
 body .wbtm-card-price ._themeButton_xs,
@@ -171,6 +243,29 @@ body .wbtm-filter-section-label,
 body .wbtm-filter-reset-btn:hover,
 body .wbtm-filter-header-title { color: var(--busly-primary) !important; }
 body .wbtm-filter-cb-row input[type="checkbox"] { accent-color: var(--busly-accent) !important; }
+
+/* Reset now renders at the bottom of the filter list (after Boarding
+   Point) in the markup for every viewport, not just mobile — give it a
+   sensible default look everywhere: a divider above it, right-aligned. */
+body .wbtm-filter-reset-row {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 18px;
+	padding-top: 14px;
+	border-top: 1px solid var(--busly-s200, #e2e8f0);
+}
+/* The mobile slide-in drawer + desktop collapse toggle (and its button)
+   were removed — the filter list now just renders normally/expanded on
+   every viewport, no JS-driven show/hide involved. But the plugin's own
+   mobile CSS (wtbm_search.css) still hides every child of the holder by
+   default except ones carrying .wbtm-mobile-filter-toggle — with that
+   button gone, nothing would ever except .wbtm-filter-card from that
+   rule, so it'd stay permanently hidden. Force it visible unconditionally
+   instead of leaving that plugin behavior in place with no way to
+   reverse it. */
+body .wbtm_bus_left_filter_holder .wbtm-filter-card {
+	display: block !important;
+}
 
 /* Flix / legacy compact layout (older style param, no known template redesign) */
 .wbtm-bus-flix-style {
