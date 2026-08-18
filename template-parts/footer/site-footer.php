@@ -10,14 +10,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$busly_socials = array(
-	'facebook'  => get_theme_mod( 'busly_social_facebook', '' ),
-	'x-twitter' => get_theme_mod( 'busly_social_x', '' ),
-	'instagram' => get_theme_mod( 'busly_social_instagram', '' ),
-	'youtube'   => get_theme_mod( 'busly_social_youtube', '' ),
-	'linkedin'  => get_theme_mod( 'busly_social_linkedin', '' ),
-);
-$busly_socials = array_filter( $busly_socials );
+$busly_socials = array();
+foreach ( busly_get_option( 'social_links', array() ) as $busly_social_item ) {
+	if ( ! empty( $busly_social_item['icon'] ) && ! empty( $busly_social_item['url'] ) ) {
+		$busly_socials[] = $busly_social_item;
+	}
+}
 
 $busly_copyright = busly_get_option( 'footer_copyright', '' );
 if ( ! $busly_copyright ) {
@@ -51,12 +49,7 @@ $busly_show_badges    = isset( $busly_options['footer_show_payment_badges'] )
 
 			<div class="ftr-brand">
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo">
-					<?php if ( has_custom_logo() ) : ?>
-						<?php the_custom_logo(); ?>
-					<?php else : ?>
-						<span class="logo-box"><?php busly_icon( 'bus' ); ?></span>
-						<span class="logo-name"><?php bloginfo( 'name' ); ?></span>
-					<?php endif; ?>
+					<?php busly_the_logo(); ?>
 				</a>
 				<?php
 				// busly_get_option()'s 2nd arg only wins when the key isn't a
@@ -73,9 +66,9 @@ $busly_show_badges    = isset( $busly_options['footer_show_payment_badges'] )
 				<p><?php echo esc_html( $busly_footer_desc ); ?></p>
 				<?php if ( ! empty( $busly_socials ) ) : ?>
 					<div class="ftr-socials">
-						<?php foreach ( $busly_socials as $busly_icon_name => $busly_url ) : ?>
-							<a href="<?php echo esc_url( $busly_url ); ?>" class="soc" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr( ucfirst( str_replace( '-', ' ', $busly_icon_name ) ) ); ?>">
-								<?php busly_icon( $busly_icon_name ); ?>
+						<?php foreach ( $busly_socials as $busly_social_item ) : ?>
+							<a href="<?php echo esc_url( $busly_social_item['url'] ); ?>" class="soc" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr( ucfirst( str_replace( '-', ' ', $busly_social_item['icon'] ) ) ); ?>">
+								<?php busly_icon( $busly_social_item['icon'] ); ?>
 							</a>
 						<?php endforeach; ?>
 					</div>

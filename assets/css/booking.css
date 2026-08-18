@@ -21,8 +21,12 @@
    own `.wrap` already provides the correct width/centering one level up,
    the plugin's container just needs to fill it edge-to-edge here.
    ══════════════════════════════════════════════════════════════════ */
-.wrap > .wbtm_style.wbtm_container,
-.busly-search-widget .wbtm_container {
+/* Unqualified (not `.wrap > .wbtm_container`): the plugin's own standalone
+   search-form page nests this several levels deeper (.wrap > .busly-content-grid
+   > .busly-content-col > .busly-entry-content > .wbtm_container), so a
+   direct-child selector silently never matched there and this override only
+   ever reached the homepage widget instance. */
+.wbtm_style.wbtm_container {
 	width: 100% !important;
 	max-width: 100% !important;
 	margin-left: 0 !important;

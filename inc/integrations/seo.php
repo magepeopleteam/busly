@@ -61,6 +61,23 @@ function busly_breadcrumbs() {
 		echo ' <span aria-hidden="true">/</span> ' . esc_html__( 'Page Not Found', 'busly' );
 	}
 
-	echo ' <span aria-hidden="true">/</span> <span aria-current="page">' . esc_html( wp_strip_all_tags( get_the_title() ) ) . '</span>';
+	// The trailing crumb needs the *page's* title, not get_the_title()'s
+	// post-in-the-Loop title — on is_home()/is_archive()/is_search(), the
+	// Loop has already advanced to the first result by this point, which
+	// silently swapped in that post's title (e.g. the blog index showing
+	// its first post's title instead of "Blog").
+	if ( is_search() ) {
+		$busly_current_title = get_search_query();
+	} elseif ( is_home() && ! is_front_page() ) {
+		$busly_current_title = single_post_title( '', false );
+	} elseif ( is_archive() ) {
+		$busly_current_title = get_the_archive_title();
+	} elseif ( is_404() ) {
+		$busly_current_title = __( 'Page Not Found', 'busly' );
+	} else {
+		$busly_current_title = get_the_title();
+	}
+
+	echo ' <span aria-hidden="true">/</span> <span aria-current="page">' . esc_html( wp_strip_all_tags( $busly_current_title ) ) . '</span>';
 	echo '</nav>';
 }

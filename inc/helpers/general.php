@@ -27,7 +27,7 @@ function busly_get_option( $key, $default = '' ) {
 		}
 	}
 
-	if ( array_key_exists( $key, $options ) && '' !== $options[ $key ] ) {
+	if ( array_key_exists( $key, $options ) ) {
 		return $options[ $key ];
 	}
 

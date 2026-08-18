@@ -67,6 +67,7 @@ function busly_register_elementor_widgets( $widgets_manager ) {
 	require_once BUSLY_DIR . '/inc/elementor/class-widget-base.php';
 
 	$widgets = array(
+		'breadcrumbs'     => 'Busly_Widget_Breadcrumbs',
 		'hero'            => 'Busly_Widget_Hero',
 		'bus-search'      => 'Busly_Widget_Bus_Search',
 		'bus-listing'     => 'Busly_Widget_Bus_Listing',

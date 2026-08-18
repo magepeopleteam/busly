@@ -148,16 +148,11 @@ function busly_comment_template( $comment, $args, $depth ) {
  * @return array{login: string, login_label: string, bookings: string, cta: string}
  */
 function busly_header_urls() {
-	// 'header_cta_url' is a registered Theme Settings field with a blank
-	// schema default, so busly_get_option()'s fallback arg never wins for
-	// it (see the same issue fixed in site-footer.php) — resolve manually.
-	$busly_cta_url = busly_get_option( 'header_cta_url', '' );
-
 	$urls = array(
 		'login'       => wp_login_url(),
 		'login_label' => __( 'Login', 'busly' ),
 		'bookings'    => '',
-		'cta'         => $busly_cta_url ? $busly_cta_url : home_url( '/' ),
+		'cta'         => home_url( '/' ),
 	);
 
 	if ( busly_is_wc_active() ) {
@@ -173,10 +168,79 @@ function busly_header_urls() {
 		}
 	}
 
+	// CTA target priority: Bus Search page (lowest) < URL fallback <
+	// CTA Button Page (highest) — the Header tab's own settings always
+	// outrank the Bus Booking tab's default so they reliably take effect.
 	$search_page = busly_get_option( 'booking_search_page', 0 );
 	if ( $search_page && get_post( $search_page ) ) {
 		$urls['cta'] = get_permalink( $search_page );
 	}
 
+	$cta_url = busly_get_option( 'header_cta_url', '' );
+	if ( $cta_url ) {
+		$urls['cta'] = $cta_url;
+	}
+
+	$cta_page = busly_get_option( 'header_cta_page', 0 );
+	if ( $cta_page && get_post( $cta_page ) ) {
+		$urls['cta'] = get_permalink( $cta_page );
+	}
+
 	return $urls;
+}
+
+/**
+ * Output the header/footer logo link contents per the "Logo display"
+ * Customizer setting (Appearance → Customize → Site Identity).
+ *
+ * Shared by site-header.php, site-footer.php and mobile-menu.php so the
+ * image/text/both logic only lives in one place.
+ *
+ * @param array $args {
+ *     Optional. Inline style overrides for the icon fallback markup.
+ *
+ *     @type string $icon_style Inline `style` attribute for the icon box.
+ *     @type string $text_style Inline `style` attribute for the site name.
+ * }
+ */
+function busly_the_logo( $args = array() ) {
+	$args     = wp_parse_args( $args, array( 'icon_style' => '', 'text_style' => '' ) );
+	$display  = get_theme_mod( 'busly_logo_display', 'logo' );
+	$logo_id  = get_theme_mod( 'custom_logo' );
+	$has_logo = $logo_id && wp_attachment_is_image( $logo_id );
+
+	$show_image = 'text' !== $display && $has_logo;
+	$show_text  = 'text' === $display || 'both' === $display || ! $has_logo;
+
+	if ( $show_image ) {
+		// Output the <img> directly (not the_custom_logo()) so it nests inside
+		// this function's single <a class="logo"> caller instead of core's own
+		// <a class="custom-logo-link"> — a nested anchor breaks HTML parsing
+		// and silently defeats the .logo img sizing rule in header.css.
+		$alt = get_post_meta( $logo_id, '_wp_attachment_image_alt', true );
+		echo wp_get_attachment_image(
+			$logo_id,
+			'full',
+			false,
+			array(
+				'class' => 'custom-logo',
+				'alt'   => $alt ? $alt : get_bloginfo( 'name' ),
+			)
+		);
+	}
+
+	if ( $show_text ) {
+		if ( ! $has_logo ) {
+			printf(
+				'<span class="logo-box"%s>%s</span>',
+				$args['icon_style'] ? ' style="' . esc_attr( $args['icon_style'] ) . '"' : '',
+				busly_get_icon_svg( 'bus' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static developer-authored SVG, see busly_icon().
+			);
+		}
+		printf(
+			'<span class="logo-name"%s>%s</span>',
+			$args['text_style'] ? ' style="' . esc_attr( $args['text_style'] ) . '"' : '',
+			esc_html( get_bloginfo( 'name' ) )
+		);
+	}
 }

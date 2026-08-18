@@ -49,9 +49,15 @@
 .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,0,0,.28); }
 .hero-cta svg { width: 15px; height: 15px; flex-shrink: 0; }
 
-.hero-trust { display: flex; align-items: center; gap: 20px; margin-top: 36px; flex-wrap: wrap; }
-.trust-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: rgba(255,255,255,.44); }
-.trust-item svg { width: 14px; height: 14px; color: rgba(255,255,255,.35); flex-shrink: 0; }
+/* Text/icon color are set per-instance from the widget's own Elementor
+   "Trust Row Style" controls (Style tab), not hardcoded here — see
+   class-widget-hero.php. Icon SVGs have no `fill` attribute of their own
+   (Elementor's Icons_Manager output relies on CSS for that), so without an
+   explicit fill they render at the SVG spec default (solid black) —
+   invisible against a dark hero photo. */
+.hero-trust { display: flex; align-items: center; gap: 20px; margin-top: 36px; margin-bottom: 32px; flex-wrap: wrap; }
+.trust-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; }
+.trust-item svg { width: 14px; height: 14px; flex-shrink: 0; }
 .trust-sep { width: 1px; height: 16px; background: rgba(255,255,255,.12); }
 
 @media (max-width: 760px) {

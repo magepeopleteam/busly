@@ -14,12 +14,14 @@ $busly_urls = busly_header_urls();
 <div class="busly-mobile-panel" id="busly-mobile-panel">
 	<div class="busly-mobile-panel-head">
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo">
-			<?php if ( has_custom_logo() ) : ?>
-				<?php the_custom_logo(); ?>
-			<?php else : ?>
-				<span class="logo-box" style="background:var(--busly-primary)"><?php busly_icon( 'bus' ); ?></span>
-				<span class="logo-name" style="color:var(--busly-s900)"><?php bloginfo( 'name' ); ?></span>
-			<?php endif; ?>
+			<?php
+			busly_the_logo(
+				array(
+					'icon_style' => 'background:var(--busly-primary)',
+					'text_style' => 'color:var(--busly-s900)',
+				)
+			);
+			?>
 		</a>
 		<button type="button" class="busly-mobile-panel-close" aria-label="<?php esc_attr_e( 'Close menu', 'busly' ); ?>">
 			<?php busly_icon( 'close' ); ?>

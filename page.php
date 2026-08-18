@@ -23,8 +23,20 @@ $busly_elementor_built = busly_is_elementor_built();
 	<?php if ( $busly_elementor_built ) : ?>
 
 		<?php
+		// No automatic breadcrumb here — Elementor pages own 100% of their
+		// layout; add the "Busly Breadcrumbs" widget wherever you want one.
+		// The title, though, prints by default like any other page. Visibility
+		// is left entirely to Elementor's own Page Settings > Hide Title
+		// control — it works via a CSS variable (.busly-page-title's own
+		// `display: var(--page-title-display, block)`), not a PHP check, so
+		// it stays in sync with the editor's live preview automatically.
 		while ( have_posts() ) :
 			the_post();
+			?>
+			<div class="wrap">
+				<h1 class="busly-page-title"><?php the_title(); ?></h1>
+			</div>
+			<?php
 			the_content();
 		endwhile;
 		?>

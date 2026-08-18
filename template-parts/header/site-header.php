@@ -19,12 +19,7 @@ $busly_cta_label   = busly_get_option( 'header_cta_label', __( 'Book Now', 'busl
 <header class="hdr" id="busly-header">
 	<div class="hdr-in">
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="logo" rel="home">
-			<?php if ( has_custom_logo() ) : ?>
-				<?php the_custom_logo(); ?>
-			<?php else : ?>
-				<span class="logo-box"><?php busly_icon( 'bus' ); ?></span>
-				<span class="logo-name"><?php bloginfo( 'name' ); ?></span>
-			<?php endif; ?>
+			<?php busly_the_logo(); ?>
 		</a>
 
 		<?php

@@ -4,11 +4,10 @@
  *
  * Scope is intentionally small: the Customizer here only holds settings
  * that are genuinely "live preview" appearance/copy (header behaviour,
- * footer copyright, social links). Structural/behavioural configuration
- * (colors, typography, bus booking, WooCommerce, performance) lives in the
- * dedicated Busly → Theme Settings screen (inc/theme-options.php) per
- * PHASE 17/18 — keeping the two systems from ever describing the same
- * option twice.
+ * footer copyright). Everything else — including social links (a repeater
+ * under the Social tab) — lives in the dedicated Busly → Theme Settings
+ * screen (inc/theme-options.php) per PHASE 17/18, keeping the two systems
+ * from ever describing the same option twice.
  *
  * @package Busly
  */
@@ -79,6 +78,33 @@ function busly_customize_register( $wp_customize ) {
 	);
 
 	/* ---------------------------------------------------------------
+	 * Logo display (Site Identity — alongside core's logo upload control)
+	 * ------------------------------------------------------------- */
+	$wp_customize->add_setting(
+		'busly_logo_display',
+		array(
+			'default'           => 'logo',
+			'sanitize_callback' => 'busly_sanitize_logo_display',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'busly_logo_display',
+		array(
+			'label'       => __( 'Logo display', 'busly' ),
+			'description' => __( 'What to show in the header and footer logo link. "Logo image" falls back to the site title when no logo is uploaded below.', 'busly' ),
+			'section'     => 'title_tagline',
+			'type'        => 'select',
+			'choices'     => array(
+				'logo' => __( 'Logo image only', 'busly' ),
+				'text' => __( 'Site title only', 'busly' ),
+				'both' => __( 'Logo image and site title', 'busly' ),
+			),
+			'priority'    => 9,
+		)
+	);
+
+	/* ---------------------------------------------------------------
 	 * Footer
 	 * ------------------------------------------------------------- */
 	$wp_customize->add_section(
@@ -108,43 +134,6 @@ function busly_customize_register( $wp_customize ) {
 		)
 	);
 
-	/* ---------------------------------------------------------------
-	 * Social links
-	 * ------------------------------------------------------------- */
-	$wp_customize->add_section(
-		'busly_social',
-		array(
-			'title' => __( 'Social Links', 'busly' ),
-			'panel' => 'busly_options',
-		)
-	);
-
-	$busly_social_networks = array(
-		'facebook'  => __( 'Facebook URL', 'busly' ),
-		'x'         => __( 'X (Twitter) URL', 'busly' ),
-		'instagram' => __( 'Instagram URL', 'busly' ),
-		'youtube'   => __( 'YouTube URL', 'busly' ),
-		'linkedin'  => __( 'LinkedIn URL', 'busly' ),
-	);
-
-	foreach ( $busly_social_networks as $busly_key => $busly_label ) {
-		$wp_customize->add_setting(
-			'busly_social_' . $busly_key,
-			array(
-				'default'           => '',
-				'sanitize_callback' => 'esc_url_raw',
-				'transport'         => 'refresh',
-			)
-		);
-		$wp_customize->add_control(
-			'busly_social_' . $busly_key,
-			array(
-				'label'   => $busly_label,
-				'section' => 'busly_social',
-				'type'    => 'url',
-			)
-		);
-	}
 }
 add_action( 'customize_register', 'busly_customize_register' );
 
@@ -156,6 +145,17 @@ add_action( 'customize_register', 'busly_customize_register' );
  */
 function busly_sanitize_checkbox( $checked ) {
 	return ( isset( $checked ) && true === $checked ) || '1' === $checked || 1 === $checked;
+}
+
+/**
+ * Sanitize the logo display select control.
+ *
+ * @param string $value Raw value.
+ * @return string
+ */
+function busly_sanitize_logo_display( $value ) {
+	$allowed = array( 'logo', 'text', 'both' );
+	return in_array( $value, $allowed, true ) ? $value : 'logo';
 }
 
 /*

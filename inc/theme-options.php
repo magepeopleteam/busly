@@ -83,11 +83,17 @@ function busly_theme_option_fields() {
 					'label'   => __( 'CTA Button Text', 'busly' ),
 					'default' => __( 'Book Now', 'busly' ),
 				),
+				'header_cta_page'      => array(
+					'type'        => 'page',
+					'label'       => __( 'CTA Button Page', 'busly' ),
+					'default'     => 0,
+					'description' => __( 'Send the CTA button to this page. Takes priority over the URL below and the Bus Search Page setting.', 'busly' ),
+				),
 				'header_cta_url'       => array(
 					'type'        => 'text',
 					'label'       => __( 'CTA Button URL (fallback)', 'busly' ),
 					'default'     => '',
-					'description' => __( 'Used only if no Bus Search page is selected under the Bus Booking tab.', 'busly' ),
+					'description' => __( 'Used only if no page is selected above, and no Bus Search page is selected under the Bus Booking tab.', 'busly' ),
 				),
 				'header_sticky_note'   => array(
 					'type'        => 'note',
@@ -99,11 +105,18 @@ function busly_theme_option_fields() {
 		'typography' => array(
 			'label'  => __( 'Typography', 'busly' ),
 			'fields' => array(
+				'font_google_family' => array(
+					'type'        => 'select',
+					'label'       => __( 'Google Font Family', 'busly' ),
+					'default'     => 'plus_jakarta_sans',
+					'choices'     => busly_google_font_choices(),
+					'description' => __( 'Pick a font to auto-load from Google Fonts (site-wide, body + headings). Choose "Custom" to enter your own font-family stack below without loading any Google Fonts request.', 'busly' ),
+				),
 				'font_body'      => array(
 					'type'        => 'text',
-					'label'       => __( 'Body/Heading Font Stack', 'busly' ),
+					'label'       => __( 'Custom Font Stack', 'busly' ),
 					'default'     => "'Plus Jakarta Sans', sans-serif",
-					'description' => __( 'A CSS font-family value. To use a different Google Font, also update the Google Fonts URL via the busly_enable_google_fonts filter / a child theme.', 'busly' ),
+					'description' => __( 'Only used when Google Font Family above is set to "Custom".', 'busly' ),
 				),
 				'font_size_base' => array(
 					'type'    => 'number',
@@ -334,10 +347,33 @@ function busly_theme_option_fields() {
 		'social'     => array(
 			'label'  => __( 'Social', 'busly' ),
 			'fields' => array(
-				'social_note' => array(
-					'type'        => 'note',
+				'social_links' => array(
+					'type'        => 'repeater',
 					'label'       => __( 'Social Links', 'busly' ),
-					'description' => __( 'Social links are live-preview settings — manage them under Customizer → Busly Options → Social Links.', 'busly' ),
+					'default'     => array(
+						array(
+							'icon' => 'facebook',
+							'url'  => '',
+						),
+					),
+					'fields'      => array(
+						'icon' => array(
+							'type'    => 'select',
+							'label'   => __( 'Icon', 'busly' ),
+							'choices' => array(
+								'facebook'  => __( 'Facebook', 'busly' ),
+								'x-twitter' => __( 'X (Twitter)', 'busly' ),
+								'instagram' => __( 'Instagram', 'busly' ),
+								'youtube'   => __( 'YouTube', 'busly' ),
+								'linkedin'  => __( 'LinkedIn', 'busly' ),
+							),
+						),
+						'url'  => array(
+							'type'  => 'url',
+							'label' => __( 'URL', 'busly' ),
+						),
+					),
+					'description' => __( 'Add the social profiles to show as icons in the header/footer. Pick an icon and paste the profile URL; remove any row you don\'t need.', 'busly' ),
 				),
 			),
 		),
@@ -446,6 +482,11 @@ function busly_sanitize_theme_options( $input ) {
 							$sub_type = isset( $sub_field['type'] ) ? $sub_field['type'] : 'text';
 							if ( 'number' === $sub_type ) {
 								$clean_item[ $sub_key ] = absint( $sub_raw );
+							} elseif ( 'url' === $sub_type ) {
+								$clean_item[ $sub_key ] = esc_url_raw( $sub_raw );
+							} elseif ( 'select' === $sub_type ) {
+								$sub_choices = isset( $sub_field['choices'] ) ? array_keys( $sub_field['choices'] ) : array();
+								$clean_item[ $sub_key ] = in_array( $sub_raw, $sub_choices, true ) ? $sub_raw : reset( $sub_choices );
 							} else {
 								$clean_item[ $sub_key ] = sanitize_text_field( $sub_raw );
 							}
@@ -651,13 +692,26 @@ function busly_render_settings_field( $key, $field, $value ) {
 						$sub_value = isset( $item[ $sub_key ] ) ? $item[ $sub_key ] : '';
 						$sub_type  = isset( $sub_field['type'] ) ? $sub_field['type'] : 'text';
 						printf( '<label>%s</label>', esc_html( $sub_field['label'] ) );
-						printf(
-							'<input type="%1$s" name="%2$s" id="%3$s" value="%4$s" />',
-							esc_attr( $sub_type ),
-							esc_attr( $sub_name ),
-							esc_attr( $sub_id ),
-							esc_attr( $sub_value )
-						);
+						if ( 'select' === $sub_type ) {
+							echo '<select name="' . esc_attr( $sub_name ) . '" id="' . esc_attr( $sub_id ) . '">';
+							foreach ( $sub_field['choices'] as $sub_choice_value => $sub_choice_label ) {
+								printf(
+									'<option value="%1$s" %2$s>%3$s</option>',
+									esc_attr( $sub_choice_value ),
+									selected( $sub_value, $sub_choice_value, false ),
+									esc_html( $sub_choice_label )
+								);
+							}
+							echo '</select>';
+						} else {
+							printf(
+								'<input type="%1$s" name="%2$s" id="%3$s" value="%4$s" />',
+								esc_attr( $sub_type ),
+								esc_attr( $sub_name ),
+								esc_attr( $sub_id ),
+								esc_attr( $sub_value )
+							);
+						}
 					}
 					echo '</div>';
 					echo '<button type="button" class="busly-repeater-remove" aria-label="Remove item">&times;</button>';

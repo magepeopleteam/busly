@@ -216,6 +216,52 @@ class Busly_Widget_Hero extends Busly_Widget_Base {
 		$this->add_typography_group( 'subtitle_typography', __( 'Subtitle', 'busly' ), '.hero-sub' );
 
 		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_style_trust',
+			array(
+				'label' => __( 'Trust Row Style', 'busly' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			)
+		);
+
+		$this->add_control(
+			'trust_icon_color',
+			array(
+				'label'     => __( 'Icon Color', 'busly' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => 'rgba(255,255,255,0.35)',
+				'selectors' => array(
+					'{{WRAPPER}} .trust-item svg' => 'fill: {{VALUE}}; color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'trust_text_color',
+			array(
+				'label'     => __( 'Text Color', 'busly' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => 'rgba(255,255,255,0.44)',
+				'selectors' => array(
+					'{{WRAPPER}} .trust-item' => 'color: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->add_control(
+			'trust_divider_color',
+			array(
+				'label'     => __( 'Divider Color', 'busly' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => 'rgba(255,255,255,0.12)',
+				'selectors' => array(
+					'{{WRAPPER}} .trust-sep' => 'background: {{VALUE}};',
+				),
+			)
+		);
+
+		$this->end_controls_section();
 	}
 
 	/**

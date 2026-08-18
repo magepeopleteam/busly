@@ -56,10 +56,30 @@ body.busly-layout-full-width .wrap { max-width: none; }
 .busly-layout-left-sidebar .busly-content-grid { grid-template-columns: 320px minmax(0, 1fr); }
 .busly-layout-left-sidebar .busly-content-col { order: 2; }
 .busly-layout-left-sidebar .busly-sidebar { order: 1; }
-.busly-no-sidebar .busly-content-grid { grid-template-columns: 1fr; max-width: 820px; margin: 0 auto; }
+/* The content column's breadcrumb/title block (.busly-page-header, 48px top
+   padding) pushes its actual entry-content down — the sidebar has no
+   equivalent above its first widget, so without this it starts noticeably
+   higher than the main column and looks flush against the header. */
+.busly-sidebar { margin-top: 48px; }
+.busly-no-sidebar .busly-content-grid { grid-template-columns: 1fr; }
 
-.busly-main { padding: 56px 0 88px; }
+/* Top padding must be >= the fixed header's own height (66px, header.css)
+   — some templates (single.php, author.php) print content/breadcrumbs
+   right at the top of .busly-main with no extra wrapper padding of their
+   own, so anything less here clips under the header. */
+.busly-main { padding: 66px 0 88px; }
 .busly-elementor-canvas.busly-main { padding: 0; }
+/* Elementor content still renders inside the theme's normal header/footer
+   (only a true Elementor Canvas *template*, which this theme doesn't use,
+   would remove them) — the fixed header needs the same top clearance here
+   as everywhere else, plus a little breathing room so the first line of
+   content doesn't start flush against the header's bottom edge (there's no
+   automatic breadcrumb here to provide that spacing — it's an opt-in
+   "Busly Breadcrumbs" widget now, added manually per page). Skipped only
+   on the transparent front-page header, where the hero's own padding-top
+   already reserves that space so its photo can still reach y:0 behind
+   the header. */
+body:not(.busly-header-transparent) .busly-elementor-canvas.busly-main { padding-top: 98px; }
 
 /* Elementor's own default CSS puts padding on the populated widget-wrap
    inside every column (frontend.min.css) — on our full_width homepage
@@ -85,6 +105,26 @@ body .elementor-column-gap-default > .elementor-column > .elementor-element-popu
 /* Full-bleed helper for Elementor "stretch section" rows inside a boxed page */
 .e-con.e-flex.busly-fullbleed,
 .elementor-section.busly-fullbleed { width: 100vw; margin-left: 50%; transform: translateX(-50%); }
+
+/* Default sizing for generic Elementor widgets an author drops directly
+   into page content (Text Editor, Heading, Image, Icon List, etc.) —
+   without it they render flush against whatever container they're in and
+   can run edge-to-edge. Capped to the theme's own container width so they
+   line up with the header/footer, centered, with a small breathing-room
+   padding. The theme's own busly-* widgets (Hero, CTA, Features, ...)
+   already manage their own full-bleed backgrounds/padding, so they're
+   excluded by name here to avoid doubling up. Still fully overridable
+   per-instance via that widget's own Advanced > Padding control in
+   Elementor, since an inline style always beats this class rule. Current
+   Elementor markup (4.x, "optimized markup" on) renders widget content
+   directly inside `.elementor-widget` — there's no separate
+   `.elementor-widget-container` wrapper to target instead. */
+.elementor-widget:not([class*="elementor-widget-busly-"]) {
+	max-width: var(--busly-container, 1180px);
+	margin-left: auto;
+	margin-right: auto;
+	padding: 10px;
+}
 
 @media (max-width: 1024px) {
 	.grid-4, .dest-grid { grid-template-columns: repeat(2, 1fr); }

@@ -137,6 +137,9 @@ function busly_page_has_busly_shortcode() {
  * @return string Raw CSS (already safe — every value is sanitized on save).
  */
 function busly_generate_css_variables() {
+	$busly_active_font = busly_get_active_google_font();
+	$busly_font_stack  = $busly_active_font ? $busly_active_font['stack'] : busly_get_option( 'font_body', "'Plus Jakarta Sans', sans-serif" );
+
 	$vars = array(
 		'--busly-navy'      => busly_get_option( 'color_navy', '#0c1a52' ),
 		'--busly-primary'   => busly_get_option( 'color_primary', '#1d3d87' ),
@@ -150,7 +153,7 @@ function busly_generate_css_variables() {
 		'--busly-background' => busly_get_option( 'color_background', '#f4f6fb' ),
 		'--busly-radius'    => absint( busly_get_option( 'radius', 20 ) ) . 'px',
 		'--busly-container' => absint( busly_get_option( 'container_width', 1180 ) ) . 'px',
-		'--busly-font-primary' => busly_get_option( 'font_body', "'Plus Jakarta Sans', sans-serif" ),
+		'--busly-font-primary' => $busly_font_stack,
 	);
 
 	$vars = apply_filters( 'busly_css_variables', $vars );

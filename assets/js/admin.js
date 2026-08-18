@@ -88,16 +88,21 @@
 			var $items   = $wrapper.find( '.busly-repeater-item' );
 			var index    = $items.length;
 			var template = $items.first().clone();
-			template.find( 'input' ).each( function () {
+			template.find( 'input, select' ).each( function () {
 				var name = $( this ).attr( 'name' );
 				if ( name ) {
 					name = name.replace( /\[\d+\]/, '[' + index + ']' );
-					$( this ).attr( 'name', name ).val( '' );
+					$( this ).attr( 'name', name );
 				}
 				var id = $( this ).attr( 'id' );
 				if ( id ) {
 					id = id.replace( /-\d+-/, '-' + index + '-' );
 					$( this ).attr( 'id', id );
+				}
+				if ( this.tagName === 'SELECT' ) {
+					$( this ).prop( 'selectedIndex', 0 );
+				} else {
+					$( this ).val( '' );
 				}
 			} );
 			$wrapper.find( '.busly-repeater-add' ).before( template );
@@ -109,7 +114,7 @@
 			var $wrapper = $item.closest( '.busly-repeater' );
 			$item.remove();
 			$wrapper.find( '.busly-repeater-item' ).each( function ( idx ) {
-				$( this ).find( 'input' ).each( function () {
+				$( this ).find( 'input, select' ).each( function () {
 					var name = $( this ).attr( 'name' );
 					if ( name ) {
 						$( this ).attr( 'name', name.replace( /\[\d+\]/, '[' + idx + ']' ) );

@@ -82,7 +82,20 @@
 
 /* ── Page header (non-front pages) ────────────── */
 .busly-page-header { padding: 48px 0 8px; }
-.busly-page-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 900; letter-spacing: -.02em; }
+/* display:var(...) is Elementor's own native "Hide Title" integration point
+   — its Page Settings > Hide Title control (core/document-types/page-base.php)
+   injects `--page-title-display: none` on :root for that page's dynamic CSS
+   (both in the live editor preview and once saved), rather than saving a
+   flag the theme has to check in PHP. Any theme title element that doesn't
+   read this variable simply ignores the toggle, which is why it looked
+   broken before this. */
+.busly-page-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 900; letter-spacing: -.02em; display: var(--page-title-display, block); }
+/* Printed inside a bare .wrap (no .busly-page-header wrapper) on
+   Elementor-built pages, for container-width alignment with the
+   header/footer — .busly-elementor-canvas.busly-main's own top padding
+   already covers header clearance/breathing room, so this only needs its
+   own bottom gap before the Elementor content below it. */
+.busly-elementor-canvas > .wrap > .busly-page-title { margin-bottom: 24px; }
 
 /* ── Comments ──────────────────────────────────── */
 .busly-comments { margin-top: 56px; }
