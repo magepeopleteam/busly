@@ -131,6 +131,44 @@ body #wbtm_area .wbtm-bar-redesign .wbtm_search_location_toggle:hover {
 	border-color: var(--busly-primary) !important;
 }
 body #wbtm_area .wbtm-bar-redesign .wbtm_search_location_toggle:hover i { color: var(--busly-primary) !important; }
+/* Swap button — layout, not just colour, unlike everything else in this
+   section. This one genuinely was a plugin bug (fixed at the source in
+   search_form.php: the toggle used to be a normal flex sibling between the
+   From/To fields with its own left/right margin — dead space neither
+   field's own background, including :hover, ever painted, visible as a gap
+   around the divider). Kept here too, defensively, so Busly still renders
+   it correctly even if a future plugin update reverts that fix — this is
+   the one place in this file that duplicates layout rather than only
+   retinting, because the underlying bug is real, not a colour clash. Must
+   mirror the plugin's own two states (centred on desktop, right-aligned
+   once the fields stack on mobile) or this would fight its own mobile
+   layout the same way the radius rule above once did. */
+body #wbtm_area .wbtm-bar-redesign .wbtm_input_start_end_location {
+	position: relative !important;
+}
+body #wbtm_area .wbtm-bar-redesign .wtbm_inputList {
+	margin: 0 !important;
+}
+@media (min-width: 768px) {
+	body #wbtm_area .wbtm-bar-redesign .wbtm_search_location_toggle {
+		position: absolute !important;
+		top: 50% !important;
+		left: 50% !important;
+		right: auto !important;
+		transform: translate(-50%, -50%) !important;
+		margin: 0 !important;
+	}
+}
+@media (max-width: 767px) {
+	body #wbtm_area .wbtm-bar-redesign .wbtm_search_location_toggle {
+		position: absolute !important;
+		top: 50% !important;
+		left: auto !important;
+		right: 14px !important;
+		transform: translateY(-50%) !important;
+		margin: 0 !important;
+	}
+}
 
 /* Location dropdown */
 body #wbtm_area .wbtm-bar-redesign ul.wbtm_input_select_list li:hover { background: var(--busly-i50) !important; }
@@ -254,25 +292,11 @@ body .wbtm-filter-reset-row {
 	padding-top: 14px;
 	border-top: 1px solid var(--busly-s200, #e2e8f0);
 }
-/* The mobile slide-in drawer + desktop collapse toggle (and its button)
-   were removed — the filter list now just renders normally/expanded on
-   every viewport, no JS-driven show/hide involved. But the plugin's own
-   mobile CSS (wtbm_search.css) still hides every child of the holder by
-   default except ones carrying .wbtm-mobile-filter-toggle — with that
-   button gone, nothing would ever except .wbtm-filter-card from that
-   rule, so it'd stay permanently hidden. Force it visible unconditionally
-   instead of leaving that plugin behavior in place with no way to
-   reverse it. */
-body .wbtm_bus_left_filter_holder .wbtm-filter-card {
-	display: block !important;
-}
-
-/* Flix / legacy compact layout (older style param, no known template redesign) */
-.wbtm-bus-flix-style {
-	background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16);
-	padding: 18px 22px; margin-bottom: 12px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
-}
-.wbtm-bus-flix-style .price { font-weight: 800; color: var(--busly-primary); }
+/* The plugin now ships its own `.wbtm-mobile-filter-toggle` button (added to
+   both search_result.php and wbtm_left_filter_disppaly() in
+   inc/WBTM_Functions.php) to go with the collapse/expand CSS and JS it
+   already had — see [[project_busly_wbtm_flix_style]]. Forcing the panel
+   permanently visible is no longer needed and would now fight that toggle. */
 
 /* Popup modal (bus details tabs) */
 .wbtm-bus-popup { position: fixed; inset: 0; background: rgba(15,23,42,.6); z-index: 100000; display: flex; align-items: center; justify-content: center; padding: 20px; }
