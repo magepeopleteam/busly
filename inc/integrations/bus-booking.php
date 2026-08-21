@@ -263,6 +263,10 @@ function busly_booking_admin_notice() {
 		return;
 	}
 
+	if ( false !== strpos( $screen_id, 'setup-wizard' ) ) {
+		return;
+	}
+
 	if ( ! current_user_can( 'activate_plugins' ) ) {
 		return;
 	}

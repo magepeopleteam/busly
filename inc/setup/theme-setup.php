@@ -90,7 +90,7 @@ function busly_get_companion_plugins() {
 				'name' => 'Bus Ticket Booking with Seat Reservation',
 				'slug' => 'bus-ticket-booking-with-seat-reservation',
 				'file' => 'bus-ticket-booking-with-seat-reservation/woocommerce-bus.php',
-				'wp'   => false, // distributed outside wordpress.org — detect only, no auto-install.
+				'wp'   => true,
 			),
 		),
 		'recommended' => array(

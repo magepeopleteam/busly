@@ -37,11 +37,15 @@
 
 		// Requirement row: install/activate a wordpress.org plugin via AJAX.
 		$( '.busly-req-action' ).on( 'click', function ( e ) {
+			if ( $( this ).hasClass( 'busly-req-external-install' ) ) {
+				return; // external install links open in a new tab — don't interfere.
+			}
 			e.preventDefault();
 			var $btn    = $( this );
 			var action  = $btn.data( 'action' ); // 'install' | 'activate'
 			var slug    = $btn.data( 'slug' );
 			var file    = $btn.data( 'file' );
+			var nonce   = $btn.data( 'nonce' ) || ( window.buslyAdmin ? window.buslyAdmin.nonce : '' );
 			var original = $btn.text();
 
 			$btn.prop( 'disabled', true ).text( 'install' === action ? busluAdminL10n().installing : busluAdminL10n().activating );
@@ -50,17 +54,26 @@
 				action: 'busly_' + action + '_plugin',
 				slug: slug,
 				file: file,
-				nonce: window.buslyAdmin ? window.buslyAdmin.nonce : ''
+				nonce: nonce
 			} ).done( function ( response ) {
 				if ( response && response.success ) {
 					window.location.reload();
 				} else {
 					$btn.prop( 'disabled', false ).text( original );
-					window.alert( ( response && response.data && response.data.message ) || 'Something went wrong.' );
+					var msg = ( response && response.data && response.data.message ) || 'Something went wrong.';
+					window.alert( msg );
 				}
-			} ).fail( function () {
+			} ).fail( function ( jqXHR, textStatus, errorThrown ) {
 				$btn.prop( 'disabled', false ).text( original );
-				window.alert( 'Request failed. Please try again.' );
+				var msg = 'Installation failed.';
+				if ( jqXHR.responseJSON && jqXHR.responseJSON.data && jqXHR.responseJSON.data.message ) {
+					msg = jqXHR.responseJSON.data.message;
+				} else if ( jqXHR.status === 400 || jqXHR.status === 403 ) {
+					msg = 'Session expired. Please refresh the page and try again.';
+				} else if ( errorThrown ) {
+					msg += ' ' + errorThrown;
+				}
+				window.alert( msg );
 			} );
 		} );
 

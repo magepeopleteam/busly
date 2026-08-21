@@ -403,17 +403,34 @@ table.wbtm_totals h5.wbtm_sub_total, h5 span.wbtm_total { color: var(--busly-pri
 /* ══════════════════════════════════════════════════════════════════
    6. MY ACCOUNT — Bus Booking Dashboard
    ══════════════════════════════════════════════════════════════════ */
-.wbtm-my-account-dashboard { display: flex; flex-direction: column; gap: 24px; }
-.wbtm-dashboard-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.wbtm-my-account-dashboard { display: flex; flex-direction: column; gap: 24px; width: 100%; min-width: 0; }
+.wbtm-dashboard-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; width: 100%; min-width: 0; }
 .wbtm-stat-card { background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16); padding: 20px; text-align: center; }
 .wbtm-stat-card strong { display: block; font-size: 24px; font-weight: 900; color: var(--busly-primary); }
 .wbtm-dashboard-filters { display: flex; gap: 10px; flex-wrap: wrap; }
-.wbtm-bookings-container { background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16); overflow: hidden; }
-.wbtm-bookings-header { display: flex; background: var(--busly-s50); font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--busly-s500); }
-.wbtm-header-cell { padding: 12px 16px; flex: 1; }
+.wbtm-search-container { display: flex; align-items: center; gap: 10px; width: 100%; }
+.wbtm-search-row { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.wbtm-search-select { padding: 10px 14px; border-radius: var(--busly-r12); border: 1px solid var(--busly-s200); font-size: 13px; font-weight: 600; color: var(--busly-s700); background: #fff; cursor: pointer; white-space: nowrap; }
+.wbtm-search-row input { flex: 1; min-width: 0; padding: 10px 14px; border-radius: var(--busly-r12); border: 1px solid var(--busly-s200); font-size: 13px; }
+.wbtm-search-buttons { display: flex; gap: 8px; flex-shrink: 0; }
+.wbtm-search-btn, .wbtm-reset-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 100px; font-size: 13px; font-weight: 700; cursor: pointer; border: none; transition: opacity .15s, transform .1s; }
+.wbtm-search-btn { background: var(--busly-primary); color: #fff; }
+.wbtm-search-btn:hover { opacity: .9; transform: translateY(-1px); }
+.wbtm-reset-btn { background: var(--busly-s100); color: var(--busly-s600); }
+.wbtm-reset-btn:hover { background: var(--busly-s200); }
+.wbtm-bookings-container { background: #fff; border: 1px solid var(--busly-s200); border-radius: var(--busly-r16); overflow: hidden; width: 100%; min-width: 0; }
+.wbtm-bookings-header { display: flex; background: var(--busly-s50); font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--busly-s500); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.wbtm-header-cell { padding: 12px 16px; flex: 1 1 0; min-width: 100px; white-space: nowrap; }
+.wbtm-bookings-list { width: 100%; min-width: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.wbtm-empty-state { padding: 48px 20px; text-align: center; color: var(--busly-s500); }
+.wbtm-empty-state i { font-size: 32px; color: var(--busly-s400); margin-bottom: 12px; display: block; }
+.wbtm-empty-state h3 { font-size: 16px; font-weight: 700; color: var(--busly-s700); margin-bottom: 8px; }
+.wbtm-empty-state p { font-size: 13.5px; color: var(--busly-s500); max-width: 360px; margin: 0 auto; }
 
 @media (max-width: 760px) {
 	.wbtm-dashboard-stats { grid-template-columns: repeat(2, 1fr); }
+	.wbtm-bookings-header { font-size: 10px; }
+	.wbtm-header-cell { padding: 10px 10px; }
 }
 
 /* ══════════════════════════════════════════════════════════════════

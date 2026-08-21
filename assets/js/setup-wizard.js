@@ -84,6 +84,9 @@
 		// main dashboard (admin.js), scoped here only if admin.js isn't
 		// also loaded on this screen.
 		$( '.busly-req-action' ).on( 'click', function ( e ) {
+			if ( $( this ).hasClass( 'busly-req-external-install' ) ) {
+				return; // external install links open in a new tab — don't interfere.
+			}
 			if ( $._data && $._data( this, 'events' ) ) {
 				return; // admin.js already bound a handler.
 			}
@@ -92,6 +95,7 @@
 			var action = $btn.data( 'action' );
 			var slug   = $btn.data( 'slug' );
 			var file   = $btn.data( 'file' );
+			var nonce  = $btn.data( 'nonce' ) || ( typeof buslySetup !== 'undefined' ? buslySetup.pluginNonce : '' );
 
 			$btn.prop( 'disabled', true ).text( 'install' === action ? buslySetup.i18n.installing : buslySetup.i18n.activating );
 
@@ -99,14 +103,22 @@
 				action: 'busly_' + action + '_plugin',
 				slug: slug,
 				file: file,
-				nonce: buslySetup.pluginNonce
+				nonce: nonce
 			} ).done( function ( response ) {
 				if ( response && response.success ) {
 					window.location.reload();
 				} else {
-					window.alert( ( response && response.data && response.data.message ) || buslySetup.i18n.error );
+					var msg = ( response && response.data && response.data.message ) || buslySetup.i18n.error;
+					window.alert( msg );
 					window.location.reload();
 				}
+			} ).fail( function ( jqXHR, textStatus, errorThrown ) {
+				var msg = buslySetup.i18n.error;
+				if ( jqXHR.responseJSON && jqXHR.responseJSON.data && jqXHR.responseJSON.data.message ) {
+					msg = jqXHR.responseJSON.data.message;
+				}
+				window.alert( msg );
+				window.location.reload();
 			} );
 		} );
 	} );
