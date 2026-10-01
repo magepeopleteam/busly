@@ -22,7 +22,14 @@
    the plugin's container just needs to fill it edge-to-edge here.
    ══════════════════════════════════════════════════════════════════ */
 .wrap > .wbtm_style.wbtm_container,
-.busly-search-widget .wbtm_container {
+.busly-search-widget .wbtm_container,
+/* Plain pages (page.php) nest the shortcode output several levels deeper
+   than Elementor's widget wrapper does — .wrap > .busly-content-grid >
+   .busly-content-col > .busly-entry-content > .wbtm_container — so the
+   direct-child selector above never matched there and the plugin's
+   hard-coded 1340px container rendered at its native width instead of
+   filling the (now full-width, see layout.css) content column. */
+.busly-content-col .wbtm_container {
 	width: 100% !important;
 	max-width: 100% !important;
 	margin-left: 0 !important;

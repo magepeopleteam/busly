@@ -57,6 +57,14 @@ body.busly-layout-full-width .wrap { max-width: none; }
 .busly-layout-left-sidebar .busly-content-col { order: 2; }
 .busly-layout-left-sidebar .busly-sidebar { order: 1; }
 .busly-no-sidebar .busly-content-grid { grid-template-columns: 1fr; max-width: 820px; margin: 0 auto; }
+/* The booking plugin's search form/results/seat-map UI (rendered via
+   shortcode on plain pages like "Search Result" / "Global search form",
+   not inside Elementor) needs the full `.wrap` width like the homepage
+   search widget gets — the 820px prose-article cap above is only right for
+   actual text content (About, FAQ, Terms...), and squeezing the plugin's
+   ~1340px-native container into 820px pushed it past the right edge of its
+   centered box instead of actually fitting inside it. */
+body.busly-has-booking-ui .busly-no-sidebar .busly-content-grid { max-width: 100%; }
 
 .busly-main { padding: 56px 0 88px; }
 .busly-elementor-canvas.busly-main { padding: 0; }

@@ -4,8 +4,16 @@
  *
  * Every step checks for existing content (by a `_busly_demo` post meta flag,
  * or by option) before creating anything, so re-running the wizard never
- * duplicates pages/menus and never overwrites content a merchant has since
- * edited. Nothing here ever deletes existing user content.
+ * duplicates pages/menus. Nothing here ever deletes existing user content.
+ *
+ * Exception: step_homepage() and step_homepage2() always refresh their own
+ * demo page's Elementor layout (Busly_Elementor_Homepage::build/build_modern
+ * with $force = true) on every run, even if it already has saved data —
+ * that's the whole point of "re-import" for these two theme-owned pages:
+ * it replaces an older import's homepage design with the current theme
+ * code's design. If a merchant has customized Homepage 1/2 themselves in
+ * the Elementor editor, re-running the Setup Wizard will overwrite those
+ * edits back to the stock design — the wizard's UI should make that clear.
  *
  * @package Busly
  */
@@ -300,7 +308,11 @@ class Busly_Demo_Import {
 
 		if ( did_action( 'elementor/loaded' ) ) {
 			require_once BUSLY_DIR . '/inc/admin/class-elementor-homepage.php';
-			Busly_Elementor_Homepage::build( $home_id );
+			// force=true: this is the importer's own demo page (tracked by
+			// _busly_demo_key), so re-running the wizard must always refresh
+			// it to the current theme code's design — an older import's
+			// saved _elementor_data would otherwise block every update.
+			Busly_Elementor_Homepage::build( $home_id, true );
 		}
 
 		update_option( 'show_on_front', 'page' );
@@ -327,7 +339,8 @@ class Busly_Demo_Import {
 
 		if ( did_action( 'elementor/loaded' ) ) {
 			require_once BUSLY_DIR . '/inc/admin/class-elementor-homepage.php';
-			Busly_Elementor_Homepage::build_modern( $page_id );
+			// force=true — see step_homepage()'s comment: same re-import rule.
+			Busly_Elementor_Homepage::build_modern( $page_id, true );
 		}
 
 		return __( 'Homepage 2 (Modern design) assembled as its own page.', 'busly' );

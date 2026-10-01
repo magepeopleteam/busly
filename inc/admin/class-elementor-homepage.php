@@ -8,8 +8,12 @@
  * (plus, for build_modern(), the handful of illustration images that design
  * uses), not the bulk of the copy.
  *
- * Only ever runs from Busly_Demo_Import::step_homepage() / step_homepage2()
- * — never touches an existing page's Elementor data if one is already saved.
+ * Only ever runs from Busly_Demo_Import::step_homepage() / step_homepage2(),
+ * which call it with $force = true — on re-import, the demo pages they own
+ * are always refreshed to the current theme code's design, replacing
+ * whatever an older import left behind. A non-forced call (e.g. from a
+ * future admin "rebuild this page" button) still never clobbers existing
+ * Elementor data.
  *
  * @package Busly
  */
@@ -27,17 +31,34 @@ class Busly_Elementor_Homepage {
 	 * Write the demo homepage layout to $post_id, unless it already has
 	 * Elementor data (never clobber a merchant's own edits on re-import).
 	 *
-	 * @param int $post_id Target page ID.
+	 * @param int  $post_id Target page ID.
+	 * @param bool $force   When true, overwrite existing Elementor data too.
+	 *                      Used by Busly_Demo_Import on re-import so the
+	 *                      theme-owned demo page always refreshes to the
+	 *                      current theme code's design (an older import's
+	 *                      saved data would otherwise block every update
+	 *                      forever) — never set this for anything other than
+	 *                      the demo pages the import step itself owns.
 	 */
-	public static function build( $post_id ) {
+	public static function build( $post_id, $force = false ) {
 		$existing = get_post_meta( $post_id, '_elementor_data', true );
-		if ( ! empty( $existing ) && '[]' !== $existing ) {
+		if ( ! $force && ! empty( $existing ) && '[]' !== $existing ) {
 			return;
 		}
 
+		$hero_photo = BUSLY_URI . '/assets/images/homepage1/hero-highway.jpg';
+
 		$data = array(
-			self::section( array( self::column( array( self::widget( 'busly-hero' ) ) ) ), array( 'custom_margin' => '' ) ),
-			self::section( array( self::column( array( self::widget( 'busly-bus-search' ) ) ) ) ),
+			self::section( array( self::column( array( self::widget(
+				'busly-hero',
+				array(
+					'background_image' => array( 'url' => $hero_photo, 'id' => '' ),
+				)
+			) ) ) ), array( 'custom_margin' => '' ) ),
+			self::section(
+				array( self::column( array( self::widget( 'busly-bus-search', array( 'card_wrapper' => 'yes' ) ) ) ) ),
+				array( '_element_id' => 'busly-search-section' )
+			),
 			self::section(
 				array(
 					self::column(
@@ -170,6 +191,8 @@ class Busly_Elementor_Homepage {
 		update_post_meta( $post_id, '_elementor_data', wp_slash( wp_json_encode( $data ) ) );
 		update_post_meta( $post_id, '_elementor_edit_mode', 'builder' );
 		update_post_meta( $post_id, '_elementor_version', self::elementor_version() );
+		update_post_meta( $post_id, '_busly_hero_floating_search', 'yes' );
+		delete_post_meta( $post_id, '_elementor_element_cache' );
 
 		self::regenerate_css( $post_id );
 	}
@@ -185,11 +208,13 @@ class Busly_Elementor_Homepage {
 	 * mockup), all shipped with the theme under assets/images/homepage2/
 	 * so they survive a theme re-install.
 	 *
-	 * @param int $post_id Target page ID.
+	 * @param int  $post_id Target page ID.
+	 * @param bool $force   When true, overwrite existing Elementor data too
+	 *                      (see build()'s $force doc — same re-import rule).
 	 */
-	public static function build_modern( $post_id ) {
+	public static function build_modern( $post_id, $force = false ) {
 		$existing = get_post_meta( $post_id, '_elementor_data', true );
-		if ( ! empty( $existing ) && '[]' !== $existing ) {
+		if ( ! $force && ! empty( $existing ) && '[]' !== $existing ) {
 			return;
 		}
 
@@ -202,7 +227,10 @@ class Busly_Elementor_Homepage {
 					'background_image' => array( 'url' => $img . 'hero-illustration.svg', 'id' => '' ),
 				)
 			) ) ) ), array( 'custom_margin' => '' ) ),
-			self::section( array( self::column( array( self::widget( 'busly-bus-search' ) ) ) ) ),
+			self::section(
+				array( self::column( array( self::widget( 'busly-bus-search' ) ) ) ),
+				array( '_element_id' => 'busly-search-section' )
+			),
 			self::section(
 				array(
 					self::column(
@@ -351,6 +379,7 @@ class Busly_Elementor_Homepage {
 		update_post_meta( $post_id, '_elementor_edit_mode', 'builder' );
 		update_post_meta( $post_id, '_elementor_version', self::elementor_version() );
 		update_post_meta( $post_id, '_busly_page_skin', 'modern' );
+		delete_post_meta( $post_id, '_elementor_element_cache' );
 
 		self::regenerate_css( $post_id );
 	}
