@@ -37,6 +37,18 @@ function busly_register_fonts() {
 		array(),
 		null // phpcs:ignore -- version intentionally omitted for a third-party URL.
 	);
+
+	// Alternate "Homepage 2" skin uses its own type pairing (Space Grotesk
+	// headings, IBM Plex Sans body) — loaded alongside, never instead of,
+	// the site default above, and only on pages flagged for it.
+	if ( busly_is_modern_skin_page() ) {
+		wp_enqueue_style(
+			'busly-google-fonts-modern',
+			'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap',
+			array(),
+			null // phpcs:ignore -- version intentionally omitted for a third-party URL.
+		);
+	}
 }
 add_action( 'wp_enqueue_scripts', 'busly_register_fonts' );
 

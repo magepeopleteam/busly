@@ -65,6 +65,15 @@ class Busly_Widget_Offers extends Busly_Widget_Base {
 		);
 
 		$repeater = new Repeater();
+		$repeater->add_control(
+			'banner_image',
+			array(
+				'label'       => __( 'Banner Image (optional)', 'busly' ),
+				'type'        => Controls_Manager::MEDIA,
+				'default'     => array(),
+				'description' => __( 'Shown as a full-width banner at the top of the card when set; the card renders without one otherwise.', 'busly' ),
+			)
+		);
 		$repeater->add_control( 'tag', array( 'label' => __( 'Tag', 'busly' ), 'type' => Controls_Manager::TEXT, 'default' => __( 'Early Bird', 'busly' ) ) );
 		$repeater->add_control( 'title', array( 'label' => __( 'Title', 'busly' ), 'type' => Controls_Manager::TEXT, 'default' => __( '20% Off Morning Buses', 'busly' ), 'label_block' => true ) );
 		$repeater->add_control( 'description', array( 'label' => __( 'Description', 'busly' ), 'type' => Controls_Manager::TEXTAREA, 'default' => __( 'Book 7+ days in advance and save on any AC route.', 'busly' ) ) );
@@ -112,6 +121,9 @@ class Busly_Widget_Offers extends Busly_Widget_Base {
 				<?php foreach ( $settings['offers'] as $offer ) : ?>
 					<?php $c = $themes[ $offer['theme'] ] ?? $themes['indigo']; ?>
 					<div class="off-c" style="background:<?php echo esc_attr( $c['bg'] ); ?>;border-color:<?php echo esc_attr( $c['border'] ); ?>">
+						<?php if ( ! empty( $offer['banner_image']['url'] ) ) : ?>
+							<img class="off-banner" src="<?php echo esc_url( $offer['banner_image']['url'] ); ?>" alt="" loading="lazy">
+						<?php endif; ?>
 						<span class="off-tag" style="background:<?php echo esc_attr( $c['tag_bg'] ); ?>;color:<?php echo esc_attr( $c['text'] ); ?>"><?php echo esc_html( $offer['tag'] ); ?></span>
 						<div class="off-t"><?php echo esc_html( $offer['title'] ); ?></div>
 						<div class="off-d"><?php echo esc_html( $offer['description'] ); ?></div>

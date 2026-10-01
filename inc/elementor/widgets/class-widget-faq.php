@@ -81,6 +81,54 @@ class Busly_Widget_Faq extends Busly_Widget_Base {
 		);
 
 		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_side_card',
+			array(
+				'label' => __( 'Side Card (optional)', 'busly' ),
+			)
+		);
+
+		$this->add_control(
+			'side_heading',
+			array(
+				'label'       => __( 'Heading', 'busly' ),
+				'type'        => Controls_Manager::TEXT,
+				'default'     => '',
+				'label_block' => true,
+				'description' => __( 'Leave blank to keep the question list centered with no side card (the default, single-column layout).', 'busly' ),
+			)
+		);
+
+		$this->add_control(
+			'side_description',
+			array(
+				'label'   => __( 'Description', 'busly' ),
+				'type'    => Controls_Manager::TEXTAREA,
+				'default' => '',
+			)
+		);
+
+		$this->add_control(
+			'side_button_text',
+			array(
+				'label'   => __( 'Button Text', 'busly' ),
+				'type'    => Controls_Manager::TEXT,
+				'default' => __( 'Contact Support', 'busly' ),
+			)
+		);
+
+		$this->add_control(
+			'side_button_link',
+			array(
+				'label'       => __( 'Button Link', 'busly' ),
+				'type'        => Controls_Manager::URL,
+				'default'     => array( 'url' => '#' ),
+				'placeholder' => __( 'https://your-link.com', 'busly' ),
+			)
+		);
+
+		$this->end_controls_section();
 	}
 
 	/**
@@ -88,23 +136,47 @@ class Busly_Widget_Faq extends Busly_Widget_Base {
 	 */
 	protected function render() {
 		$settings = $this->get_settings_for_display();
+
+		$has_side = ! empty( $settings['side_heading'] );
+
+		$this->add_render_attribute( 'side_button', 'class', 'busly-btn busly-btn--primary' );
+		if ( ! empty( $settings['side_button_link']['url'] ) ) {
+			$this->add_link_attributes( 'side_button', $settings['side_button_link'] );
+		}
 		?>
 		<div class="busly-faq-widget wrap">
 			<?php $this->render_section_header( $settings ); ?>
 
-			<div class="busly-faq">
-				<?php foreach ( $settings['faqs'] as $index => $faq ) : ?>
-					<?php $panel_id = $this->get_id() . '-faq-' . $index; ?>
-					<div class="busly-faq-item">
-						<button type="button" class="busly-faq-q" aria-expanded="false" aria-controls="<?php echo esc_attr( $panel_id ); ?>">
-							<?php echo esc_html( $faq['question'] ); ?>
-							<?php busly_icon( 'chevron-down' ); ?>
-						</button>
-						<div class="busly-faq-a" id="<?php echo esc_attr( $panel_id ); ?>">
-							<div class="busly-faq-a-inner"><?php echo wp_kses_post( $faq['answer'] ); ?></div>
+			<div class="busly-faq-row<?php echo $has_side ? ' has-side' : ''; ?>">
+				<div class="busly-faq">
+					<?php foreach ( $settings['faqs'] as $index => $faq ) : ?>
+						<?php $panel_id = $this->get_id() . '-faq-' . $index; ?>
+						<div class="busly-faq-item">
+							<button type="button" class="busly-faq-q" aria-expanded="false" aria-controls="<?php echo esc_attr( $panel_id ); ?>">
+								<?php echo esc_html( $faq['question'] ); ?>
+								<?php busly_icon( 'chevron-down' ); ?>
+							</button>
+							<div class="busly-faq-a" id="<?php echo esc_attr( $panel_id ); ?>">
+								<div class="busly-faq-a-inner"><?php echo wp_kses_post( $faq['answer'] ); ?></div>
+							</div>
 						</div>
+					<?php endforeach; ?>
+				</div>
+
+				<?php if ( $has_side ) : ?>
+					<div class="busly-faq-side">
+						<div class="busly-faq-side-ic"><?php busly_icon( 'headset' ); ?></div>
+						<div class="busly-faq-side-h"><?php echo esc_html( $settings['side_heading'] ); ?></div>
+						<?php if ( ! empty( $settings['side_description'] ) ) : ?>
+							<p class="busly-faq-side-d"><?php echo esc_html( $settings['side_description'] ); ?></p>
+						<?php endif; ?>
+						<?php if ( ! empty( $settings['side_button_text'] ) ) : ?>
+							<a <?php $this->print_render_attribute_string( 'side_button' ); ?>>
+								<?php echo esc_html( $settings['side_button_text'] ); ?>
+							</a>
+						<?php endif; ?>
 					</div>
-				<?php endforeach; ?>
+				<?php endif; ?>
 			</div>
 		</div>
 		<?php

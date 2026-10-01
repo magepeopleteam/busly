@@ -23,6 +23,7 @@
 			{ key: 'pages', label: 'Creating demo pages' },
 			{ key: 'menus', label: 'Building navigation menus' },
 			{ key: 'homepage', label: 'Assembling the Elementor homepage' },
+			{ key: 'homepage2', label: 'Building Homepage 2 (Modern design)' },
 			{ key: 'options', label: 'Applying Theme Settings' },
 			{ key: 'finish', label: 'Finishing up' }
 		];

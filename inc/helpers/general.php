@@ -39,6 +39,9 @@ function busly_get_option( $key, $default = '' ) {
 /**
  * Whether the current page should render a transparent-over-photo header
  * (only meaningful when a hero widget is the very first content block).
+ * True for the static front page, and for any alternate homepage layout
+ * (e.g. "Homepage 2") flagged via busly_is_modern_skin_page() — both start
+ * with the same full-bleed hero widget and need the same treatment.
  *
  * @return bool
  */
@@ -46,7 +49,27 @@ function busly_use_transparent_header() {
 	if ( ! get_theme_mod( 'busly_header_transparent', true ) ) {
 		return false;
 	}
-	return is_front_page();
+	return is_front_page() || busly_is_modern_skin_page();
+}
+
+/**
+ * Whether the current page is flagged to render with the "Modern" homepage
+ * skin (navy/terracotta palette, Space Grotesk headings) instead of the
+ * default Busly look — see assets/css/homepage-modern.css. Driven by a
+ * post meta flag rather than a hardcoded page ID/slug so any page (e.g. an
+ * alternate "Homepage 2") can opt in from the editor's Custom Fields, and
+ * the flag survives the page being renamed, re-slugged, or promoted to the
+ * site's static front page.
+ *
+ * @param int $post_id Optional. Defaults to the current queried object.
+ * @return bool
+ */
+function busly_is_modern_skin_page( $post_id = 0 ) {
+	$post_id = $post_id ? $post_id : get_queried_object_id();
+	if ( ! $post_id ) {
+		return false;
+	}
+	return 'modern' === get_post_meta( $post_id, '_busly_page_skin', true );
 }
 
 /**

@@ -1,0 +1,272 @@
+/**
+ * Busly — homepage-modern.css
+ * Alternate "Homepage 2" skin: same Busly widget markup as the default
+ * homepage, re-themed navy/terracotta with Space Grotesk headings. Scoped
+ * entirely to `body.busly-skin-modern` (added by busly_is_modern_skin_page()
+ * in inc/template-functions.php) so it never affects the default homepage
+ * or any other page.
+ *
+ * Deliberately NOT a duplicate component stylesheet: hero.css, sections.css,
+ * components.css and layout.css already read every color/spacing value from
+ * the --busly-* custom properties defined in base.css, so redeclaring those
+ * properties here re-skins every widget (routes, features, destinations,
+ * offers, steps, testimonials, CTA, buttons, cards, icon chips) without
+ * touching a single widget template. Only the handful of values those files
+ * hard-code outside the variable system are overridden individually below.
+ */
+
+body.busly-skin-modern {
+	--busly-navy: #15213D;
+	--busly-primary: #15213D;
+	--busly-primary-2: #1D2B4A;
+	--busly-primary-3: #2B3A5E;
+	--busly-accent: #E8622C;
+	--busly-accent-hover: #D1551F;
+	--busly-heading: #15213D;
+	--busly-text: #6B7280;
+	--busly-border: #E7E2D8;
+	--busly-background: #FBF9F4;
+	--busly-font-primary: 'IBM Plex Sans', sans-serif;
+
+	/* Warm neutral scale in place of the default cool slate, plus a soft
+	   terracotta-tinted "info chip" pair (feature/route icon backgrounds). */
+	--busly-i50: #FBEAE0;
+	--busly-i100: #F6D4C2;
+	--busly-s50: #FBF9F4;
+	--busly-s100: #F3F0E9;
+	--busly-s200: #E7E2D8;
+	--busly-s400: #9A9488;
+	--busly-s500: #746F63;
+	--busly-s600: #54504A;
+	--busly-s700: #3A3733;
+	--busly-s900: #15213D;
+}
+
+body.busly-skin-modern h1,
+body.busly-skin-modern h2,
+body.busly-skin-modern h3 {
+	font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Eyebrow reads in the accent color here (the default skin uses --busly-primary,
+   i.e. navy, which would read as a heading rather than a kicker). */
+body.busly-skin-modern .sec-eye { color: var(--busly-accent); }
+body.busly-skin-modern .see-all { border-bottom: 2px solid var(--busly-accent); padding-bottom: 2px; }
+
+/* ── Hero ──────────────────────────────────────────────────────────── */
+/* The reference hero is flat navy with a corner illustration (a bus on a
+   highway past a city skyline, at night) — not a full-bleed photo, so the
+   widget's own full-bleed "Background Photo" layer is hidden and the real
+   illustration (uploaded to wp-content/uploads/busly-homepage2/, same file
+   the reference uses) is painted into the corner instead. The widget's
+   Background Photo control still exists and still works if this page is
+   ever switched back to the default skin. */
+body.busly-skin-modern .busly-hero-wrap { background: #FBF9F4; }
+/* Transparent, not the page's cream — a solid color here would show as a
+   mismatched frame around any custom background color set on the search
+   card itself (e.g. via the widget's own Style tab controls). Padding
+   trimmed too, now that the card's own padding (Style > Container)
+   provides the breathing room instead. */
+body.busly-skin-modern .busly-search-widget { background: transparent; padding-bottom: 20px; }
+body.busly-skin-modern .busly-hero-photo { background-image: none !important; }
+/* min-height: 0 — the default skin's `clamp(400px, 62vh, 680px)` can
+   reserve far more height than this hero's actual content needs at taller
+   viewports, leaving a large unpredictable blank strip between the trust
+   row and the search card that the fixed overlap amount below can't
+   account for. Zeroing it makes the hero's height exactly
+   padding-top + content + padding-bottom (both explicit, both tuned
+   against the overlap transform), so the gap is consistent regardless of
+   viewport height. */
+body.busly-skin-modern .busly-hero { background: var(--busly-navy); min-height: 0 !important; }
+body.busly-skin-modern .busly-hero-overlay {
+	/* Relative to this CSS file's own path (assets/css/) rather than a
+	   domain-root-absolute "/wp-content/…" path — the site can be (and
+	   here, is) installed in a subdirectory, which an absolute path
+	   silently 404s under. Ships with the theme under assets/images/, not
+	   wp-content/uploads/, so it survives a theme re-install/migration. */
+	background-image: url("../images/homepage2/hero-illustration.svg");
+	background-repeat: no-repeat;
+	background-position: right bottom;
+	background-size: 620px 520px;
+	background-color: transparent;
+}
+body.busly-skin-modern .busly-hero-top-fade { background: none; }
+/* Reserve clear navy space below the (vertically centered) badge/heading/
+   trust-row stack so the floating search card below can overlap into the
+   hero without ever covering real content, then pull the card up into it —
+   matching the reference's search card floating over the hero's bottom
+   edge instead of sitting in its own flat section underneath. */
+body.busly-skin-modern .busly-hero-body { padding-bottom: 100px !important; }
+body.busly-skin-modern .busly-search-widget { padding-top: 0; }
+/* `margin-top` on #busly-search-section (even ID-selector + !important,
+   confirmed via a debug outline/background test to be matching the right
+   element) is silently neutralized by something in Elementor's cascade
+   never root-caused — `transform` and `outline` both move/paint on the
+   same element correctly, so the overlap is done with `transform`
+   instead. Unlike a negative margin, transform doesn't close up the
+   document-flow gap it leaves behind, so the routes section's own top
+   padding is trimmed by roughly the same amount below to compensate
+   (see "Popular Routes" further down). */
+body.busly-skin-modern #busly-search-section {
+	transform: translateY(-90px);
+	position: relative;
+	z-index: 5;
+}
+@media (max-width: 760px) {
+	body.busly-skin-modern .busly-hero-body { padding-bottom: 90px !important; }
+	body.busly-skin-modern #busly-search-section { transform: translateY(-56px); }
+}
+body.busly-skin-modern .hero-badge-dot { background: var(--busly-accent); }
+body.busly-skin-modern .hero-h1 em,
+body.busly-skin-modern .hero-h1 .accent { color: var(--busly-accent); }
+/* The default skin's 520px cap wraps this headline onto 3 lines at this
+   font size; the reference wraps it onto 2 ("…starts" / "with the right
+   bus."). */
+body.busly-skin-modern .hero-h1 { max-width: 620px; }
+/* Trust row ("Secure payments" / "24/7 support" / "100K+ happy travelers").
+   These are Elementor's Font-Awesome-as-inline-SVG icons (.e-font-icon-svg) —
+   the path has no fill attribute and nothing in Elementor's or the theme's
+   own CSS sets `fill: currentColor` for them, so the default skin's own
+   `.trust-item svg { color: rgba(255,255,255,.35) }` rule in hero.css was
+   never actually doing anything either (SVG `fill`, not CSS `color`, is
+   what paints them — they've always rendered with the SVG default fill,
+   black). `color` alone here has the same no-op problem, so `fill` is set
+   explicitly instead. */
+body.busly-skin-modern .trust-item svg { fill: var(--busly-accent); }
+body.busly-skin-modern .trust-item { color: rgba(255,255,255,.7); }
+@media (max-width: 980px) {
+	body.busly-skin-modern .busly-hero-overlay { background-image: none; }
+}
+/* The reference hero has no CTA button of its own — the search card right
+   below it carries that action instead, so the widget's "Search Buses"
+   button (always rendered by class-widget-hero.php) is hidden here to
+   avoid a redundant second call-to-action. */
+body.busly-skin-modern .hero-cta { display: none; }
+
+/* ── Header: the reference nav is a light, frosted bar at all times (never
+   transparent-over-hero), its text dark rather than white — force the
+   "solid" header state unconditionally instead of the scroll-triggered
+   transparent→solid behavior the default skin uses over a photo hero. */
+body.busly-skin-modern .hdr {
+	background: rgba(251,249,244,.92) !important;
+	backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+	box-shadow: 0 1px 0 rgba(0,0,0,.06) !important;
+}
+body.busly-skin-modern .hdr::before { display: none !important; }
+body.busly-skin-modern .logo-name,
+body.busly-skin-modern .nav a,
+body.busly-skin-modern .hbtn { color: var(--busly-s700) !important; }
+body.busly-skin-modern .nav a:hover,
+body.busly-skin-modern .hbtn:hover { background: var(--busly-s100) !important; color: var(--busly-s900) !important; }
+body.busly-skin-modern .hdr-burger { color: var(--busly-s700) !important; }
+
+/* Popular Routes: top padding trimmed to compensate for the gap the
+   search card's transform-based overlap above leaves in normal document
+   flow (transform doesn't close up the space like a negative margin
+   would — see the hero/search overlap comment above). */
+body.busly-skin-modern .busly-featured-routes { padding-top: 40px; }
+
+/* ── Cards / icon chips ───────────────────────────────────────────── */
+body.busly-skin-modern .busly-card:hover { border-color: #EBB796; }
+body.busly-skin-modern .busly-btn--accent { box-shadow: 0 3px 14px rgba(232,98,44,.35); }
+/* Route "go to" chip: a neutral warm chip with a navy icon in the reference
+   (not the feature icon's filled-navy treatment below). */
+body.busly-skin-modern .go-ic { background: var(--busly-s100); color: var(--busly-primary); }
+body.busly-skin-modern .route-price { color: var(--busly-accent); }
+/* Feature icon: a solid navy tile with an accent-colored icon in the
+   reference, not the default skin's light tinted chip. */
+body.busly-skin-modern .feat-ic { background: var(--busly-navy); color: var(--busly-accent); }
+/* Same Elementor Font-Awesome-as-inline-SVG issue as the hero trust row
+   (see that comment above): `color` never paints these, `fill` does. */
+body.busly-skin-modern .feat-ic svg { fill: var(--busly-accent); }
+
+/* ── Destinations: real photos (same per-city tint behind them as the
+   reference), with the fare pill moved to the top of the card and a
+   lighter top-to-bottom gradient in place of the default skin's
+   bottom-heavy one — matching the reference exactly. */
+body.busly-skin-modern .dest-c:nth-child(4n+1) { background: #1D2B4A; }
+body.busly-skin-modern .dest-c:nth-child(4n+2) { background: #8A4A33; }
+body.busly-skin-modern .dest-c:nth-child(4n+3) { background: #2F5542; }
+body.busly-skin-modern .dest-c:nth-child(4n+4) { background: #5B4A7A; }
+body.busly-skin-modern .dest-c img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+body.busly-skin-modern .dest-ov {
+	z-index: 1;
+	background: linear-gradient(180deg, rgba(10,16,30,.15) 0%, rgba(10,16,30,0) 35%, rgba(10,16,30,.72) 100%);
+}
+/* Fare pill moves to the top of the card (the default skin keeps it at the
+   bottom, after the city name) — .dest-body spans the whole tile instead of
+   just the bottom strip so re-ordering its children actually relocates it. */
+body.busly-skin-modern .dest-body {
+	position: absolute; inset: 0; z-index: 2; box-sizing: border-box;
+	padding: 22px; display: flex; flex-direction: column; justify-content: space-between;
+}
+body.busly-skin-modern .dest-fare { order: -1; align-self: flex-start; }
+body.busly-skin-modern .dest-city { color: #fff; }
+body.busly-skin-modern .dest-ctry { color: rgba(255,255,255,.82); }
+
+/* Offer banner image (class-widget-offers.php's new optional banner_image
+   field): full-bleed across the top of the card, same negative-margin trick
+   as the reference (the card's own 28px padding, from sections.css, is
+   what the -28px margins bleed out to the edge). */
+body.busly-skin-modern .off-banner {
+	display: block; width: calc(100% + 56px); height: 150px; object-fit: cover;
+	margin: -28px -28px 22px; border-radius: 0;
+}
+
+/* ── How It Works ─────────────────────────────────────────────────── */
+body.busly-skin-modern .step-n { color: var(--busly-accent); box-shadow: 0 4px 16px rgba(21,33,61,.3); }
+
+/* ── Testimonials ─────────────────────────────────────────────────── */
+body.busly-skin-modern .stars { color: var(--busly-accent); }
+
+/* ── CTA band: flat navy with an accent-filled button in the reference,
+   not the default skin's gradient band + white/navy button. When the
+   widget's optional Side Image is set (class-widget-cta.php), it switches
+   to a left-aligned two-column layout with the image bottom-aligned on the
+   right, matching the reference's phone/ticket mockup treatment. */
+body.busly-skin-modern .cta-sec { background: var(--busly-navy); }
+body.busly-skin-modern .cta-sec::before { display: none; }
+body.busly-skin-modern .cta-btn { background: var(--busly-accent); color: #fff; }
+body.busly-skin-modern .cta-eyebrow {
+	font-size: 13px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase;
+	color: var(--busly-accent); margin: 0 0 12px;
+}
+body.busly-skin-modern .cta-sec--split { padding: 80px 0 0; overflow: hidden; text-align: left; }
+body.busly-skin-modern .cta-sec--split::before { display: none; }
+body.busly-skin-modern .cta-sec-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; }
+body.busly-skin-modern .cta-sec-text { flex: 1; max-width: 520px; padding-bottom: 80px; text-align: left; }
+body.busly-skin-modern .cta-sec--split .cta-h { font-size: 40px; line-height: 1.15; margin-bottom: 16px; }
+body.busly-skin-modern .cta-sec--split .cta-p { margin-bottom: 32px; }
+body.busly-skin-modern .cta-sec-image { flex-shrink: 0; align-self: flex-end; height: 400px; overflow: hidden; }
+body.busly-skin-modern .cta-sec-image img { display: block; width: 280px; height: 100%; object-fit: contain; }
+@media (max-width: 980px) {
+	body.busly-skin-modern .cta-sec-row { flex-direction: column; align-items: flex-start; gap: 0; }
+	body.busly-skin-modern .cta-sec-image { align-self: center; }
+}
+
+/* ── Search card: the reference wraps the pill bar in its own padded white
+   card (shadow + rounded-20px), and the pill itself is a compact rounded
+   rectangle (14px radius, 16/20px field padding) rather than the default
+   skin's full pill shape (100px radius, 30/40px padding) — both need
+   `body …` + !important to beat the plugin's own !important-heavy inline
+   stylesheet and the base skin's own !important retint (see booking.css's
+   "Section 1" comment for why). */
+body.busly-skin-modern .busly-search-card {
+	background: #fff; border-radius: 20px; border: 1px solid #EFEAE0;
+	box-shadow: 0 24px 48px rgba(21,33,61,.16); padding: 32px;
+}
+body.busly-skin-modern #wbtm_area .wbtm-bar-redesign .wbtm_search_input_fields_holder {
+	border-radius: 14px !important;
+	box-shadow: none !important;
+}
+body.busly-skin-modern #wbtm_area .wbtm-bar-redesign .wtbm_inputList { padding: 16px 20px !important; }
+body.busly-skin-modern #wbtm_area .wbtm-bar-redesign label.wtbm_fdColumn { color: #8A8F9C !important; }
+/* Field values (city names, dates): the plugin's own inline stylesheet
+   hard-codes near-black (#1a1a1a); the reference uses the same navy as
+   everything else, not plain black. Icons match the reference's cooler
+   muted gray too (the base skin's --busly-s400 is a warmer tone). */
+body.busly-skin-modern #wbtm_area .wbtm-bar-redesign .formControl { color: var(--busly-navy) !important; }
+body.busly-skin-modern #wbtm_area .wbtm-bar-redesign .marker > i,
+body.busly-skin-modern #wbtm_area .wbtm-bar-redesign .calendar > i { color: #8A8F9C !important; }
+body.busly-skin-modern #wbtm_area .wbtm-bar-redesign .wtbm_inputList:hover { background: var(--busly-s50) !important; }
+body.busly-skin-modern #wbtm_area .wbtm-bar-redesign .wbtm_search_action_button { box-shadow: 0 3px 14px rgba(232,98,44,.35) !important; }

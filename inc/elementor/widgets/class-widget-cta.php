@@ -50,6 +50,16 @@ class Busly_Widget_Cta extends Busly_Widget_Base {
 		);
 
 		$this->add_control(
+			'eyebrow',
+			array(
+				'label'       => __( 'Eyebrow (optional)', 'busly' ),
+				'type'        => Controls_Manager::TEXT,
+				'default'     => '',
+				'label_block' => true,
+			)
+		);
+
+		$this->add_control(
 			'heading',
 			array(
 				'label'   => __( 'Heading', 'busly' ),
@@ -88,6 +98,25 @@ class Busly_Widget_Cta extends Busly_Widget_Base {
 		);
 
 		$this->end_controls_section();
+
+		$this->start_controls_section(
+			'section_image',
+			array(
+				'label' => __( 'Side Image', 'busly' ),
+			)
+		);
+
+		$this->add_control(
+			'side_image',
+			array(
+				'label'       => __( 'Image (optional)', 'busly' ),
+				'type'        => Controls_Manager::MEDIA,
+				'default'     => array(),
+				'description' => __( 'When set, the band switches from a centered layout to a two-column one with this image on the right (e.g. a phone/ticket mockup).', 'busly' ),
+			)
+		);
+
+		$this->end_controls_section();
 	}
 
 	/**
@@ -100,20 +129,32 @@ class Busly_Widget_Cta extends Busly_Widget_Base {
 		if ( ! empty( $settings['button_link']['url'] ) ) {
 			$this->add_link_attributes( 'button', $settings['button_link'] );
 		}
+
+		$has_image = ! empty( $settings['side_image']['url'] );
 		?>
-		<div class="cta-sec">
-			<div class="wrap">
-				<?php if ( ! empty( $settings['heading'] ) ) : ?>
-					<h2 class="cta-h"><?php echo esc_html( $settings['heading'] ); ?></h2>
-				<?php endif; ?>
-				<?php if ( ! empty( $settings['description'] ) ) : ?>
-					<p class="cta-p"><?php echo esc_html( $settings['description'] ); ?></p>
-				<?php endif; ?>
-				<?php if ( ! empty( $settings['button_text'] ) ) : ?>
-					<a <?php $this->print_render_attribute_string( 'button' ); ?>>
-						<?php echo esc_html( $settings['button_text'] ); ?>
-						<?php busly_icon( 'arrow-right' ); ?>
-					</a>
+		<div class="cta-sec<?php echo $has_image ? ' cta-sec--split' : ''; ?>">
+			<div class="wrap<?php echo $has_image ? ' cta-sec-row' : ''; ?>">
+				<div class="cta-sec-text">
+					<?php if ( ! empty( $settings['eyebrow'] ) ) : ?>
+						<p class="cta-eyebrow"><?php echo esc_html( $settings['eyebrow'] ); ?></p>
+					<?php endif; ?>
+					<?php if ( ! empty( $settings['heading'] ) ) : ?>
+						<h2 class="cta-h"><?php echo esc_html( $settings['heading'] ); ?></h2>
+					<?php endif; ?>
+					<?php if ( ! empty( $settings['description'] ) ) : ?>
+						<p class="cta-p"><?php echo esc_html( $settings['description'] ); ?></p>
+					<?php endif; ?>
+					<?php if ( ! empty( $settings['button_text'] ) ) : ?>
+						<a <?php $this->print_render_attribute_string( 'button' ); ?>>
+							<?php echo esc_html( $settings['button_text'] ); ?>
+							<?php busly_icon( 'arrow-right' ); ?>
+						</a>
+					<?php endif; ?>
+				</div>
+				<?php if ( $has_image ) : ?>
+					<div class="cta-sec-image">
+						<img src="<?php echo esc_url( $settings['side_image']['url'] ); ?>" alt="">
+					</div>
 				<?php endif; ?>
 			</div>
 		</div>

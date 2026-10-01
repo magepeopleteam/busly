@@ -32,6 +32,7 @@ function busly_register_assets() {
 	wp_register_style( 'busly-footer', $css . 'footer.css', array( 'busly-base' ), $v );
 	wp_register_style( 'busly-hero', $css . 'hero.css', array( 'busly-base' ), $v );
 	wp_register_style( 'busly-sections', $css . 'sections.css', array( 'busly-base', 'busly-components' ), $v );
+	wp_register_style( 'busly-homepage-modern', $css . 'homepage-modern.css', array( 'busly-base', 'busly-components', 'busly-layout', 'busly-hero', 'busly-sections' ), $v );
 	wp_register_style( 'busly-blog', $css . 'blog.css', array( 'busly-base', 'busly-components' ), $v );
 	wp_register_style( 'busly-booking', $css . 'booking.css', array( 'busly-base', 'busly-components' ), $v );
 	wp_register_style( 'busly-woocommerce', $css . 'woocommerce.css', array( 'busly-base', 'busly-components' ), $v );
@@ -67,9 +68,15 @@ function busly_enqueue_assets() {
 	// Hero + homepage sections: only where a Busly section widget is used.
 	// (Elementor widgets pull these in themselves via get_style_depends();
 	// this covers the no-Elementor / shortcode-in-content fallback case.)
-	if ( is_front_page() || busly_page_has_busly_shortcode() ) {
+	if ( is_front_page() || busly_page_has_busly_shortcode() || busly_is_modern_skin_page() ) {
 		wp_enqueue_style( 'busly-hero' );
 		wp_enqueue_style( 'busly-sections' );
+	}
+
+	// Alternate "Homepage 2" skin: navy/terracotta palette over the same
+	// Busly widget markup — loaded last so its overrides win the cascade.
+	if ( busly_is_modern_skin_page() ) {
+		wp_enqueue_style( 'busly-homepage-modern' );
 	}
 
 	// Blog: home, single posts, archives, search.

@@ -32,6 +32,10 @@ function busly_body_classes( $classes ) {
 		$classes[] = 'busly-elementor-page';
 	}
 
+	if ( busly_is_modern_skin_page() ) {
+		$classes[] = 'busly-skin-modern';
+	}
+
 	$classes[] = 'busly-layout-' . sanitize_html_class( busly_get_option( 'site_layout', 'boxed' ) );
 
 	return $classes;

@@ -310,6 +310,30 @@ class Busly_Demo_Import {
 	}
 
 	/**
+	 * Step: assemble the alternate "Homepage 2" (Modern navy/terracotta
+	 * design) as its own page — same widgets as the main homepage, entirely
+	 * Elementor-editable, re-skinned via assets/css/homepage-modern.css.
+	 * Published at its own URL; never touches Settings → Reading, so the
+	 * main homepage from step_homepage() stays the site's front page unless
+	 * the merchant switches it themselves.
+	 *
+	 * @return string Status message.
+	 */
+	public static function step_homepage2() {
+		$page_id = self::find_demo_page( 'homepage2' );
+		if ( ! $page_id ) {
+			$page_id = self::ensure_page( 'homepage2', __( 'Homepage 2', 'busly' ), '' );
+		}
+
+		if ( did_action( 'elementor/loaded' ) ) {
+			require_once BUSLY_DIR . '/inc/admin/class-elementor-homepage.php';
+			Busly_Elementor_Homepage::build_modern( $page_id );
+		}
+
+		return __( 'Homepage 2 (Modern design) assembled as its own page.', 'busly' );
+	}
+
+	/**
 	 * Step: apply sensible Theme Settings defaults tying it all together.
 	 *
 	 * @return string Status message.
