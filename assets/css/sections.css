@@ -32,6 +32,14 @@
 	padding-bottom: 88px;
 }
 
+/* Whichever section follows the search widget needs its own top padding
+   trimmed when the hero's floating-search-card treatment is on (see
+   hero.css): `transform` (used for that overlap) doesn't close up the gap
+   it leaves in normal document flow like a negative margin would, so the
+   gap is closed here instead. Busly_Elementor_Homepage::build() always
+   places Featured Routes right after the search widget. */
+body.busly-hero-floating-search .busly-featured-routes { padding-top: 40px; }
+
 /* ── Routes ────────────────────────────────────── */
 .route-c { padding: 20px; cursor: pointer; display: flex; flex-direction: column; gap: 14px; }
 .route-top { display: flex; align-items: center; justify-content: space-between; }

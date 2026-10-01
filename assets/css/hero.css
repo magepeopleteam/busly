@@ -51,8 +51,21 @@
 
 .hero-trust { display: flex; align-items: center; gap: 20px; margin-top: 36px; flex-wrap: wrap; }
 .trust-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: rgba(255,255,255,.44); }
-.trust-item svg { width: 14px; height: 14px; color: rgba(255,255,255,.35); flex-shrink: 0; }
+/* These are Elementor's Font-Awesome-as-inline-SVG icons (.e-font-icon-svg)
+   — the path carries no fill attribute, and nothing in Elementor's or this
+   theme's own CSS sets `fill: currentColor` for them, so `color` here was
+   never actually painting anything (SVG `fill` is what does); they've
+   always rendered with the SVG default fill, black, regardless of this
+   rule. Fixed to target the property that actually works. */
+.trust-item svg { width: 14px; height: 14px; fill: rgba(255,255,255,.35); flex-shrink: 0; }
 .trust-sep { width: 1px; height: 16px; background: rgba(255,255,255,.12); }
+
+/* Pages with the modernized hero treatment (see the floating-search block
+   below) use accent-colored icons and a lighter, more legible trust-row
+   text color, matching the approved reference — rather than the classic
+   skin's very faint near-invisible default above. */
+body.busly-hero-floating-search .trust-item { color: #C3CBDE; }
+body.busly-hero-floating-search .trust-item svg { fill: var(--busly-accent); }
 
 @media (max-width: 760px) {
 	.hero-trust { gap: 22px; }
@@ -62,4 +75,42 @@
 /* Search widget sits directly under the hero, mirroring homepage.html's
    .search-wrap vertical rhythm. */
 .busly-search-widget { padding: 24px 0 44px; background: #f0f2f7; }
+
+/* Optional floating white card around the search pill (class-widget-bus-
+   search.php's "Floating Card Wrapper" control) — a sensible default for
+   any page that turns it on, classic or modern skin alike; homepage-
+   modern.css layers its own refinements on top for that skin specifically. */
+.busly-search-card {
+	background: #fff; border-radius: var(--busly-r20); border: 1px solid var(--busly-s200);
+	box-shadow: 0 24px 48px rgba(21,33,61,.16); padding: 10px;
+}
+
+/* ── Floating search card overlapping the hero's bottom edge ─────────────
+   Opt-in per page via busly_hero_has_floating_search() (the modern skin
+   always has it; a classic-skin page — e.g. Homepage 1 — can opt in on its
+   own via the "_busly_hero_floating_search" post meta, keeping its own
+   colors/fonts otherwise unchanged). Reserves clear hero space below the
+   centered badge/heading/trust-row stack, then pulls the search section up
+   into it with `transform` — plain `margin-top` on this specific Elementor
+   section is inexplicably inert even with !important and an ID selector
+   (confirmed with a debug outline: the selector matches fine, margin just
+   has no visual effect), so transform is used instead; since transform
+   (unlike margin) doesn't close up the gap it leaves in normal document
+   flow, the very next section's own top spacing needs a matching trim
+   wherever this class is used. */
+body.busly-hero-floating-search .busly-hero { min-height: 0; }
+body.busly-hero-floating-search .busly-hero-body { padding-bottom: 110px; }
+/* The floating search card right below now carries the "search" action —
+   keeping the hero's own CTA button too would be a redundant second one. */
+body.busly-hero-floating-search .hero-cta { display: none; }
+body.busly-hero-floating-search .busly-search-widget { padding-top: 0; padding-bottom: 20px; background: transparent; }
+body.busly-hero-floating-search #busly-search-section {
+	transform: translateY(-80px);
+	position: relative;
+	z-index: 5;
+}
+@media (max-width: 760px) {
+	body.busly-hero-floating-search .busly-hero-body { padding-bottom: 80px; }
+	body.busly-hero-floating-search #busly-search-section { transform: translateY(-50px); }
+}
 

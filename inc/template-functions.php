@@ -36,6 +36,10 @@ function busly_body_classes( $classes ) {
 		$classes[] = 'busly-skin-modern';
 	}
 
+	if ( busly_hero_has_floating_search() ) {
+		$classes[] = 'busly-hero-floating-search';
+	}
+
 	$classes[] = 'busly-layout-' . sanitize_html_class( busly_get_option( 'site_layout', 'boxed' ) );
 
 	return $classes;

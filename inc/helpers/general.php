@@ -73,6 +73,29 @@ function busly_is_modern_skin_page( $post_id = 0 ) {
 }
 
 /**
+ * Whether the current page's hero + search widget should use the floating
+ * "search card overlaps the hero's bottom edge" treatment, independent of
+ * which color skin (classic or modern) the page otherwise uses — e.g.
+ * Homepage 1 keeps its classic blue palette everywhere else but opts into
+ * this one structural upgrade. Driven by its own post meta flag (not
+ * folded into busly_is_modern_skin_page()) so a page can have either
+ * independently of the other.
+ *
+ * @param int $post_id Optional. Defaults to the current queried object.
+ * @return bool
+ */
+function busly_hero_has_floating_search( $post_id = 0 ) {
+	$post_id = $post_id ? $post_id : get_queried_object_id();
+	if ( ! $post_id ) {
+		return false;
+	}
+	if ( busly_is_modern_skin_page( $post_id ) ) {
+		return true; // The modern skin always has it; no need to also set the flag.
+	}
+	return 'yes' === get_post_meta( $post_id, '_busly_hero_floating_search', true );
+}
+
+/**
  * Numbered pagination markup (wraps paginate_links()).
  */
 function busly_pagination() {
