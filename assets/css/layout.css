@@ -95,15 +95,26 @@ body .elementor-column-gap-default > .elementor-column > .elementor-element-popu
 .elementor-section.busly-fullbleed { width: 100vw; margin-left: 50%; transform: translateX(-50%); }
 
 @media (max-width: 1024px) {
-	.grid-4, .dest-grid { grid-template-columns: repeat(2, 1fr); }
+	/* !important: some pages (e.g. the homepage's Featured Routes and
+	   Destinations widgets, post-139.css) carry a per-element Elementor
+	   "Custom CSS" rule of `.grid-4{grid-template-columns:repeat(4,1fr)}`
+	   with no responsive variants of its own. Elementor compiles that to
+	   `.elementor-139 .elementor-element.elementor-element-<id> .grid-4`,
+	   4 classes of specificity vs. this plain `.grid-4`'s 1 -- it always
+	   won here regardless of viewport, so the grid never actually dropped
+	   below 4 columns; each card got squeezed to its min-content width
+	   instead of reflowing, pushing the row wider than the screen and off
+	   the right edge. The Elementor rule carries no !important of its own,
+	   so this beats it outright without needing to match its specificity. */
+	.grid-4, .dest-grid { grid-template-columns: repeat(2, 1fr) !important; }
 	.busly-layout-right-sidebar .busly-content-grid,
 	.busly-layout-left-sidebar .busly-content-grid { grid-template-columns: 1fr; }
 	.busly-layout-left-sidebar .busly-content-col,
 	.busly-layout-left-sidebar .busly-sidebar { order: initial; }
 }
 @media (max-width: 760px) {
-	.grid-4, .dest-grid { grid-template-columns: repeat(2, 1fr); }
+	.grid-4, .dest-grid { grid-template-columns: repeat(2, 1fr) !important; }
 }
 @media (max-width: 480px) {
-	.grid-4, .dest-grid, .grid-2 { grid-template-columns: 1fr; }
+	.grid-4, .dest-grid, .grid-2 { grid-template-columns: 1fr !important; }
 }

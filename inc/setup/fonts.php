@@ -33,7 +33,12 @@ function busly_register_fonts() {
 
 	wp_enqueue_style(
 		'busly-google-fonts',
-		'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap',
+		// Manrope rides along with the site's default Plus Jakarta Sans in this
+		// one request (same pattern as the modern-skin bundle below): the bus
+		// search results card (search_result.php) uses it for body-weight text
+		// (times, labels, amenities) while Plus Jakarta Sans stays the heading/
+		// price/button face, matching the card's design reference exactly.
+		'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700&display=swap',
 		array(),
 		null // phpcs:ignore -- version intentionally omitted for a third-party URL.
 	);
